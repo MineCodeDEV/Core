@@ -12,7 +12,7 @@ public class CoreSpigot {
     private JavaPlugin mainClass;
 
     public CoreSpigot(String pluginName, String pluginVersion, JavaPlugin mainClass) {
-        this.instance = this;
+        instance = this;
         this.mainClass = mainClass;
         PluginMessageManagerProvider pluginMessageManager = new PluginMessageManagerProvider();
         new CoreCommon(pluginName, pluginVersion);
@@ -23,11 +23,11 @@ public class CoreSpigot {
         mainClass.getServer().getMessenger().registerIncomingPluginChannel(mainClass, CoreAPI.getInstance().getPluginMessageChannel(), new PluginMessageListener());
     }
 
-    public JavaPlugin getMainClass() {
-        return mainClass;
-    }
-
     public static CoreSpigot getInstance() {
         return instance;
+    }
+
+    public JavaPlugin getMainClass() {
+        return mainClass;
     }
 }

@@ -23,7 +23,7 @@ public class UpdateManagerProvider implements UpdateManager {
 
     public UpdateManagerProvider() {
         try {
-            url = new URL("https://api.github.com/repos/CraftCode-Dev/" + CoreCommon.getInstance().getPluginName() + "/releases");
+            url = new URL("https://api.github.com/repos/MineCodeDEV/" + CoreCommon.getInstance().getPluginName() + "/releases");
             loader = GsonConfigurationLoader.builder().url(url).build();
             conf = loader.load();
         } catch (ConfigurateException | MalformedURLException e) {

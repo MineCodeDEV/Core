@@ -39,7 +39,7 @@ public class FileObjectProvider implements FileObject {
             subFolder.append(temp + "/");
         }
         this.fileStreamPath = "/" + subFolder.toString() + fileName;
-        this.directoryPath = "plugins/CraftCode/" + folder + "/" + subFolder.toString() + "/";
+        this.directoryPath = "plugins/MineCode/" + folder + "/" + subFolder.toString() + "/";
         this.filePath = directoryPath + fileName;
         this.file = new File(directoryPath, fileName);
         createFile();
@@ -48,7 +48,7 @@ public class FileObjectProvider implements FileObject {
     public FileObjectProvider(String fileName, String folder) {
         this.fileName = fileName;
         this.fileStreamPath = "/" + fileName;
-        this.directoryPath = "plugins/CraftCode/" + folder + "/";
+        this.directoryPath = "plugins/MineCode/" + folder + "/";
         this.filePath = directoryPath + fileName;
         this.file = new File(directoryPath, fileName);
         createFile();
@@ -57,7 +57,7 @@ public class FileObjectProvider implements FileObject {
     public FileObjectProvider(String fileName) {
         this.fileName = fileName;
         this.fileStreamPath = fileName;
-        this.directoryPath = "plugins/CraftCode/";
+        this.directoryPath = "plugins/MineCode/";
         this.filePath = directoryPath + fileName;
         this.file = new File(directoryPath, fileName);
         createFile();

@@ -36,8 +36,7 @@ public class LanguageProvider implements Language {
         this.slot = configNode.node("slot").getInt();
         try {
             this.lore = configNode.node("lore").getList(String.class);
-        } catch (SerializationException e) {
-            System.out.println("[CraftCode] THERE IS AN ERROR! CANNOT SERIALIZATE THE LORE FOR THE ISOCODE-ITEMS");
+        } catch (SerializationException ignored) {
         }
         this.texture = configNode.node("texture").getString();
     }

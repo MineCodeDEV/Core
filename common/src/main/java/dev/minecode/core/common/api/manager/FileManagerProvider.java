@@ -24,7 +24,7 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void loadMessages() {
-        File messsageDirectory = new File("plugins/CraftCode/" + CoreAPI.getInstance().getPluginName() + "/message/");
+        File messsageDirectory = new File("plugins/MineCode/" + CoreAPI.getInstance().getPluginName() + "/message/");
         messsageDirectory.mkdirs();
         for (Map.Entry<Object, ? extends ConfigurationNode> node : config.getConf().node("language", "languages").childrenMap().entrySet()) {
             CoreAPI.getInstance().getLanguage((String) node.getValue().key());
