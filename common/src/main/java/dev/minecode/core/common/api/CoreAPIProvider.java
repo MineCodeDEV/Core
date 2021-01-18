@@ -101,7 +101,7 @@ public class CoreAPIProvider extends CoreAPI {
     @Override
     public CorePlayer getCorePlayer(int id) {
         if (CorePlayerProvider.getIdCache().containsKey(id)) {
-            CorePlayerProvider corePlayerProvider = CorePlayerProvider.getNameCache().get(id);
+            CorePlayerProvider corePlayerProvider = CorePlayerProvider.getIdCache().get(id);
             corePlayerProvider.load();
             return corePlayerProvider;
         }
