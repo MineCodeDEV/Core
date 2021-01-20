@@ -1,5 +1,6 @@
 package dev.minecode.core.spigot.api.manager;
 
+import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.PluginMessageManager;
 import dev.minecode.core.spigot.CoreSpigot;
 import org.bukkit.Bukkit;
@@ -28,7 +29,7 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
         }
 
         Player player = Bukkit.getOnlinePlayers().iterator().next();
-        player.sendPluginMessage(CoreSpigot.getInstance().getMainClass(), "BungeeCord", stream.toByteArray());
+        player.sendPluginMessage(CoreSpigot.getInstance().getMainClass(), CoreAPI.getInstance().getPluginMessageChannel(), stream.toByteArray());
         return false;
     }
 }

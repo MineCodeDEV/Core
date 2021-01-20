@@ -71,7 +71,6 @@ public class CoreAPIProvider extends CoreAPI {
         return pluginMessageManager;
     }
 
-    @Override
     public void setPluginMessageManager(PluginMessageManager pluginMessageManager) {
         this.pluginMessageManager = pluginMessageManager;
     }

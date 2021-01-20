@@ -7,18 +7,34 @@ import dev.minecode.core.spigot.listener.PluginMessageListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CoreSpigot {
-
     private static CoreSpigot instance;
+
+    private CoreCommon coreCommon;
     private JavaPlugin mainClass;
 
+    private PluginMessageManagerProvider pluginMessageManagerProvider;
+
+    private String pluginName;
+    private String pluginVersion;
+
     public CoreSpigot(String pluginName, String pluginVersion, JavaPlugin mainClass) {
-        instance = this;
+        this.pluginName = pluginName;
+        this.pluginVersion = pluginVersion;
         this.mainClass = mainClass;
-        PluginMessageManagerProvider pluginMessageManager = new PluginMessageManagerProvider();
-        new CoreCommon(pluginName, pluginVersion);
-        CoreAPI.getInstance().setPluginMessageManager(pluginMessageManager);
 
+        makeInstances();
+        registerChannel();
+    }
 
+    private void makeInstances() {
+        instance = this;
+        pluginMessageManagerProvider = new PluginMessageManagerProvider();
+        coreCommon = new CoreCommon(pluginName, pluginVersion);
+
+        coreCommon.getCoreAPIProvider().setPluginMessageManager(pluginMessageManagerProvider);
+    }
+
+    private void registerChannel() {
         mainClass.getServer().getMessenger().registerOutgoingPluginChannel(mainClass, CoreAPI.getInstance().getPluginMessageChannel());
         mainClass.getServer().getMessenger().registerIncomingPluginChannel(mainClass, CoreAPI.getInstance().getPluginMessageChannel(), new PluginMessageListener());
     }

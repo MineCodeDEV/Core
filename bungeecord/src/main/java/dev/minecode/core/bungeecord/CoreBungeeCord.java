@@ -8,18 +8,35 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 public class CoreBungeeCord {
     private static CoreBungeeCord instance;
+
+    private CoreCommon coreCommon;
     private Plugin mainClass;
 
-    public CoreBungeeCord(String pluginName, String pluginVersion, Plugin mainClass) {
-        instance = this;
-        this.mainClass = mainClass;
-        PluginMessageManagerProvider pluginMessageManager = new PluginMessageManagerProvider();
-        new CoreCommon(pluginName, pluginVersion);
-        CoreAPI.getInstance().setPluginMessageManager(pluginMessageManager);
+    private PluginMessageManagerProvider pluginMessageManagerProvider;
 
+    private String pluginName;
+    private String pluginVersion;
+
+    public CoreBungeeCord(String pluginName, String pluginVersion, Plugin mainClass) {
+        this.pluginName = pluginName;
+        this.pluginVersion = pluginVersion;
+        this.mainClass = mainClass;
+
+        makeInstances();
+        registerChannel();
+    }
+
+    private void makeInstances() {
+        instance = this;
+        pluginMessageManagerProvider = new PluginMessageManagerProvider();
+        coreCommon = new CoreCommon(pluginName, pluginVersion);
+
+        coreCommon.getCoreAPIProvider().setPluginMessageManager(pluginMessageManagerProvider);
+    }
+
+    private void registerChannel() {
         mainClass.getProxy().registerChannel(CoreAPI.getInstance().getPluginMessageChannel());
         mainClass.getProxy().getPluginManager().registerListener(mainClass, new PluginMessageListener());
-
     }
 
     public static CoreBungeeCord getInstance() {

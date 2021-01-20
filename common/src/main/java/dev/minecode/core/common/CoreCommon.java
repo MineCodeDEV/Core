@@ -94,4 +94,8 @@ public class CoreCommon {
             return null;
         }
     }
+
+    public CoreAPIProvider getCoreAPIProvider() {
+        return coreAPIProvider;
+    }
 }

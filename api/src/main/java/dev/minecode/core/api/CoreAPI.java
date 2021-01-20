@@ -37,8 +37,6 @@ public abstract class CoreAPI {
 
     public abstract PluginMessageManager getPluginMessageManager();
 
-    public abstract void setPluginMessageManager(PluginMessageManager pluginMessageManager);
-
     public abstract ReplaceManager getReplaceManager(String message);
 
     public abstract ReplaceManager getReplaceManager(String iso_code, String... path);
