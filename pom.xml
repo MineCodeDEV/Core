@@ -13,7 +13,6 @@
         <module>api</module>
         <module>spigot</module>
         <module>bungeecord</module>
-        <module>sponge</module>
     </modules>
 
     <organization>
