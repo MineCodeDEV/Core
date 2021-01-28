@@ -30,6 +30,7 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
             return;
         }
 
+        /* Multi-Proxy
         // it's a proxy and sql is enabled
         if (CoreAPI.getInstance().isUsingSQL()) {
             try {
@@ -42,6 +43,7 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
 
         // it's a proxy and sql is disabled
         //TODO: Forward over a server to a BungeeCord
+        */
     }
 
     @Override

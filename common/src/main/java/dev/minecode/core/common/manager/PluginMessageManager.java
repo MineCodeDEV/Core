@@ -39,13 +39,14 @@ public class PluginMessageManager {
                                 Type.valueOf(resultSet.getString("SENDERTYPE")),
                                 resultSet.getString("RECEIVERNAME"),
                                 CoreCommon.getInstance().getPluginMessageManager().getMessageHashMap(resultSet.getString("MESSAGE")));
+                        resultSet.deleteRow();
                     }
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
             }
-        // Make the delay adjustable
-        },1, TimeUnit.MILLISECONDS);
+            // Make the delay adjustable
+        }, 1, TimeUnit.MILLISECONDS);
     }
 
     public ByteArrayOutputStream getByteArrayOutputStream(String channel, String subChannel, String senderName, Type senderType, String receiverName, HashMap<String, Object> message) {
