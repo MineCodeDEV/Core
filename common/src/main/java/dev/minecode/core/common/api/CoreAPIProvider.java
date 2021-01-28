@@ -5,6 +5,7 @@ import dev.minecode.core.api.manager.*;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
+import dev.minecode.core.api.object.Type;
 import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.common.api.manager.*;
 import dev.minecode.core.common.api.object.CorePlayerProvider;
@@ -188,8 +189,13 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public String getPluginMessageChannel() {
-        return "MineCode";
+    public String getProcessName() {
+        return CoreCommon.getInstance().getProcessName();
+    }
+
+    @Override
+    public Type getProcessType() {
+        return CoreCommon.getInstance().getProcessType();
     }
 
     // Other staff

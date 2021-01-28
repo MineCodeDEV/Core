@@ -1,5 +1,6 @@
 package dev.minecode.core.sponge;
 
+import dev.minecode.core.api.object.Type;
 import dev.minecode.core.common.CoreCommon;
 
 public class CoreSponge {
@@ -20,6 +21,8 @@ public class CoreSponge {
     private void makeInstances() {
         instance = this;
         coreCommon = new CoreCommon(pluginName, pluginVersion);
+        // CoreCommon.getInstance().setProcessName(Sponge.getServer().getName());
+        CoreCommon.getInstance().setProcessType(Type.Sponge);
     }
 
     public static CoreSponge getInstance() {

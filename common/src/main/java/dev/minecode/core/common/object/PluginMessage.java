@@ -1,11 +1,10 @@
-package dev.minecode.core.api.event;
+package dev.minecode.core.common.object;
 
-import dev.minecode.core.api.object.CoreEvent;
 import dev.minecode.core.api.object.Type;
 
 import java.util.HashMap;
 
-public class PluginMessageEvent implements CoreEvent {
+public class PluginMessage {
 
     private String channel;
     private String subChannel;
@@ -14,7 +13,7 @@ public class PluginMessageEvent implements CoreEvent {
     private String receiverName;
     private HashMap<String, Object> message;
 
-    public PluginMessageEvent(String channel, String subChannel, String senderName, Type senderType, String receiverName, HashMap<String, Object> message) {
+    public PluginMessage(String channel, String subChannel, String senderName, Type senderType, String receiverName, HashMap<String, Object> message) {
         this.channel = channel;
         this.subChannel = subChannel;
         this.senderName = senderName;

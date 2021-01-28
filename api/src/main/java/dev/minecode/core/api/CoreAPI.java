@@ -4,6 +4,7 @@ import dev.minecode.core.api.manager.*;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
+import dev.minecode.core.api.object.Type;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -67,7 +68,9 @@ public abstract class CoreAPI {
 
     public abstract String getDefaultLanguage();
 
-    public abstract String getPluginMessageChannel();
+    public abstract String getProcessName();
+
+    public abstract Type getProcessType();
 
 
     // Other staff

@@ -3,7 +3,9 @@ package dev.minecode.core.common;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.UpdateManager;
 import dev.minecode.core.api.object.CorePlayer;
+import dev.minecode.core.api.object.Type;
 import dev.minecode.core.common.api.CoreAPIProvider;
+import dev.minecode.core.common.manager.PluginMessageManager;
 import dev.minecode.core.common.util.UUIDFetcher;
 import org.spongepowered.configurate.ConfigurationNode;
 
@@ -19,10 +21,13 @@ public class CoreCommon {
 
     private CoreAPIProvider coreAPIProvider;
     private UUIDFetcher uuidFetcher;
+    private PluginMessageManager pluginMessageManager;
     private CorePlayer console;
 
     private String pluginName;
     private String pluginVersion;
+    private String processName;
+    private Type processType;
     private boolean usingSQL;
     private String defaultLanguage;
 
@@ -42,6 +47,7 @@ public class CoreCommon {
         usingSQL = configNode.node("database", "enable").getBoolean();
         defaultLanguage = configNode.node("language", "default").getString();
 
+        pluginMessageManager = new PluginMessageManager();
         console = CoreAPI.getInstance().getCorePlayer(new UUID(0, 0));
 
         UpdateManager updateManager = CoreAPI.getInstance().getUpdateManager();
@@ -49,6 +55,10 @@ public class CoreCommon {
         if (updateManager.updateAvailable()) {
             System.out.println("[" + pluginName + "] There is a newer Version available! You can download it at " + updateManager.getVersionURL(updateManager.getRecommendVersion()));
         }
+    }
+
+    public PluginMessageManager getPluginMessageManager() {
+        return pluginMessageManager;
     }
 
     public CorePlayer getConsole() {
@@ -66,7 +76,6 @@ public class CoreCommon {
     public boolean isUsingSQL() {
         return usingSQL;
     }
-
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -93,6 +102,22 @@ public class CoreCommon {
         } catch (IOException var4) {
             return null;
         }
+    }
+
+    public String getProcessName() {
+        return processName;
+    }
+
+    public void setProcessName(String processName) {
+        this.processName = processName;
+    }
+
+    public Type getProcessType() {
+        return processType;
+    }
+
+    public void setProcessType(Type processType) {
+        this.processType = processType;
     }
 
     public CoreAPIProvider getCoreAPIProvider() {

@@ -1,9 +1,11 @@
 package dev.minecode.core.spigot;
 
-import dev.minecode.core.api.CoreAPI;
+import dev.minecode.core.api.object.Type;
 import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.spigot.api.manager.PluginMessageManagerProvider;
+import dev.minecode.core.spigot.listener.PlayerListener;
 import dev.minecode.core.spigot.listener.PluginMessageListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CoreSpigot {
@@ -24,19 +26,26 @@ public class CoreSpigot {
 
         makeInstances();
         registerChannel();
+        registerListener();
     }
 
     private void makeInstances() {
         instance = this;
         pluginMessageManagerProvider = new PluginMessageManagerProvider();
         coreCommon = new CoreCommon(pluginName, pluginVersion);
+        CoreCommon.getInstance().setProcessName(Bukkit.getName()); //TODO: Better determine ProcessName
+        CoreCommon.getInstance().setProcessType(Type.Spigot);
 
         coreCommon.getCoreAPIProvider().setPluginMessageManager(pluginMessageManagerProvider);
     }
 
+    private void registerListener() {
+        new PlayerListener();
+    }
+
     private void registerChannel() {
-        mainClass.getServer().getMessenger().registerOutgoingPluginChannel(mainClass, CoreAPI.getInstance().getPluginMessageChannel());
-        mainClass.getServer().getMessenger().registerIncomingPluginChannel(mainClass, CoreAPI.getInstance().getPluginMessageChannel(), new PluginMessageListener());
+        mainClass.getServer().getMessenger().registerOutgoingPluginChannel(mainClass, "MineCode");
+        mainClass.getServer().getMessenger().registerIncomingPluginChannel(mainClass, "MineCode", new PluginMessageListener());
     }
 
     public static CoreSpigot getInstance() {
