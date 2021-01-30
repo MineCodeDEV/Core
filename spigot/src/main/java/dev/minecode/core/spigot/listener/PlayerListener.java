@@ -23,6 +23,11 @@ public class PlayerListener implements Listener {
                 public void run() {
                     if (CoreCommon.getInstance().getProcessName() == null) {
                         BungeeCordPluginMessage.getServer(event.getPlayer().getName());
+                    } else {
+                        for (PluginMessage pluginMessage : CoreCommon.getInstance().getPluginMessageManager().getPluginMessageQueue())
+                            CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(pluginMessage.getChannel(), pluginMessage.getSubChannel(), pluginMessage.getSenderName(), pluginMessage.getReceiverName(), pluginMessage.getMessage());
+                        CoreCommon.getInstance().getPluginMessageManager().getPluginMessageQueue().clear();
+                        return;
                     }
 
                     Bukkit.getScheduler().runTaskLater(CoreSpigot.getInstance().getMainClass(), new Runnable() {
@@ -32,9 +37,9 @@ public class PlayerListener implements Listener {
                                 CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(pluginMessage.getChannel(), pluginMessage.getSubChannel(), pluginMessage.getSenderName(), pluginMessage.getReceiverName(), pluginMessage.getMessage());
                             CoreCommon.getInstance().getPluginMessageManager().getPluginMessageQueue().clear();
                         }
-                    }, 20);
+                    }, 10);
                 }
-            }, 20);
+            }, 10);
         }
     }
 

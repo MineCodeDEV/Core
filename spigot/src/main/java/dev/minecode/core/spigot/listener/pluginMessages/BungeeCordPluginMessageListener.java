@@ -82,7 +82,7 @@ public class BungeeCordPluginMessageListener implements PluginMessageListener {
                 int port = dataInput.readUnsignedShort();
 
                 if (serverName.equals(CoreAPI.getInstance().getProcessName()))
-                CoreCommon.getInstance().setProcessName(serverName);
+                    CoreCommon.getInstance().setProcessName(serverName);
                 CoreCommon.getInstance().setProcessIp(ip);
                 CoreCommon.getInstance().setProcessPort(port);
             }
