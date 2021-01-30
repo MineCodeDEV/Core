@@ -4,7 +4,8 @@ import dev.minecode.core.api.object.Type;
 import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.spigot.api.manager.PluginMessageManagerProvider;
 import dev.minecode.core.spigot.listener.PlayerListener;
-import dev.minecode.core.spigot.listener.PluginMessageListener;
+import dev.minecode.core.spigot.listener.pluginMessages.BungeeCordPluginMessageListener;
+import dev.minecode.core.spigot.listener.pluginMessages.MineCodePluginMessageListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -33,7 +34,6 @@ public class CoreSpigot {
         instance = this;
         pluginMessageManagerProvider = new PluginMessageManagerProvider();
         coreCommon = new CoreCommon(pluginName, pluginVersion);
-        CoreCommon.getInstance().setProcessName(Bukkit.getName()); //TODO: Better determine ProcessName
         CoreCommon.getInstance().setProcessType(Type.Spigot);
 
         coreCommon.getCoreAPIProvider().setPluginMessageManager(pluginMessageManagerProvider);
@@ -45,7 +45,9 @@ public class CoreSpigot {
 
     private void registerChannel() {
         mainClass.getServer().getMessenger().registerOutgoingPluginChannel(mainClass, "MineCode");
-        mainClass.getServer().getMessenger().registerIncomingPluginChannel(mainClass, "MineCode", new PluginMessageListener());
+        mainClass.getServer().getMessenger().registerIncomingPluginChannel(mainClass, "MineCode", new MineCodePluginMessageListener());
+        mainClass.getServer().getMessenger().registerOutgoingPluginChannel(mainClass, "BungeeCord");
+        mainClass.getServer().getMessenger().registerIncomingPluginChannel(mainClass, "BungeeCord", new BungeeCordPluginMessageListener());
     }
 
     public static CoreSpigot getInstance() {
@@ -54,5 +56,9 @@ public class CoreSpigot {
 
     public JavaPlugin getMainClass() {
         return mainClass;
+    }
+
+    public PluginMessageManagerProvider getPluginMessageManagerProvider() {
+        return pluginMessageManagerProvider;
     }
 }

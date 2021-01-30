@@ -3,6 +3,7 @@ package dev.minecode.core.bungeecord.listener;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.Type;
 import dev.minecode.core.bungeecord.CoreBungeeCord;
+import dev.minecode.core.common.CoreCommon;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -28,21 +29,17 @@ public class PluginMessageListener implements Listener {
         String channel;
         String subChannel;
         String senderName;
-        Type senderType;
         String receiverName;
         HashMap<String, Object> message;
-        ObjectInputStream objectInput;
 
         try {
             channel = dataInput.readUTF();
             subChannel = dataInput.readUTF();
             senderName = dataInput.readUTF();
-            senderType = Type.valueOf(dataInput.readUTF());
             receiverName = dataInput.readUTF();
-            objectInput = new ObjectInputStream(dataInput);
-            message = (HashMap<String, Object>) objectInput.readObject();
-            CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(channel, subChannel, senderName, senderType, receiverName, message);
-        } catch (IOException | ClassNotFoundException e) {
+            message = CoreCommon.getInstance().getPluginMessageManager().getMessageHashMap(dataInput);
+            CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(channel, subChannel, senderName, receiverName, message);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -26,8 +26,12 @@ public class CoreCommon {
 
     private String pluginName;
     private String pluginVersion;
+
     private String processName;
     private Type processType;
+    private String processIp;
+    private int processPort;
+
     private boolean usingSQL;
     private String defaultLanguage;
 
@@ -104,6 +108,14 @@ public class CoreCommon {
         }
     }
 
+    public void setPluginName(String pluginName) {
+        this.pluginName = pluginName;
+    }
+
+    public void setPluginVersion(String pluginVersion) {
+        this.pluginVersion = pluginVersion;
+    }
+
     public String getProcessName() {
         return processName;
     }
@@ -118,6 +130,22 @@ public class CoreCommon {
 
     public void setProcessType(Type processType) {
         this.processType = processType;
+    }
+
+    public String getProcessIp() {
+        return processIp;
+    }
+
+    public void setProcessIp(String processIp) {
+        this.processIp = processIp;
+    }
+
+    public int getProcessPort() {
+        return processPort;
+    }
+
+    public void setProcessPort(int processPort) {
+        this.processPort = processPort;
     }
 
     public CoreAPIProvider getCoreAPIProvider() {

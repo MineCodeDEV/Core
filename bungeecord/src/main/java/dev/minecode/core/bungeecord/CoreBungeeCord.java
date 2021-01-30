@@ -22,7 +22,7 @@ public class CoreBungeeCord {
         this.pluginName = pluginName;
         this.pluginVersion = pluginVersion;
         this.mainClass = mainClass;
-        CoreCommon.getInstance().setProcessName(ProxyServer.getInstance().getName()); //TODO: Better determine ProcessName
+        CoreCommon.getInstance().setProcessName("BungeeCord");
         CoreCommon.getInstance().setProcessType(Type.BungeeCord);
 
         CoreCommon.getInstance().getPluginMessageManager().runSQLChecker();

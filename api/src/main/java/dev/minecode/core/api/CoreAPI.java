@@ -28,8 +28,6 @@ public abstract class CoreAPI {
 
 
     // API-Manager
-    public abstract EventManager getEventManager();
-
     public abstract DatabaseManager getDatabaseManager();
 
     public abstract FileManager getFileManager();
@@ -71,6 +69,10 @@ public abstract class CoreAPI {
     public abstract String getProcessName();
 
     public abstract Type getProcessType();
+
+    public abstract String getProcessIp();
+
+    public abstract int getProcessPort();
 
 
     // Other staff

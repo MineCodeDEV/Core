@@ -36,7 +36,6 @@ public class PluginMessageManager {
                         CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(resultSet.getString("CHANNEL"),
                                 resultSet.getString("SUBCHANNEL"),
                                 resultSet.getString("SENDERNAME"),
-                                Type.valueOf(resultSet.getString("SENDERTYPE")),
                                 resultSet.getString("RECEIVERNAME"),
                                 CoreCommon.getInstance().getPluginMessageManager().getMessageHashMap(resultSet.getString("MESSAGE")));
                         resultSet.deleteRow();
@@ -49,7 +48,7 @@ public class PluginMessageManager {
         }, 1, TimeUnit.MILLISECONDS);
     }
 
-    public ByteArrayOutputStream getByteArrayOutputStream(String channel, String subChannel, String senderName, Type senderType, String receiverName, HashMap<String, Object> message) {
+    public ByteArrayOutputStream getByteArrayOutputStream(String channel, String subChannel, String senderName,String receiverName, HashMap<String, Object> message) {
         ByteArrayOutputStream byteArrayOutput = new ByteArrayOutputStream();
         DataOutputStream dataOutput = new DataOutputStream(byteArrayOutput);
         ObjectOutputStream objectOutput;
@@ -58,7 +57,6 @@ public class PluginMessageManager {
             dataOutput.writeUTF(channel);
             dataOutput.writeUTF(subChannel);
             dataOutput.writeUTF(senderName);
-            dataOutput.writeUTF(senderType.toString());
             dataOutput.writeUTF(receiverName);
             objectOutput = new ObjectOutputStream(dataOutput);
             objectOutput.writeObject(message);
@@ -79,19 +77,15 @@ public class PluginMessageManager {
         String channel;
         String subChannel;
         String senderName;
-        Type senderType;
         String receiverName;
         HashMap<String, Object> message;
-        ObjectInputStream objectInput;
 
         try {
             channel = dataInput.readUTF();
             subChannel = dataInput.readUTF();
             senderName = dataInput.readUTF();
-            senderType = Type.valueOf(dataInput.readUTF());
             receiverName = dataInput.readUTF();
-            objectInput = new ObjectInputStream(dataInput);
-            message = (HashMap<String, Object>) objectInput.readObject();
+            message = getMessageHashMap(dataInput);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -99,12 +93,12 @@ public class PluginMessageManager {
     }
      */
 
-    public HashMap<String, Object> getMessageHashMap(ByteArrayInputStream byteArrayInput) {
+    public HashMap<String, Object> getMessageHashMap(DataInputStream dataInput) {
         HashMap<String, Object> message = null;
         ObjectInputStream objectInput;
 
         try {
-            objectInput = new ObjectInputStream(byteArrayInput);
+            objectInput = new ObjectInputStream(dataInput);
             message = (HashMap<String, Object>) objectInput.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -112,8 +106,8 @@ public class PluginMessageManager {
         return message;
     }
 
-    public HashMap<String, Object> getMessageHashMap(String data) {
-        return getMessageHashMap(new ByteArrayInputStream(data.getBytes()));
+    public HashMap<String, Object> getMessageHashMap(String message) {
+        return getMessageHashMap(new DataInputStream(new ByteArrayInputStream(message.getBytes())));
     }
 
     public ArrayList<PluginMessage> getPluginMessageQueue() {

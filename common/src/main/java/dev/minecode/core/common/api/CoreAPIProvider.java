@@ -19,7 +19,6 @@ import java.util.UUID;
 public class CoreAPIProvider extends CoreAPI {
 
     private DatabaseManagerProvider databaseManagerProvider;
-    private EventManagerProvider eventManagerProvider;
     private FileManagerProvider fileManagerProvider;
     private LanguageManagerProvider languageManagerProvider;
     private UpdateManagerProvider updateManagerProvider;
@@ -33,7 +32,6 @@ public class CoreAPIProvider extends CoreAPI {
     private void makeInstances() {
         CoreAPI.setInstance(this);
         databaseManagerProvider = new DatabaseManagerProvider();
-        eventManagerProvider = new EventManagerProvider();
         fileManagerProvider = new FileManagerProvider();
         languageManagerProvider = new LanguageManagerProvider();
         updateManagerProvider = new UpdateManagerProvider();
@@ -52,11 +50,6 @@ public class CoreAPIProvider extends CoreAPI {
 
 
     // API-Manager
-    @Override
-    public EventManager getEventManager() {
-        return eventManagerProvider;
-    }
-
     @Override
     public DatabaseManager getDatabaseManager() {
         return databaseManagerProvider;
@@ -196,6 +189,16 @@ public class CoreAPIProvider extends CoreAPI {
     @Override
     public Type getProcessType() {
         return CoreCommon.getInstance().getProcessType();
+    }
+
+    @Override
+    public String getProcessIp() {
+        return CoreCommon.getInstance().getProcessIp();
+    }
+
+    @Override
+    public int getProcessPort() {
+        return CoreCommon.getInstance().getProcessPort();
     }
 
     // Other staff
