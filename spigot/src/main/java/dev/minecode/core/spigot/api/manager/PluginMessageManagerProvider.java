@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class PluginMessageManagerProvider implements PluginMessageManager {
@@ -38,7 +37,7 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
         // sql is enabled
         if (CoreAPI.getInstance().isUsingSQL()) {
             try {
-                CoreAPI.getInstance().getDatabaseManager().getStatement().execute("INSERT INTO minecode_messaging (CHANNEL, SUBCHANNEL, SENDERNAME, RECEIVERNAME, MESSAGE) VALUES ('" + channel + "','" + subChannel + "', '" + senderName + "', '" + receiverName + "', '" + Arrays.toString(byteArrayOutput.toByteArray()) + "')");
+                CoreAPI.getInstance().getDatabaseManager().getStatement().execute("INSERT INTO minecode_messaging (CHANNEL, SUBCHANNEL, SENDERNAME, RECEIVERNAME, MESSAGE) VALUES ('" + channel + "','" + subChannel + "', '" + senderName + "', '" + receiverName + "', " + byteArrayOutput.toByteArray() + ")");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

@@ -31,13 +31,13 @@ public class PluginMessageManager {
             @Override
             public void run() {
                 try {
-                    ResultSet resultSet = statement.executeQuery("SELECT * FROM minecode_messaging WHERE RECEIVERNAME = '" + CoreAPI.getInstance().getProcessName() + "'");
+                    ResultSet resultSet = statement.executeQuery("SELECT * FROM minecode_messaging");
                     while (resultSet.next()) {
                         CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(resultSet.getString("CHANNEL"),
                                 resultSet.getString("SUBCHANNEL"),
                                 resultSet.getString("SENDERNAME"),
                                 resultSet.getString("RECEIVERNAME"),
-                                CoreCommon.getInstance().getPluginMessageManager().getMessageHashMap(resultSet.getString("MESSAGE")));
+                                CoreCommon.getInstance().getPluginMessageManager().getMessageHashMap(resultSet.getBytes("MESSAGE")));
                         resultSet.deleteRow();
                     }
                 } catch (SQLException throwables) {
@@ -106,8 +106,8 @@ public class PluginMessageManager {
         return message;
     }
 
-    public HashMap<String, Object> getMessageHashMap(String message) {
-        return getMessageHashMap(new DataInputStream(new ByteArrayInputStream(message.getBytes())));
+    public HashMap<String, Object> getMessageHashMap(byte[] message) {
+        return getMessageHashMap(new DataInputStream(new ByteArrayInputStream(message)));
     }
 
     public ArrayList<PluginMessage> getPluginMessageQueue() {
