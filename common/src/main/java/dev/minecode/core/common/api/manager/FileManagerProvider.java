@@ -3,6 +3,7 @@ package dev.minecode.core.common.api.manager;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.FileManager;
 import dev.minecode.core.api.object.FileObject;
+import dev.minecode.core.common.api.object.LanguageProvider;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import java.io.File;
@@ -27,7 +28,7 @@ public class FileManagerProvider implements FileManager {
         File messsageDirectory = new File("plugins/MineCode/" + CoreAPI.getInstance().getPluginName() + "/message/");
         messsageDirectory.mkdirs();
         for (Map.Entry<Object, ? extends ConfigurationNode> node : config.getConf().node("language", "languages").childrenMap().entrySet()) {
-            CoreAPI.getInstance().getLanguage((String) node.getValue().key());
+            new LanguageProvider((String) node.getValue().key());
         }
     }
 

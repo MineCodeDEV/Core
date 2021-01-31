@@ -21,8 +21,8 @@ public class ReplaceManagerProvider implements ReplaceManager {
         this.message = ComponentSerializer.toString(message);
     }
 
-    public ReplaceManagerProvider(String iso_code, LanguageAbstract path) {
-        this.message = CoreAPI.getInstance().getLanguageManager().getString(iso_code, path);
+    public ReplaceManagerProvider(Language language, LanguageAbstract path) {
+        this.message = CoreAPI.getInstance().getLanguageManager().getString(language, path);
     }
 
     public ReplaceManager replaceAll(String toReplace, String replaceWith) {

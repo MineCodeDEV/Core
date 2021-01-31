@@ -2,12 +2,8 @@ package dev.minecode.core.common.api.object;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlayer;
-
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
-
 import dev.minecode.core.api.object.FileObject;
+import dev.minecode.core.api.object.Language;
 import dev.minecode.core.common.CoreCommon;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -15,7 +11,10 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 public class CorePlayerProvider implements CorePlayer {
 
@@ -33,7 +32,7 @@ public class CorePlayerProvider implements CorePlayer {
     private int id;
     private UUID uuid;
     private String name;
-    private String language;
+    private Language language;
     private boolean exists;
     private Statement statement;
     private ResultSet resultSet;
@@ -100,11 +99,11 @@ public class CorePlayerProvider implements CorePlayer {
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 resultSet.updateString("NAME", name);
-                resultSet.updateString("LANGUAGE", language);
+                resultSet.updateString("LANGUAGE", language.getIso_code());
                 resultSet.updateRow();
             } else {
                 conf.node(id, "name").set(name);
-                conf.node(id, "language").set(language);
+                conf.node(id, "language").set(language.getIso_code());
                 fileObject.save();
             }
         } catch (SQLException | SerializationException throwables) {
@@ -118,12 +117,12 @@ public class CorePlayerProvider implements CorePlayer {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE ID = '" + id + "'");
                 uuid = UUID.fromString(resultSet.getString("UUID"));
-                language = resultSet.getString("LANGUAGE");
+                language = CoreAPI.getInstance().getLanguage(resultSet.getString("LANGUAGE"));
                 name = resultSet.getString("NAME");
             } else {
                 uuid = UUID.fromString(conf.node(id, "uuid").getString());
                 name = conf.node(id, "name").getString();
-                language = conf.node(id, "language").getString();
+                language = CoreAPI.getInstance().getLanguage(conf.node(id, "language").getString());
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -161,12 +160,12 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     @Override
-    public String getLanguage() {
+    public Language getLanguage() {
         return language;
     }
 
     @Override
-    public void setLanguage(String language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 

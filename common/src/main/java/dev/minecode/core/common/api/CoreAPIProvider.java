@@ -69,8 +69,8 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public ReplaceManager getReplaceManager(String iso_code, LanguageAbstract path) {
-        return new ReplaceManagerProvider(iso_code, path);
+    public ReplaceManager getReplaceManager(Language language, LanguageAbstract path) {
+        return new ReplaceManagerProvider(language, path);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class CoreAPIProvider extends CoreAPI {
     public Language getLanguage(String iso_code) {
         if (LanguageProvider.getLanguages().containsKey(iso_code))
             return LanguageProvider.getLanguages().get(iso_code);
-        return LanguageProvider.getLanguages().get(iso_code);
+        return null;
     }
 
 

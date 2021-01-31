@@ -20,8 +20,8 @@ public interface CorePlayer {
 
     void setName(String name);
 
-    String getLanguage();
+    Language getLanguage();
 
-    void setLanguage(String language);
+    void setLanguage(Language language);
 
 }

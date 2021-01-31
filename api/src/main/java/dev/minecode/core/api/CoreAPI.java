@@ -37,7 +37,7 @@ public abstract class CoreAPI {
 
     public abstract ReplaceManager getReplaceManager(BaseComponent[] message);
 
-    public abstract ReplaceManager getReplaceManager(String iso_code, LanguageAbstract path);
+    public abstract ReplaceManager getReplaceManager(Language language, LanguageAbstract path);
 
     public abstract UpdateManager getUpdateManager();
 
