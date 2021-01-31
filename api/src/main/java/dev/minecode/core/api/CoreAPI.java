@@ -4,6 +4,8 @@ import dev.minecode.core.api.manager.*;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
+import dev.minecode.core.api.object.LanguageAbstract;
+import net.md_5.bungee.api.chat.BaseComponent;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -21,8 +23,6 @@ public abstract class CoreAPI {
         return coreAPI;
     }
 
-    public abstract void onDisable();
-
     public abstract String getPluginName();
 
 
@@ -35,7 +35,9 @@ public abstract class CoreAPI {
 
     public abstract ReplaceManager getReplaceManager(String message);
 
-    public abstract ReplaceManager getReplaceManager(String iso_code, String... path);
+    public abstract ReplaceManager getReplaceManager(BaseComponent[] message);
+
+    public abstract ReplaceManager getReplaceManager(String iso_code, LanguageAbstract path);
 
     public abstract UpdateManager getUpdateManager();
 

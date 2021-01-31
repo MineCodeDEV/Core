@@ -5,12 +5,13 @@ import dev.minecode.core.api.manager.*;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
-import dev.minecode.core.api.object.Type;
+import dev.minecode.core.api.object.LanguageAbstract;
 import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.common.api.manager.*;
 import dev.minecode.core.common.api.object.CorePlayerProvider;
 import dev.minecode.core.common.api.object.FileObjectProvider;
 import dev.minecode.core.common.api.object.LanguageProvider;
+import net.md_5.bungee.api.chat.BaseComponent;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -33,12 +34,6 @@ public class CoreAPIProvider extends CoreAPI {
         fileManagerProvider = new FileManagerProvider();
         languageManagerProvider = new LanguageManagerProvider();
         updateManagerProvider = new UpdateManagerProvider();
-    }
-
-    @Override
-    public void onDisable() {
-        getFileManager().saveDatas();
-        if (CoreCommon.getInstance().isUsingSQL()) getDatabaseManager().disconnect();
     }
 
     @Override
@@ -69,7 +64,12 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public ReplaceManager getReplaceManager(String iso_code, String... path) {
+    public ReplaceManager getReplaceManager(BaseComponent[] message) {
+        return new ReplaceManagerProvider(message);
+    }
+
+    @Override
+    public ReplaceManager getReplaceManager(String iso_code, LanguageAbstract path) {
         return new ReplaceManagerProvider(iso_code, path);
     }
 

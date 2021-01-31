@@ -2,6 +2,7 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.LanguageManager;
+import dev.minecode.core.api.object.LanguageAbstract;
 import dev.minecode.core.common.api.object.LanguageProvider;
 import org.spongepowered.configurate.serialize.SerializationException;
 
@@ -11,12 +12,12 @@ import java.util.List;
 public class LanguageManagerProvider implements LanguageManager {
 
     @Override
-    public Object get(String iso_code, String... path) {
+    public Object get(String iso_code, LanguageAbstract message) {
         Object object = null;
         if (!isValid(iso_code)) iso_code = getDefaultLanguage();
 
         try {
-            object = CoreAPI.getInstance().getLanguage(iso_code).getConfigurationNode().node(path).get(Object.class);
+            object = CoreAPI.getInstance().getLanguage(iso_code).getConfigurationNode().node(message).get(Object.class);
         } catch (SerializationException e) {
             e.printStackTrace();
         }
@@ -25,34 +26,34 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public String getString(String iso_code, String... path) {
-        return (String) get(iso_code, path);
+    public String getString(String iso_code, LanguageAbstract message) {
+        return (String) get(iso_code, message);
     }
 
     @Override
-    public int getInt(String iso_code, String... path) {
-        return (int) get(iso_code, path);
+    public int getInt(String iso_code, LanguageAbstract message) {
+        return (int) get(iso_code, message);
     }
 
     @Override
-    public boolean getBoolean(String iso_code, String... path) {
-        return (boolean) get(iso_code, path);
+    public boolean getBoolean(String iso_code, LanguageAbstract message) {
+        return (boolean) get(iso_code, message);
     }
 
     @Override
-    public long getLong(String iso_code, String... path) {
-        return (long) get(iso_code, path);
+    public long getLong(String iso_code, LanguageAbstract message) {
+        return (long) get(iso_code, message);
     }
 
     @Override
-    public List<Object> getList(String iso_code, String... path) {
-        return (List<Object>) get(iso_code, path);
+    public List<Object> getList(String iso_code, LanguageAbstract message) {
+        return (List<Object>) get(iso_code, message);
     }
 
     @Override
-    public List<String> getStringList(String iso_code, String... path) {
+    public List<String> getStringList(String iso_code, LanguageAbstract message) {
         List<String> stringList = new ArrayList<>();
-        for (Object entry : getList(iso_code, path)) stringList.add(entry.toString());
+        for (Object entry : getList(iso_code, message)) stringList.add(entry.toString());
         return stringList;
     }
 

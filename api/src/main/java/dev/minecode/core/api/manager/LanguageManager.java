@@ -1,24 +1,26 @@
 package dev.minecode.core.api.manager;
 
+import dev.minecode.core.api.object.LanguageAbstract;
+
 import java.util.List;
 
 public interface LanguageManager {
 
-    Object get(String iso_code, String... path);
+    Object get(String iso_code, LanguageAbstract message);
 
-    String getString(String iso_code, String... path);
+    String getString(String iso_code, LanguageAbstract message);
 
-    int getInt(String iso_code, String... path);
+    int getInt(String iso_code, LanguageAbstract message);
 
-    boolean getBoolean(String iso_code, String... path);
+    boolean getBoolean(String iso_code, LanguageAbstract message);
 
-    long getLong(String iso_code, String... path);
+    long getLong(String iso_code, LanguageAbstract message);
 
-    List<Object> getList(String iso_code, String... path);
+    List<Object> getList(String iso_code, LanguageAbstract message);
 
     // spezifischere Methoden
 
-    List<String> getStringList(String iso_code, String... path);
+    List<String> getStringList(String iso_code, LanguageAbstract message);
 
     // Methoden zur Sprache
 

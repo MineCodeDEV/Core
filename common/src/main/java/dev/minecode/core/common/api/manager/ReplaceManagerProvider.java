@@ -4,6 +4,10 @@ import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.ReplaceManager;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.Language;
+import dev.minecode.core.api.object.LanguageAbstract;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 
 public class ReplaceManagerProvider implements ReplaceManager {
 
@@ -13,7 +17,11 @@ public class ReplaceManagerProvider implements ReplaceManager {
         this.message = message;
     }
 
-    public ReplaceManagerProvider(String iso_code, String... path) {
+    public ReplaceManagerProvider(BaseComponent[] message) {
+        this.message = ComponentSerializer.toString(message);
+    }
+
+    public ReplaceManagerProvider(String iso_code, LanguageAbstract path) {
         this.message = CoreAPI.getInstance().getLanguageManager().getString(iso_code, path);
     }
 
@@ -73,6 +81,14 @@ public class ReplaceManagerProvider implements ReplaceManager {
     }
 
     public String getMessage() {
+        if (message.startsWith("text:{"))
+            return TextComponent.toLegacyText(ComponentSerializer.parse(message));
         return message;
+    }
+
+    public BaseComponent[] getBaseMessage() {
+        if (message.startsWith("text:{"))
+            return ComponentSerializer.parse(message);
+        return TextComponent.fromLegacyText(message);
     }
 }
