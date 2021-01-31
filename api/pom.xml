@@ -5,13 +5,14 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>dev.minecode.core</groupId>
-        <version>0.1.0-Pre.5</version>
+        <version>0.1.0-Pre.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>api</artifactId>
 
     <dependencies>
+        <!-- Spongepowered Conrigurate -->
         <dependency>
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-core</artifactId>
@@ -21,6 +22,19 @@
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-yaml</artifactId>
             <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spongepowered</groupId>
+            <artifactId>configurate-gson</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
+        <!-- md_5 BungeeCord -->
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-chat</artifactId>
+            <version>1.16-R0.4-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>dev.minecode.core</groupId>
-        <version>0.1.0-Pre.5</version>
+        <version>0.1.0-Pre.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,12 +13,14 @@
 
 
     <dependencies>
+        <!-- MineCode Core -->
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>api</artifactId>
-            <version>0.1.0-Pre.5</version>
+            <version>0.1.0-Pre.6</version>
         </dependency>
 
+        <!-- Spongepowered Conrigurate -->
         <dependency>
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-core</artifactId>
@@ -35,6 +37,23 @@
             <version>4.0.0</version>
         </dependency>
 
+        <!-- md_5 BungeeCord -->
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-chat</artifactId>
+            <version>1.16-R0.4-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-chat</artifactId>
+            <version>1.16-R0.4-SNAPSHOT</version>
+            <type>javadoc</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Google Gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

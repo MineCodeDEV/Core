@@ -7,7 +7,7 @@
     <groupId>dev.minecode.core</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.0-Pre.5</version>
+    <version>0.1.0-Pre.6</version>
     <modules>
         <module>common</module>
         <module>api</module>
@@ -20,17 +20,17 @@
         <url>https://github.com/MineCodeDEV</url>
     </organization>
 
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/MineCodeDEV/Core/issues</url>
+    </issueManagement>
+
     <licenses>
         <license>
             <name>MIT</name>
             <url>https://opensource.org/licenses/MIT</url>
         </license>
     </licenses>
-
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/MineCodeDEV/Core/issues</url>
-    </issueManagement>
 
     <distributionManagement>
         <repository>
