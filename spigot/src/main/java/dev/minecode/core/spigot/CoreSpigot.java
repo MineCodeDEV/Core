@@ -21,7 +21,7 @@ public class CoreSpigot {
         coreCommon = new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
     }
 
-    private void onDisable() {
+    public void onDisable() {
         for (CorePlayerProvider corePlayer : CorePlayerProvider.getIdCache().values())
             corePlayer.update();
 

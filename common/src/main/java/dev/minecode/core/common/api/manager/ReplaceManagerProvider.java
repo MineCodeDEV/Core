@@ -25,12 +25,14 @@ public class ReplaceManagerProvider implements ReplaceManager {
         this.message = CoreAPI.getInstance().getLanguageManager().getString(language, path);
     }
 
+    @Override
     public ReplaceManager replaceAll(String toReplace, String replaceWith) {
         if (message != null)
             this.message = this.message.replaceAll(toReplace, replaceWith);
         return this;
     }
 
+    @Override
     public ReplaceManager chatcolorColor() {
         return replaceAll("&1", "§1")
                 .replaceAll("&2", "§2")
@@ -49,6 +51,7 @@ public class ReplaceManagerProvider implements ReplaceManager {
                 .replaceAll("&f", "§f");
     }
 
+    @Override
     public ReplaceManager chatcolorFormat() {
         return replaceAll("&l", "§l")
                 .replaceAll("&m", "§m")
@@ -57,21 +60,25 @@ public class ReplaceManagerProvider implements ReplaceManager {
                 .replaceAll("&r", "§r");
     }
 
+    @Override
     public ReplaceManager chatcolorMagic() {
         return replaceAll("&k", "§k");
     }
 
+    @Override
     public ReplaceManager chatcolorAll() {
         return chatcolorColor()
                 .chatcolorFormat()
                 .chatcolorMagic();
     }
 
+    @Override
     public ReplaceManager corePlayer(CorePlayer corePlayer, String replacement) {
         return replaceAll("%" + replacement + "UUID%", String.valueOf(corePlayer.getUuid()))
                 .replaceAll("%" + replacement + "Name%", corePlayer.getName());
     }
 
+    @Override
     public ReplaceManager language(Language language, String replacement) {
         return replaceAll("%" + replacement + "IsoCode%", language.getIso_code())
                 .replaceAll("%" + replacement + "Name%", language.getName())
@@ -80,12 +87,14 @@ public class ReplaceManagerProvider implements ReplaceManager {
                 .replaceAll("%" + replacement + "Texture%", language.getTexture());
     }
 
+    @Override
     public String getMessage() {
         if (message.startsWith("text:{"))
             return TextComponent.toLegacyText(ComponentSerializer.parse(message));
         return message;
     }
 
+    @Override
     public BaseComponent[] getBaseMessage() {
         if (message.startsWith("text:{"))
             return ComponentSerializer.parse(message);

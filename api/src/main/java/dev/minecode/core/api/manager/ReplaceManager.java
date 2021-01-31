@@ -2,6 +2,7 @@ package dev.minecode.core.api.manager;
 
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.Language;
+import net.md_5.bungee.api.chat.BaseComponent;
 
 public interface ReplaceManager {
 
@@ -20,4 +21,6 @@ public interface ReplaceManager {
     ReplaceManager language(Language language, String replacement);
 
     String getMessage();
+
+    BaseComponent[] getBaseMessage();
 }
