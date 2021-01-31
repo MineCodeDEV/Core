@@ -23,8 +23,6 @@ public class CoreAPIProvider extends CoreAPI {
     private LanguageManagerProvider languageManagerProvider;
     private UpdateManagerProvider updateManagerProvider;
 
-    private PluginMessageManager pluginMessageManager;
-
     public CoreAPIProvider() {
         makeInstances();
     }
@@ -58,15 +56,6 @@ public class CoreAPIProvider extends CoreAPI {
     @Override
     public FileManager getFileManager() {
         return fileManagerProvider;
-    }
-
-    @Override
-    public PluginMessageManager getPluginMessageManager() {
-        return pluginMessageManager;
-    }
-
-    public void setPluginMessageManager(PluginMessageManager pluginMessageManager) {
-        this.pluginMessageManager = pluginMessageManager;
     }
 
     @Override

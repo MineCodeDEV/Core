@@ -14,7 +14,6 @@ import java.net.URLConnection;
 import java.util.UUID;
 
 public class CoreCommon {
-
     private static CoreCommon instance;
 
     private CoreAPIProvider coreAPIProvider;
@@ -93,17 +92,5 @@ public class CoreCommon {
         } catch (IOException var4) {
             return null;
         }
-    }
-
-    public void setPluginName(String pluginName) {
-        this.pluginName = pluginName;
-    }
-
-    public void setPluginVersion(String pluginVersion) {
-        this.pluginVersion = pluginVersion;
-    }
-
-    public CoreAPIProvider getCoreAPIProvider() {
-        return coreAPIProvider;
     }
 }

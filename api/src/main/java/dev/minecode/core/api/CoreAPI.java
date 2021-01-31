@@ -4,7 +4,6 @@ import dev.minecode.core.api.manager.*;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
-import dev.minecode.core.api.object.Type;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -33,8 +32,6 @@ public abstract class CoreAPI {
     public abstract FileManager getFileManager();
 
     public abstract LanguageManager getLanguageManager();
-
-    public abstract PluginMessageManager getPluginMessageManager();
 
     public abstract ReplaceManager getReplaceManager(String message);
 

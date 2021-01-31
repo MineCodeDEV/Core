@@ -6,22 +6,17 @@ import net.md_5.bungee.api.plugin.Plugin;
 public class CoreBungeeCord {
     private static CoreBungeeCord instance;
 
-    private CoreCommon coreCommon;
     private Plugin mainClass;
+    private CoreCommon coreCommon;
 
-    private String pluginName;
-    private String pluginVersion;
-
-    public CoreBungeeCord(String pluginName, String pluginVersion, Plugin mainClass) {
-        this.pluginName = pluginName;
-        this.pluginVersion = pluginVersion;
+    public CoreBungeeCord(Plugin mainClass) {
         this.mainClass = mainClass;
         makeInstances();
     }
 
     private void makeInstances() {
         instance = this;
-        coreCommon = new CoreCommon(pluginName, pluginVersion);
+        coreCommon = new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
     }
 
     public static CoreBungeeCord getInstance() {

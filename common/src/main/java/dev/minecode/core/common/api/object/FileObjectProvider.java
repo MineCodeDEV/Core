@@ -36,7 +36,7 @@ public class FileObjectProvider implements FileObject {
         this.fileName = fileName;
         StringBuilder subFolder = new StringBuilder();
         for (String temp : subFolders) {
-            subFolder.append(temp + "/");
+            subFolder.append(temp).append("/");
         }
         this.fileStreamPath = "/" + subFolder.toString() + fileName;
         this.directoryPath = "plugins/MineCode/" + folder + "/" + subFolder.toString() + "/";

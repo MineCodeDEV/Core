@@ -1,29 +1,22 @@
 package dev.minecode.core.spigot;
 
-import dev.minecode.core.api.object.Type;
 import dev.minecode.core.common.CoreCommon;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CoreSpigot {
     private static CoreSpigot instance;
 
-    private CoreCommon coreCommon;
     private JavaPlugin mainClass;
+    private CoreCommon coreCommon;
 
-    private String pluginName;
-    private String pluginVersion;
-
-    public CoreSpigot(String pluginName, String pluginVersion, JavaPlugin mainClass) {
-        this.pluginName = pluginName;
-        this.pluginVersion = pluginVersion;
+    public CoreSpigot(JavaPlugin mainClass) {
         this.mainClass = mainClass;
-
         makeInstances();
     }
 
     private void makeInstances() {
         instance = this;
-        coreCommon = new CoreCommon(pluginName, pluginVersion);
+        coreCommon = new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
     }
 
     public static CoreSpigot getInstance() {
