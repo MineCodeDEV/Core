@@ -181,26 +181,6 @@ public class CoreAPIProvider extends CoreAPI {
         return CoreCommon.getInstance().getDefaultLanguage();
     }
 
-    @Override
-    public String getProcessName() {
-        return CoreCommon.getInstance().getProcessName();
-    }
-
-    @Override
-    public Type getProcessType() {
-        return CoreCommon.getInstance().getProcessType();
-    }
-
-    @Override
-    public String getProcessIp() {
-        return CoreCommon.getInstance().getProcessIp();
-    }
-
-    @Override
-    public int getProcessPort() {
-        return CoreCommon.getInstance().getProcessPort();
-    }
-
     // Other staff
     @Override
     public InputStream getResourceAsStream(String fileName) {

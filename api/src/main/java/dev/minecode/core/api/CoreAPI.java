@@ -66,14 +66,6 @@ public abstract class CoreAPI {
 
     public abstract String getDefaultLanguage();
 
-    public abstract String getProcessName();
-
-    public abstract Type getProcessType();
-
-    public abstract String getProcessIp();
-
-    public abstract int getProcessPort();
-
 
     // Other staff
     public abstract InputStream getResourceAsStream(String fileName);
