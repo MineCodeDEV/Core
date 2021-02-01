@@ -33,7 +33,6 @@ public class CorePlayerProvider implements CorePlayer {
     private UUID uuid;
     private String name;
     private Language language;
-    private boolean exists;
     private Statement statement;
     private ResultSet resultSet;
 
@@ -74,6 +73,8 @@ public class CorePlayerProvider implements CorePlayer {
 
     public void load() {
         try {
+            boolean exists;
+
             if (CoreAPI.getInstance().isUsingSQL()) {
                 statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
                 resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE ID = '" + id + "'");
@@ -82,9 +83,11 @@ public class CorePlayerProvider implements CorePlayer {
                 exists = !conf.node(id).empty();
 
             if (!exists) {
+                int tempId = generateNewID();
                 if (name == null) name = getName(id);
                 if (uuid == null) uuid = getUuid(id);
-                create(generateNewID(), uuid, name, null);
+                if (uuid == consoleUUID || name.equals(consoleName)) tempId = consoleID;
+                create(tempId, uuid, name, null);
                 load();
             }
 
@@ -295,21 +298,6 @@ public class CorePlayerProvider implements CorePlayer {
         return name;
     }
 
-    public static boolean isExists(int id) {
-        if (getUuid(id) != null) return true;
-        return false;
-    }
-
-    public static boolean isExists(UUID uuid) {
-        if (getID(uuid) != 0) return true;
-        return false;
-    }
-
-    public static boolean isExists(String name) {
-        if (getID(name) != 0) return true;
-        return false;
-    }
-
     public static boolean isAvailableID(int id) {
         return getUuid(id) != null && id > 0;
     }
@@ -317,7 +305,7 @@ public class CorePlayerProvider implements CorePlayer {
     private static int generateNewID() {
         int id = 0;
         do {
-            id = new Random().nextInt(Integer.MAX_VALUE);
+            id = new Random().nextInt(Integer.MAX_VALUE - 1);
         } while (isAvailableID(id));
         return id;
     }

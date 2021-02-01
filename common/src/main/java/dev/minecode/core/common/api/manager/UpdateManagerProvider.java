@@ -33,7 +33,9 @@ public class UpdateManagerProvider implements UpdateManager {
 
     @Override
     public boolean updateAvailable() {
-        return !getRecommendVersion().equals(pluginVersion);
+        System.out.println(getRecommendVersion());
+        return !getRecommendVersion()
+                .equals(pluginVersion);
     }
 
     public String getRecommendVersion() {

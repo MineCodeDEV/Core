@@ -9,9 +9,9 @@ import java.sql.*;
 public class DatabaseManagerProvider implements DatabaseManager {
 
     private Connection connection;
+    private boolean sql;
     private String host, database, username, password;
     private int port;
-    private boolean sql;
     private Statement statement;
 
     public DatabaseManagerProvider() {
@@ -24,12 +24,12 @@ public class DatabaseManagerProvider implements DatabaseManager {
 
     private void setData() {
         ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
+        sql = conf.node("database", "enabled").getBoolean();
         host = conf.node("database", "host").getString();
         port = conf.node("database", "port").getInt();
         database = conf.node("database", "database").getString();
         username = conf.node("database", "username").getString();
         password = conf.node("database", "password").getString();
-        sql = conf.node("database", "enabled").getBoolean();
     }
 
     @Override
