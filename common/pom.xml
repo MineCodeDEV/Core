@@ -5,7 +5,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>dev.minecode.core</groupId>
-        <version>0.1.0-Pre.10</version>
+        <version>0.1.0-Pre.11</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,7 +17,7 @@
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>api</artifactId>
-            <version>0.1.0-Pre.10</version>
+            <version>0.1.0-Pre.11</version>
         </dependency>
 
         <!-- Spongepowered Conrigurate -->
@@ -88,6 +88,12 @@
                                     <include>*:*</include>
                                 </includes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.yaml.snakeyaml</pattern>
+                                    <shadedPattern>dev.minecode.core.shaded</shadedPattern>
+                                </relocation>
+                            </relocations>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>

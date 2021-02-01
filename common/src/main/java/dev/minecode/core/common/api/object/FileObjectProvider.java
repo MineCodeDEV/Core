@@ -67,8 +67,8 @@ public class FileObjectProvider implements FileObject {
     public FileObject createFile() {
         new File(directoryPath).mkdirs();
         if (!file.exists()) {
-            InputStream inputStream;
-            if ((inputStream = CoreAPI.getInstance().getResourceAsStream(fileStreamPath)) != null) {
+            InputStream inputStream = CoreAPI.getInstance().getResourceAsStream(fileStreamPath);
+            if (inputStream != null) {
                 try {
                     Files.copy(inputStream, file.toPath());
                 } catch (IOException e) {
