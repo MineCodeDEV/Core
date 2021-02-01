@@ -23,9 +23,6 @@ public abstract class CoreAPI {
         return coreAPI;
     }
 
-    public abstract String getPluginName();
-
-
     // API-Manager
     public abstract DatabaseManager getDatabaseManager();
 
@@ -59,11 +56,13 @@ public abstract class CoreAPI {
 
 
     // Variables
-    public abstract boolean isUsingSQL();
-
     public abstract CorePlayer getConsole();
 
     public abstract String getDefaultLanguage();
+
+    public abstract String getPluginName();
+
+    public abstract boolean isUsingSQL();
 
 
     // Other staff

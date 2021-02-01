@@ -9,7 +9,6 @@ public class CoreSpigot {
     private static CoreSpigot instance;
 
     private JavaPlugin mainClass;
-    private CoreCommon coreCommon;
 
     public CoreSpigot(JavaPlugin mainClass) {
         this.mainClass = mainClass;
@@ -18,7 +17,7 @@ public class CoreSpigot {
 
     private void makeInstances() {
         instance = this;
-        coreCommon = new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
+        new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
     }
 
     public void onDisable() {
@@ -26,7 +25,7 @@ public class CoreSpigot {
             corePlayer.update();
 
         CoreAPI.getInstance().getFileManager().saveDatas();
-        if (CoreCommon.getInstance().isUsingSQL())
+        if (CoreAPI.getInstance().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
     }
 

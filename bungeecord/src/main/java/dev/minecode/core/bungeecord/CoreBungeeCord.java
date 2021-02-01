@@ -9,7 +9,6 @@ public class CoreBungeeCord {
     private static CoreBungeeCord instance;
 
     private Plugin mainClass;
-    private CoreCommon coreCommon;
 
     public CoreBungeeCord(Plugin mainClass) {
         this.mainClass = mainClass;
@@ -18,7 +17,7 @@ public class CoreBungeeCord {
 
     private void makeInstances() {
         instance = this;
-        coreCommon = new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
+        new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
     }
 
     public void onDisable() {
@@ -26,7 +25,7 @@ public class CoreBungeeCord {
             corePlayer.update();
 
         CoreAPI.getInstance().getFileManager().saveDatas();
-        if (CoreCommon.getInstance().isUsingSQL())
+        if (CoreAPI.getInstance().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
     }
 

@@ -11,11 +11,12 @@ public class DatabaseManagerProvider implements DatabaseManager {
     private Connection connection;
     private String host, database, username, password;
     private int port;
+    private boolean sql;
     private Statement statement;
 
     public DatabaseManagerProvider() {
         setData();
-        if (CoreAPI.getInstance().isUsingSQL()) {
+        if (sql) {
             connect();
             checkTables();
         }
@@ -28,6 +29,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
         database = conf.node("database", "database").getString();
         username = conf.node("database", "username").getString();
         password = conf.node("database", "password").getString();
+        sql = conf.node("database", "enabled").getBoolean();
     }
 
     @Override

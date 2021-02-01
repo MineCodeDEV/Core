@@ -12,8 +12,12 @@ import dev.minecode.core.common.api.object.CorePlayerProvider;
 import dev.minecode.core.common.api.object.FileObjectProvider;
 import dev.minecode.core.common.api.object.LanguageProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.spongepowered.configurate.ConfigurationNode;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -24,21 +28,24 @@ public class CoreAPIProvider extends CoreAPI {
     private LanguageManagerProvider languageManagerProvider;
     private UpdateManagerProvider updateManagerProvider;
 
+    private boolean usingSQL;
+    private String defaultLanguage;
+
     public CoreAPIProvider() {
         makeInstances();
     }
 
     private void makeInstances() {
         CoreAPI.setInstance(this);
-        databaseManagerProvider = new DatabaseManagerProvider();
         fileManagerProvider = new FileManagerProvider();
+
+        ConfigurationNode configNode = fileManagerProvider.getConfig().getConf();
+        usingSQL = configNode.node("database", "enable").getBoolean();
+        defaultLanguage = configNode.node("language", "default").getString();
+
+        databaseManagerProvider = new DatabaseManagerProvider();
         languageManagerProvider = new LanguageManagerProvider();
         updateManagerProvider = new UpdateManagerProvider();
-    }
-
-    @Override
-    public String getPluginName() {
-        return CoreCommon.getInstance().getPluginName();
     }
 
 
@@ -161,19 +168,35 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public boolean isUsingSQL() {
-        return CoreCommon.getInstance().isUsingSQL();
+    public String getDefaultLanguage() {
+        return defaultLanguage;
     }
 
     @Override
-    public String getDefaultLanguage() {
-        return CoreCommon.getInstance().getDefaultLanguage();
+    public String getPluginName() {
+        return CoreCommon.getInstance().getPluginName();
+    }
+
+    @Override
+    public boolean isUsingSQL() {
+        return usingSQL;
     }
 
     // Other staff
     @Override
     public InputStream getResourceAsStream(String fileName) {
-        return CoreCommon.getInstance().getResourceAsStream(fileName);
+        try {
+            URL url = this.getClass().getClassLoader().getResource(fileName);
+            if (url == null) {
+                return null;
+            } else {
+                URLConnection connection = url.openConnection();
+                connection.setUseCaches(false);
+                return connection.getInputStream();
+            }
+        } catch (IOException var4) {
+            return null;
+        }
     }
 
 
