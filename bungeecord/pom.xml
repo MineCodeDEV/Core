@@ -5,7 +5,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>dev.minecode.core</groupId>
-        <version>0.1.0-Pre.10</version>
+        <version>0.1.0-Pre.11</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -22,13 +22,14 @@
         <!-- MineCode Core -->
         <dependency>
             <groupId>dev.minecode.core</groupId>
-            <artifactId>api</artifactId>
-            <version>0.1.0-Pre.10</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.minecode.core</groupId>
             <artifactId>common</artifactId>
-            <version>0.1.0-Pre.10</version>
+            <version>0.1.0-Pre.11</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.md-5</groupId>
+                    <artifactId>bungeecord-chat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- md_5 BungeeCord -->
@@ -38,13 +39,20 @@
             <version>1.16-R0.4-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.16-R0.4-SNAPSHOT</version>
-            <type>javadoc</type>
-            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -72,7 +80,18 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>*:*</include>
+                                    <include>org.spongepowered:configurate-core</include>
+                                    <include>io.leangen.geantyref:geantyref</include>
+                                    <include>org.checkerframework:checkerframework</include>
+
+                                    <include>org.spongepowered:configurate-yaml</include>
+                                    <include>org.yaml:snakeyaml</include>
+
+                                    <include>org.spongepowered:configurate-gson</include>
+                                    <include>com.google.gson:gson</include>
+
+                                    <include>net.md-5:bungeecord-chat</include>
+                                    <include>com.google.guava:guava</include>
                                 </includes>
                             </artifactSet>
                             <filters>
