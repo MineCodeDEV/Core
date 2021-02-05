@@ -1,7 +1,6 @@
 package dev.minecode.core.bungeecord;
 
 import dev.minecode.core.api.CoreAPI;
-import dev.minecode.core.bungeecord.test.Test;
 import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.common.api.object.CorePlayerProvider;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -19,7 +18,6 @@ public class CoreBungeeCord extends Plugin {
     private void makeInstances() {
         instance = this;
         new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
-        new Test();
     }
 
     public void onDisable() {
