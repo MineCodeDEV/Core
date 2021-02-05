@@ -5,7 +5,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>dev.minecode.core</groupId>
-        <version>0.1.0-Pre.14</version>
+        <version>0.1.0-Pre.15</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>common</artifactId>
-            <version>0.1.0-Pre.14</version>
+            <version>0.1.0-Pre.15</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.md-5</groupId>
