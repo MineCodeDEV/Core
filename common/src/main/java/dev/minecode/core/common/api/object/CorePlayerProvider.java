@@ -98,23 +98,6 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     @Override
-    public void update() {
-        try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
-                resultSet.updateString("NAME", name);
-                resultSet.updateString("LANGUAGE", language.getIso_code());
-                resultSet.updateRow();
-            } else {
-                conf.node(id, "name").set(name);
-                conf.node(id, "language").set(language.getIso_code());
-                fileObject.save();
-            }
-        } catch (SQLException | SerializationException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
-    @Override
     public void reload() {
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
@@ -128,6 +111,23 @@ public class CorePlayerProvider implements CorePlayer {
                 language = CoreAPI.getInstance().getLanguage(conf.node(id, "language").getString());
             }
         } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    @Override
+    public void save() {
+        try {
+            if (CoreAPI.getInstance().isUsingSQL()) {
+                resultSet.updateString("NAME", name);
+                resultSet.updateString("LANGUAGE", language.getIso_code());
+                resultSet.updateRow();
+            } else {
+                conf.node(id, "name").set(name);
+                conf.node(id, "language").set(language.getIso_code());
+                fileObject.save();
+            }
+        } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();
         }
     }

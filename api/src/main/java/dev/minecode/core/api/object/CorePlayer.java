@@ -4,9 +4,9 @@ import java.util.UUID;
 
 public interface CorePlayer {
 
-    void update();
-
     void reload();
+
+    void save();
 
     int getID();
 

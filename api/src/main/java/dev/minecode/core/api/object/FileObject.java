@@ -7,21 +7,11 @@ import java.io.File;
 
 public interface FileObject {
 
-    FileObject createFile();
-
-    void loadConfig();
+    void reload();
 
     void save();
 
     File getFile();
-
-    String getDirectoryPath();
-
-    String getFileName();
-
-    String getFilePath();
-
-    String getFileStreamPath();
 
     YamlConfigurationLoader getLoader();
 

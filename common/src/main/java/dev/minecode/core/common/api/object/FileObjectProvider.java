@@ -1,6 +1,5 @@
 package dev.minecode.core.common.api.object;
 
-import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.FileObject;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
@@ -9,6 +8,8 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.HashMap;
 
@@ -16,12 +17,13 @@ public class FileObjectProvider implements FileObject {
 
     private static HashMap<String, FileObject> fileObjects = new HashMap<>();
 
-    // directory
-    private String directoryPath;
+    // directories
+    private String minecodeDirectoryPath;
+    private String pluginDirectoryPath;
+    private String fileDirectoryPath;
 
     // file
     private String fileName;
-    private String filePath;
     private String fileStreamPath;
     private File file;
 
@@ -32,42 +34,37 @@ public class FileObjectProvider implements FileObject {
     // other
     private boolean stream;
 
-    public FileObjectProvider(String fileName, String folder, String... subFolders) {
+    public FileObjectProvider(String fileName, String pluginName, String... folders) {
+        this.minecodeDirectoryPath = "plugins/MineCode";
+        this.pluginDirectoryPath = minecodeDirectoryPath + "/" + pluginName;
         this.fileName = fileName;
-        StringBuilder subFolder = new StringBuilder();
-        for (String temp : subFolders) {
-            subFolder.append(temp).append("/");
+
+        StringBuilder foldersStringBuilder = new StringBuilder();
+        for (String temp : folders) {
+            foldersStringBuilder.append(temp).append("/");
         }
-        this.fileStreamPath = "/" + subFolder.toString() + fileName;
-        this.directoryPath = "plugins/MineCode/" + folder + "/" + subFolder.toString() + "/";
-        this.filePath = directoryPath + fileName;
-        this.file = new File(directoryPath, fileName);
+
+        this.fileDirectoryPath = pluginDirectoryPath + "/" + foldersStringBuilder.toString();
+        this.fileStreamPath =  pluginName + "/" + foldersStringBuilder.toString() + fileName;
+        this.file = new File(fileDirectoryPath, fileName);
         createFile();
     }
 
-    public FileObjectProvider(String fileName, String folder) {
+    public FileObjectProvider(String fileName, String pluginName) {
+        this.minecodeDirectoryPath = "plugins/MineCode";
+        this.pluginDirectoryPath = minecodeDirectoryPath + "/" + pluginName;
         this.fileName = fileName;
-        this.fileStreamPath = "/" + fileName;
-        this.directoryPath = "plugins/MineCode/" + folder + "/";
-        this.filePath = directoryPath + fileName;
-        this.file = new File(directoryPath, fileName);
+
+        this.fileDirectoryPath = pluginDirectoryPath;
+        this.fileStreamPath =  pluginName + "/" + fileName;
+        this.file = new File(fileDirectoryPath, fileName);
         createFile();
     }
 
-    public FileObjectProvider(String fileName) {
-        this.fileName = fileName;
-        this.fileStreamPath = fileName;
-        this.directoryPath = "plugins/MineCode/";
-        this.filePath = directoryPath + fileName;
-        this.file = new File(directoryPath, fileName);
-        createFile();
-    }
-
-    @Override
     public FileObject createFile() {
-        new File(directoryPath).mkdirs();
+        new File(fileDirectoryPath).mkdirs();
         if (!file.exists()) {
-            InputStream inputStream = CoreAPI.getInstance().getResourceAsStream(fileStreamPath);
+            InputStream inputStream = getResourceAsStream(fileStreamPath);
             if (inputStream != null) {
                 try {
                     Files.copy(inputStream, file.toPath());
@@ -84,12 +81,12 @@ public class FileObjectProvider implements FileObject {
                 stream = false;
             }
         }
-        loadConfig();
+        reload();
         return this;
     }
 
     @Override
-    public void loadConfig() {
+    public void reload() {
         this.loader = YamlConfigurationLoader.builder().file(file).build();
         try {
             conf = loader.load();
@@ -113,27 +110,6 @@ public class FileObjectProvider implements FileObject {
     }
 
     @Override
-    public String getDirectoryPath() {
-        return directoryPath;
-    }
-
-    @Override
-    public String getFileName() {
-        return fileName;
-    }
-
-    @Override
-    public String getFilePath() {
-        return filePath;
-    }
-
-    @Override
-    public String getFileStreamPath() {
-        return fileStreamPath;
-    }
-
-
-    @Override
     public YamlConfigurationLoader getLoader() {
         return loader;
     }
@@ -146,6 +122,21 @@ public class FileObjectProvider implements FileObject {
     @Override
     public boolean isStream() {
         return stream;
+    }
+
+    public InputStream getResourceAsStream(String fileName) {
+        try {
+            URL url = this.getClass().getClassLoader().getResource(fileName);
+            if (url == null) {
+                return null;
+            } else {
+                URLConnection connection = url.openConnection();
+                connection.setUseCaches(false);
+                return connection.getInputStream();
+            }
+        } catch (IOException var4) {
+            return null;
+        }
     }
 
     public static HashMap<String, FileObject> getFileObjects() {

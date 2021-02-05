@@ -7,7 +7,6 @@ import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import net.md_5.bungee.api.chat.BaseComponent;
 
-import java.io.InputStream;
 import java.util.UUID;
 
 public abstract class CoreAPI {
@@ -46,11 +45,9 @@ public abstract class CoreAPI {
 
     public abstract CorePlayer getCorePlayer(String name);
 
-    public abstract FileObject getFileObject(String filename);
+    public abstract FileObject getFileObject(String fileName, String pluginName);
 
-    public abstract FileObject getFileObject(String filename, String folder);
-
-    public abstract FileObject getFileObject(String filename, String folder, String... subFolders);
+    public abstract FileObject getFileObject(String fileName, String pluginName, String... folders);
 
     public abstract Language getLanguage(String iso_code);
 
@@ -63,10 +60,4 @@ public abstract class CoreAPI {
     public abstract String getPluginName();
 
     public abstract boolean isUsingSQL();
-
-
-    // Other staff
-    public abstract InputStream getResourceAsStream(String fileName);
-
-
 }

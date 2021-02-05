@@ -5,7 +5,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>dev.minecode.core</groupId>
-        <version>0.1.0-Pre.12</version>
+        <version>0.1.0-Pre.13</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>common</artifactId>
-            <version>0.1.0-Pre.12</version>
+            <version>0.1.0-Pre.13</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.md-5</groupId>
@@ -80,6 +80,10 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
+                                    <include>dev.minecode.core:api</include>
+                                    <include>dev.minecode.core:common</include>
+                                    <include>dev.minecode.core:bungeecord</include>
+
                                     <include>org.spongepowered:configurate-core</include>
                                     <include>io.leangen.geantyref:geantyref</include>
                                     <include>org.checkerframework:checkerframework</include>
@@ -89,9 +93,6 @@
 
                                     <include>org.spongepowered:configurate-gson</include>
                                     <include>com.google.gson:gson</include>
-
-                                    <include>net.md-5:bungeecord-chat</include>
-                                    <include>com.google.guava:guava</include>
                                 </includes>
                             </artifactSet>
                             <filters>

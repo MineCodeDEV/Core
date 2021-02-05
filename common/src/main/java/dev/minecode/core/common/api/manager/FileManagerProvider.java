@@ -14,8 +14,8 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void makeInstances() {
-        config = CoreAPI.getInstance().getFileObject("config.yml");
-        players = CoreAPI.getInstance().getFileObject("players.yml");
+        config = CoreAPI.getInstance().getFileObject("config.yml", "Core");
+        players = CoreAPI.getInstance().getFileObject("players.yml", "Core");
     }
 
     @Override

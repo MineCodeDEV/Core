@@ -14,10 +14,6 @@ import dev.minecode.core.common.api.object.LanguageProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.spongepowered.configurate.ConfigurationNode;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -133,24 +129,17 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public FileObject getFileObject(String filename) {
-        if (FileObjectProvider.getFileObjects().containsKey(filename))
-            return FileObjectProvider.getFileObjects().get(filename);
-        return new FileObjectProvider(filename);
+    public FileObject getFileObject(String fileName, String pluginName, String... folders) {
+        if (FileObjectProvider.getFileObjects().containsKey(fileName + Arrays.toString(folders)))
+            return FileObjectProvider.getFileObjects().get(fileName);
+        return new FileObjectProvider(fileName, pluginName ,folders);
     }
 
     @Override
-    public FileObject getFileObject(String filename, String folder) {
-        if (FileObjectProvider.getFileObjects().containsKey(filename + folder))
-            return FileObjectProvider.getFileObjects().get(filename);
-        return new FileObjectProvider(filename, folder);
-    }
-
-    @Override
-    public FileObject getFileObject(String filename, String folder, String... subFolders) {
-        if (FileObjectProvider.getFileObjects().containsKey(filename + folder + Arrays.toString(subFolders)))
-            return FileObjectProvider.getFileObjects().get(filename);
-        return new FileObjectProvider(filename, folder, subFolders);
+    public FileObject getFileObject(String fileName, String pluginName) {
+        if (FileObjectProvider.getFileObjects().containsKey(fileName))
+            return FileObjectProvider.getFileObjects().get(fileName);
+        return new FileObjectProvider(fileName, pluginName);
     }
 
     @Override
@@ -181,23 +170,4 @@ public class CoreAPIProvider extends CoreAPI {
     public boolean isUsingSQL() {
         return usingSQL;
     }
-
-    // Other staff
-    @Override
-    public InputStream getResourceAsStream(String fileName) {
-        try {
-            URL url = this.getClass().getClassLoader().getResource(fileName);
-            if (url == null) {
-                return null;
-            } else {
-                URLConnection connection = url.openConnection();
-                connection.setUseCaches(false);
-                return connection.getInputStream();
-            }
-        } catch (IOException var4) {
-            return null;
-        }
-    }
-
-
 }

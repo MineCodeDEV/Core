@@ -33,7 +33,7 @@ public class LanguageManagerProvider implements LanguageManager {
         if (language == null) language = getDefaultLanguage();
 
         try {
-            object = language.getConfigurationNode().node(message).get(Object.class);
+            object = language.getConfigurationNode().node(message.getPath()).get(Object.class);
         } catch (SerializationException e) {
             e.printStackTrace();
         }

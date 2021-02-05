@@ -22,7 +22,7 @@ public class CoreSpigot {
 
     public void onDisable() {
         for (CorePlayerProvider corePlayer : CorePlayerProvider.getIdCache().values())
-            corePlayer.update();
+            corePlayer.save();
 
         CoreAPI.getInstance().getFileManager().saveDatas();
         if (CoreAPI.getInstance().isUsingSQL())
