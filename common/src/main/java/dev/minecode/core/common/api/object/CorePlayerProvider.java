@@ -36,6 +36,8 @@ public class CorePlayerProvider implements CorePlayer {
     private Statement statement;
     private ResultSet resultSet;
 
+    private boolean exists;
+
     public CorePlayerProvider(int id) {
         this.id = id;
         load();
@@ -65,7 +67,6 @@ public class CorePlayerProvider implements CorePlayer {
             conf.node(id, "uuid").set(uuid.toString());
             conf.node(id, "name").set(name);
             conf.node(id, "language").set(language);
-            fileObject.save();
         } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();
         }
@@ -73,8 +74,6 @@ public class CorePlayerProvider implements CorePlayer {
 
     public void load() {
         try {
-            boolean exists;
-
             if (CoreAPI.getInstance().isUsingSQL()) {
                 statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
                 resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE ID = '" + id + "'");

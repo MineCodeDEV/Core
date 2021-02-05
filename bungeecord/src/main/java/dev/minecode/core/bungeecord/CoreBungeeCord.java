@@ -5,7 +5,7 @@ import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.common.api.object.CorePlayerProvider;
 import net.md_5.bungee.api.plugin.Plugin;
 
-public class CoreBungeeCord extends Plugin {
+public class CoreBungeeCord {
     private static CoreBungeeCord instance;
 
     private Plugin mainClass;
