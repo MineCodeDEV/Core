@@ -24,7 +24,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
 
     private void setData() {
         ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
-        sql = conf.node("database", "enabled").getBoolean();
+        sql = conf.node("database", "enable").getBoolean();
         host = conf.node("database", "host").getString();
         port = conf.node("database", "port").getInt();
         database = conf.node("database", "database").getString();
@@ -37,7 +37,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
         } catch (SQLException throwables) {
-            System.out.println("A connection to the MySQL database could not be established!");
+            System.out.println("A connection to the SQL database could not be established!");
         }
     }
 
@@ -51,10 +51,9 @@ public class DatabaseManagerProvider implements DatabaseManager {
         }
     }
 
-    @Override
     public void checkTables() {
         try {
-            getStatement().executeUpdate("CREATE TABLE IF NOT EXISTS minecode_players (ID INT, UUID VARCHAR (37), NAME VARCHAR (16), LANGUAGE VARCHAR (5), CONSTRAINT uuid_pk PRIMARY KEY (ID))");
+            getStatement().executeUpdate("CREATE TABLE IF NOT EXISTS minecode_players (ID INT, UUID VARCHAR (37), NAME VARCHAR (16), LANGUAGE VARCHAR (5), PRIMARY KEY (ID))");
         } catch (SQLException e) {
             e.printStackTrace();
         }

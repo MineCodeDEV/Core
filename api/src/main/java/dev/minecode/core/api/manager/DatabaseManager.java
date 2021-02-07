@@ -9,8 +9,6 @@ public interface DatabaseManager {
 
     void disconnect();
 
-    void checkTables();
-
     Connection getConnection();
 
     Statement getStatement();
