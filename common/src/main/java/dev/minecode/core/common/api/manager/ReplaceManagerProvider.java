@@ -10,6 +10,8 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
+import java.util.ArrayList;
+
 public class ReplaceManagerProvider implements ReplaceManager {
 
     private String message;
@@ -35,8 +37,10 @@ public class ReplaceManagerProvider implements ReplaceManager {
 
     @Override
     public ReplaceManager args(String command, String[] args, String replacement) {
-        replaceAll("%" + replacement + "[" + 0 + "]%", command);
-        for (int i = 1; i < args.length; i++) replaceAll("%" + replacement + "[" + (i + 1) + "]%", args[i]);
+        replaceAll("%" + replacement + "-" + 0 + "%", command);
+        for (int i = 0; i < args.length; i++) {
+            replaceAll("%" + replacement + "-" + (i + 1) + "%", args[i]);
+        }
         return this;
     }
 
