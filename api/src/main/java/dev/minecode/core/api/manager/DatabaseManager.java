@@ -5,9 +5,9 @@ import java.sql.Statement;
 
 public interface DatabaseManager {
 
-    void connect();
+    boolean connect();
 
-    void disconnect();
+    boolean disconnect();
 
     Connection getConnection();
 

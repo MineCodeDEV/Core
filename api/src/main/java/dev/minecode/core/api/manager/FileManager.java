@@ -4,7 +4,7 @@ import dev.minecode.core.api.object.FileObject;
 
 public interface FileManager {
 
-    void saveDatas();
+    boolean saveDatas();
 
     FileObject getPlayers();
 

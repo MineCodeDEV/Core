@@ -4,21 +4,21 @@ import java.util.UUID;
 
 public interface CorePlayer {
 
-    void reload();
+    boolean reload();
 
-    void save();
+    boolean save();
 
     int getID();
 
-    void setID(int id);
+    boolean setID(int id);
 
     UUID getUuid();
 
-    void setUuid(UUID uuid);
+    boolean setUuid(UUID uuid);
 
     String getName();
 
-    void setName(String name);
+    boolean setName(String name);
 
     Language getLanguage();
 

@@ -19,8 +19,11 @@ public class FileManagerProvider implements FileManager {
     }
 
     @Override
-    public void saveDatas() {
-        players.save();
+    public boolean saveDatas() {
+        boolean saved = true;
+        if (!players.save())
+            saved = false;
+        return saved;
     }
 
     @Override

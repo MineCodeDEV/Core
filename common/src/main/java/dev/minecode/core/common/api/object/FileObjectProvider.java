@@ -86,21 +86,25 @@ public class FileObjectProvider implements FileObject {
     }
 
     @Override
-    public void reload() {
+    public boolean reload() {
         this.loader = YamlConfigurationLoader.builder().file(file).build();
         try {
             conf = loader.load();
+            return true;
         } catch (ConfigurateException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void save() {
+    public boolean save() {
         try {
             loader.save(conf);
+            return true;
         } catch (ConfigurateException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

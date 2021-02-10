@@ -33,22 +33,28 @@ public class DatabaseManagerProvider implements DatabaseManager {
     }
 
     @Override
-    public void connect() {
+    public boolean connect() {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+            return true;
         } catch (SQLException throwables) {
             System.out.println("A connection to the SQL database could not be established!");
+            return false;
         }
     }
 
     @Override
-    public void disconnect() {
+    public boolean disconnect() {
         try {
-            if (connection != null || !connection.isClosed() || connection.isValid(2))
+            if (connection != null || !connection.isClosed() || connection.isValid(2)) {
                 connection.close();
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
+        return false;
     }
 
     public void checkTables() {

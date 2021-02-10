@@ -7,9 +7,9 @@ import java.io.File;
 
 public interface FileObject {
 
-    void reload();
+    boolean reload();
 
-    void save();
+    boolean save();
 
     File getFile();
 

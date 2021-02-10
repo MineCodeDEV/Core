@@ -8,6 +8,7 @@ import dev.minecode.core.common.CoreCommon;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
+import javax.sql.CommonDataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -83,7 +84,7 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     @Override
-    public void reload() {
+    public boolean reload() {
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE ID = " + id + "");
@@ -91,6 +92,7 @@ public class CorePlayerProvider implements CorePlayer {
                     uuid = UUID.fromString(resultSet.getString("UUID"));
                     name = resultSet.getString("NAME");
                     language = CoreAPI.getInstance().getLanguage(resultSet.getString("LANGUAGE"));
+                    return true;
                 } else load();
             } else {
                 String tempUUID = conf.node(String.valueOf(id), "uuid").getString();
@@ -99,28 +101,34 @@ public class CorePlayerProvider implements CorePlayer {
                 else uuid = null;
                 name = conf.node(String.valueOf(id), "name").getString();
                 language = CoreAPI.getInstance().getLanguage(conf.node(String.valueOf(id), "language").getString());
+                return true;
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return false;
         }
+        return false;
     }
 
     @Override
-    public void save() {
+    public boolean save() {
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 resultSet.updateString("UUID", uuid.toString());
                 resultSet.updateString("NAME", name);
                 resultSet.updateString("LANGUAGE", language.getIso_code());
                 resultSet.updateRow();
+                return true;
             } else {
                 conf.node(String.valueOf(id), "uuid").set(uuid.toString());
                 conf.node(String.valueOf(id), "name").set(name);
                 conf.node(String.valueOf(id), "language").set(language.getIso_code());
                 fileObject.save();
+                return true;
             }
         } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();
+            return false;
         }
     }
 
@@ -152,8 +160,11 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     @Override
-    public void setID(int id) {
+    public boolean setID(int id) {
+        if (!isAvailableID(id)) return false;
+
         this.id = id;
+        return true;
     }
 
     @Override
@@ -162,8 +173,11 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     @Override
-    public void setUuid(UUID uuid) {
+    public boolean setUuid(UUID uuid) {
+        if (CoreCommon.getInstance().getUuidFetcher().getName(uuid) == null) return false;
+
         this.uuid = uuid;
+        return true;
     }
 
     @Override
@@ -172,8 +186,11 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     @Override
-    public void setName(String name) {
+    public boolean setName(String name) {
+        if (CoreCommon.getInstance().getUuidFetcher().getUUID(name) == null) return false;
+
         this.name = name;
+        return true;
     }
 
     @Override
