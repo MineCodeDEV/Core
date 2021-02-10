@@ -8,6 +8,8 @@ public interface ReplaceManager {
 
     ReplaceManager replaceAll(String toReplace, String replaceWith);
 
+    ReplaceManager args(String command, String[] args, String replacement);
+
     ReplaceManager chatcolorColor();
 
     ReplaceManager chatcolorFormat();

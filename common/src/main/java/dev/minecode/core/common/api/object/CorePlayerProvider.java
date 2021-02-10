@@ -30,6 +30,7 @@ public class CorePlayerProvider implements CorePlayer {
     private UUID uuid;
     private String name;
     private Language language;
+    private boolean exists = false;
     private Statement statement;
     private ResultSet resultSet;
 
@@ -46,28 +47,34 @@ public class CorePlayerProvider implements CorePlayer {
 
     public CorePlayerProvider(String name) {
         this.id = getID(name);
-        this.name = name;
-        load();
+        if (id != 0) {
+            this.name = getName(id);
+            exists = true;
+            reload();
+        } else {
+            this.name = name;
+            load();
+        }
     }
 
     public void load() {
-        boolean exists;
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
                 resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE ID = " + id + "");
                 exists = resultSet.next();
             } else
-                exists = !conf.node(id).empty();
+                exists = !conf.node(String.valueOf(id)).empty();
 
             if (!exists) {
                 if (uuid == null && name == null) return;
-                if (uuid == null) uuid = getUuid(name);
-                if (name == null) name = getName(uuid);
+                if (uuid == null && (uuid = getUuid(name)) == null) return;
+                name = getName(uuid);
                 if (uuid == consoleUUID && Objects.equals(name, consoleName)) id = consoleID;
                 if (id == 0) id = generateNewID();
-
-                create(id, uuid, name, null);
+                if (id != 0 && uuid != null && name != null)
+                    create(id, uuid, name, null);
+                exists = true;
             } else
                 reload();
         } catch (SQLException throwables) {
@@ -82,11 +89,9 @@ public class CorePlayerProvider implements CorePlayer {
                 resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE ID = " + id + "");
                 if (resultSet.next()) {
                     uuid = UUID.fromString(resultSet.getString("UUID"));
-                    language = CoreAPI.getInstance().getLanguage(resultSet.getString("LANGUAGE"));
                     name = resultSet.getString("NAME");
-                } else {
-                    load();
-                }
+                    language = CoreAPI.getInstance().getLanguage(resultSet.getString("LANGUAGE"));
+                } else load();
             } else {
                 String tempUUID = conf.node(String.valueOf(id), "uuid").getString();
                 if (tempUUID != null)
@@ -181,6 +186,10 @@ public class CorePlayerProvider implements CorePlayer {
         this.language = language;
     }
 
+    public boolean isExists() {
+        return exists;
+    }
+
     public static int getID(UUID uuid) {
         if (uuid.toString().equals(consoleUUID.toString())) return consoleID;
         try {
@@ -189,15 +198,13 @@ public class CorePlayerProvider implements CorePlayer {
                 if (resultSet.next())
                     return resultSet.getInt("ID");
             } else
-                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet()) {
+                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet())
                     if (!uuidNode.getValue().empty())
                         if (uuidNode.getValue().node("uuid").getString().equalsIgnoreCase(uuid.toString()))
-                            return (int) uuidNode.getValue().key();
-                }
+                            return Integer.parseInt((String) uuidNode.getValue().key());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
         return 0;
     }
 
@@ -205,15 +212,14 @@ public class CorePlayerProvider implements CorePlayer {
         if (name.equals(consoleName)) return consoleID;
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
-                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT ID FROM minecode_players WHERE NAME = '" + name + "'");
+                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT ID FROM minecode_players UPPER(NAME) = UPPER('" + name + "')");
                 if (resultSet.next())
                     return resultSet.getInt("ID");
             } else
-                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet()) {
+                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet())
                     if (!uuidNode.getValue().empty())
                         if (uuidNode.getValue().node("name").getString().equalsIgnoreCase(name))
-                            return (int) uuidNode.getValue().key();
-                }
+                            return Integer.parseInt((String) uuidNode.getValue().key());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -241,15 +247,14 @@ public class CorePlayerProvider implements CorePlayer {
         if (name.equals(consoleName)) return consoleUUID;
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
-                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT UUID FROM minecode_players WHERE NAME = '" + name + "'");
+                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT UUID FROM minecode_players WHERE UPPER(NAME) = UPPER('" + name + "')");
                 if (resultSet.next())
                     return UUID.fromString(resultSet.getString("UUID"));
             } else
-                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet()) {
+                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet())
                     if (!uuidNode.getValue().empty())
                         if (uuidNode.getValue().node("uuid").getString().equalsIgnoreCase(name))
                             return UUID.fromString(uuidNode.getValue().node("uuid").getString());
-                }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -282,11 +287,10 @@ public class CorePlayerProvider implements CorePlayer {
                 if (resultSet.next())
                     return resultSet.getString("NAME");
             } else {
-                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet()) {
+                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet())
                     if (!uuidNode.getValue().empty())
                         if (uuidNode.getValue().node("uuid").getString().equalsIgnoreCase(uuid.toString()))
                             return uuidNode.getValue().node("name").getString();
-                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

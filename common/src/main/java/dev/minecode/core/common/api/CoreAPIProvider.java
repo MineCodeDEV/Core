@@ -92,10 +92,13 @@ public class CoreAPIProvider extends CoreAPI {
         }
 
         CorePlayerProvider corePlayerProvider = new CorePlayerProvider(id);
-        CorePlayerProvider.getIdCache().put(id, corePlayerProvider);
-        CorePlayerProvider.getUuidCache().put(corePlayerProvider.getName(), corePlayerProvider);
-        CorePlayerProvider.getNameCache().put(corePlayerProvider.getUuid(), corePlayerProvider);
-        return corePlayerProvider;
+        if (corePlayerProvider.isExists()) {
+            CorePlayerProvider.getIdCache().put(id, corePlayerProvider);
+            CorePlayerProvider.getUuidCache().put(corePlayerProvider.getName(), corePlayerProvider);
+            CorePlayerProvider.getNameCache().put(corePlayerProvider.getUuid(), corePlayerProvider);
+            return corePlayerProvider;
+        }
+        return null;
     }
 
     @Override
@@ -107,10 +110,13 @@ public class CoreAPIProvider extends CoreAPI {
         }
 
         CorePlayerProvider corePlayerProvider = new CorePlayerProvider(uuid);
-        CorePlayerProvider.getIdCache().put(corePlayerProvider.getID(), corePlayerProvider);
-        CorePlayerProvider.getUuidCache().put(corePlayerProvider.getName(), corePlayerProvider);
-        CorePlayerProvider.getNameCache().put(uuid, corePlayerProvider);
-        return corePlayerProvider;
+        if (corePlayerProvider.isExists()) {
+            CorePlayerProvider.getIdCache().put(corePlayerProvider.getID(), corePlayerProvider);
+            CorePlayerProvider.getUuidCache().put(corePlayerProvider.getName(), corePlayerProvider);
+            CorePlayerProvider.getNameCache().put(uuid, corePlayerProvider);
+            return corePlayerProvider;
+        }
+        return null;
     }
 
     @Override
@@ -122,17 +128,20 @@ public class CoreAPIProvider extends CoreAPI {
         }
 
         CorePlayerProvider corePlayerProvider = new CorePlayerProvider(name);
-        CorePlayerProvider.getIdCache().put(corePlayerProvider.getID(), corePlayerProvider);
-        CorePlayerProvider.getUuidCache().put(name, corePlayerProvider);
-        CorePlayerProvider.getNameCache().put(corePlayerProvider.getUuid(), corePlayerProvider);
-        return corePlayerProvider;
+        if (corePlayerProvider.isExists()) {
+            CorePlayerProvider.getIdCache().put(corePlayerProvider.getID(), corePlayerProvider);
+            CorePlayerProvider.getUuidCache().put(name, corePlayerProvider);
+            CorePlayerProvider.getNameCache().put(corePlayerProvider.getUuid(), corePlayerProvider);
+            return corePlayerProvider;
+        }
+        return null;
     }
 
     @Override
     public FileObject getFileObject(String fileName, String pluginName, String... folders) {
         if (FileObjectProvider.getFileObjects().containsKey(fileName + Arrays.toString(folders)))
             return FileObjectProvider.getFileObjects().get(fileName);
-        return new FileObjectProvider(fileName, pluginName ,folders);
+        return new FileObjectProvider(fileName, pluginName, folders);
     }
 
     @Override
