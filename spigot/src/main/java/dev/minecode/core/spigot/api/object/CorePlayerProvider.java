@@ -13,11 +13,12 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 public class CorePlayerProvider implements CorePlayer {
-
-    private static ArrayList<CorePlayer> corePlayers = new ArrayList<>();
 
     private static UUID consoleUUID = new UUID(0, 0);
     private static int consoleID = 1;
@@ -337,9 +338,5 @@ public class CorePlayerProvider implements CorePlayer {
             id = new Random().nextInt(Integer.MAX_VALUE - 1);
         } while (isAvailableID(id));
         return id;
-    }
-
-    public static ArrayList<CorePlayer> getCorePlayers() {
-        return corePlayers;
     }
 }

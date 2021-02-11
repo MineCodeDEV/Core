@@ -17,8 +17,6 @@ import java.util.*;
 
 public class CorePlayerProvider implements CorePlayer {
 
-    private static ArrayList<CorePlayer> corePlayers = new ArrayList<>();
-
     private static UUID consoleUUID = new UUID(0, 0);
     private static int consoleID = 1;
     private static String consoleName = "CONSOLE";
@@ -337,9 +335,5 @@ public class CorePlayerProvider implements CorePlayer {
             id = new Random().nextInt(Integer.MAX_VALUE - 1);
         } while (isAvailableID(id));
         return id;
-    }
-
-    public static ArrayList<CorePlayer> getCorePlayers() {
-        return corePlayers;
     }
 }

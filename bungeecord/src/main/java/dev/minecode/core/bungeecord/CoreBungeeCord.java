@@ -1,8 +1,6 @@
 package dev.minecode.core.bungeecord;
 
 import dev.minecode.core.api.CoreAPI;
-import dev.minecode.core.api.object.CorePlayer;
-import dev.minecode.core.bungeecord.api.object.CorePlayerProvider;
 import dev.minecode.core.bungeecord.object.CorePlayerAddonProvider;
 import dev.minecode.core.common.CoreCommon;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -26,10 +24,6 @@ public class CoreBungeeCord {
     }
 
     public void onDisable() {
-        for (CorePlayer corePlayer : CorePlayerProvider.getCorePlayers())
-            corePlayer.save();
-
-        CoreAPI.getInstance().getFileManager().saveDatas();
         if (CoreAPI.getInstance().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
     }

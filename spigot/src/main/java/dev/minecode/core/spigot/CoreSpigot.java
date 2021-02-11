@@ -1,9 +1,7 @@
 package dev.minecode.core.spigot;
 
 import dev.minecode.core.api.CoreAPI;
-import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.common.CoreCommon;
-import dev.minecode.core.spigot.api.object.CorePlayerProvider;
 import dev.minecode.core.spigot.object.CorePlayerAddonProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,10 +26,6 @@ public class CoreSpigot {
     }
 
     public void onDisable() {
-        for (CorePlayer corePlayer : CorePlayerProvider.getCorePlayers())
-            corePlayer.save();
-
-        CoreAPI.getInstance().getFileManager().saveDatas();
         if (CoreAPI.getInstance().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
     }
