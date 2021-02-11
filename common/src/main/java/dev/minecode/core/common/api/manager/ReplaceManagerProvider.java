@@ -10,8 +10,6 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
-import java.util.ArrayList;
-
 public class ReplaceManagerProvider implements ReplaceManager {
 
     private String message;

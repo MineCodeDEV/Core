@@ -1,8 +1,10 @@
 package dev.minecode.core.bungeecord;
 
 import dev.minecode.core.api.CoreAPI;
+import dev.minecode.core.api.object.CorePlayer;
+import dev.minecode.core.bungeecord.api.object.CorePlayerProvider;
+import dev.minecode.core.bungeecord.object.CorePlayerAddonProvider;
 import dev.minecode.core.common.CoreCommon;
-import dev.minecode.core.common.api.object.CorePlayerProvider;
 import net.md_5.bungee.api.plugin.Plugin;
 
 public class CoreBungeeCord {
@@ -18,10 +20,11 @@ public class CoreBungeeCord {
     private void makeInstances() {
         instance = this;
         new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
+        CoreCommon.getInstance().setCorePlayerAddon(new CorePlayerAddonProvider());
     }
 
     public void onDisable() {
-        for (CorePlayerProvider corePlayer : CorePlayerProvider.getIdCache().values())
+        for (CorePlayer corePlayer : CorePlayerProvider.getCorePlayers())
             corePlayer.save();
 
         CoreAPI.getInstance().getFileManager().saveDatas();

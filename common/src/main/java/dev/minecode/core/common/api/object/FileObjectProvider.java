@@ -18,7 +18,7 @@ public class FileObjectProvider implements FileObject {
     private static HashMap<String, FileObject> fileObjects = new HashMap<>();
 
     // directories
-    private String minecodeDirectoryPath;
+    private static String minecodeDirectoryPath = "plugins/MineCode";
     private String pluginDirectoryPath;
     private String fileDirectoryPath;
 
@@ -35,7 +35,6 @@ public class FileObjectProvider implements FileObject {
     private boolean stream;
 
     public FileObjectProvider(String fileName, String pluginName, String... folders) {
-        this.minecodeDirectoryPath = "plugins/MineCode";
         this.pluginDirectoryPath = minecodeDirectoryPath + "/" + pluginName;
         this.fileName = fileName;
 
@@ -51,7 +50,6 @@ public class FileObjectProvider implements FileObject {
     }
 
     public FileObjectProvider(String fileName, String pluginName) {
-        this.minecodeDirectoryPath = "plugins/MineCode";
         this.pluginDirectoryPath = minecodeDirectoryPath + "/" + pluginName;
         this.fileName = fileName;
 

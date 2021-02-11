@@ -3,12 +3,15 @@ package dev.minecode.core.common;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.common.api.CoreAPIProvider;
+import dev.minecode.core.common.api.object.CorePlayerAddon;
 import dev.minecode.core.common.util.UUIDFetcher;
 
 import java.util.UUID;
 
 public class CoreCommon {
     private static CoreCommon instance;
+
+    private CorePlayerAddon corePlayerAddon;
 
     private UUIDFetcher uuidFetcher;
     private CorePlayer console;
@@ -38,6 +41,14 @@ public class CoreCommon {
 
     public static CoreCommon getInstance() {
         return instance;
+    }
+
+    public CorePlayerAddon getCorePlayerAddon() {
+        return corePlayerAddon;
+    }
+
+    public void setCorePlayerAddon(CorePlayerAddon corePlayerAddon) {
+        this.corePlayerAddon = corePlayerAddon;
     }
 
     public UUIDFetcher getUuidFetcher() {

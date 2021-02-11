@@ -1,14 +1,16 @@
-package dev.minecode.core.common.api.object;
+package dev.minecode.core.spigot.api.object;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.common.CoreCommon;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-import javax.sql.CommonDataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,9 +18,7 @@ import java.util.*;
 
 public class CorePlayerProvider implements CorePlayer {
 
-    private static HashMap<Integer, CorePlayerProvider> idCache = new HashMap<>();
-    private static HashMap<UUID, CorePlayerProvider> nameCache = new HashMap<>();
-    private static HashMap<String, CorePlayerProvider> uuidCache = new HashMap<>();
+    private static ArrayList<CorePlayer> corePlayers = new ArrayList<>();
 
     private static UUID consoleUUID = new UUID(0, 0);
     private static int consoleID = 1;
@@ -93,7 +93,10 @@ public class CorePlayerProvider implements CorePlayer {
                     name = resultSet.getString("NAME");
                     language = CoreAPI.getInstance().getLanguage(resultSet.getString("LANGUAGE"));
                     return true;
-                } else load();
+                } else {
+                    load();
+                    return exists;
+                }
             } else {
                 String tempUUID = conf.node(String.valueOf(id), "uuid").getString();
                 if (tempUUID != null)
@@ -107,7 +110,6 @@ public class CorePlayerProvider implements CorePlayer {
             throwables.printStackTrace();
             return false;
         }
-        return false;
     }
 
     @Override
@@ -203,6 +205,7 @@ public class CorePlayerProvider implements CorePlayer {
         this.language = language;
     }
 
+    @Override
     public boolean isExists() {
         return exists;
     }
@@ -262,6 +265,11 @@ public class CorePlayerProvider implements CorePlayer {
 
     public static UUID getUuid(String name) {
         if (name.equals(consoleName)) return consoleUUID;
+
+        Player player;
+        if ((player = Bukkit.getPlayer(name)) != null)
+            return player.getUniqueId();
+
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT UUID FROM minecode_players WHERE UPPER(NAME) = UPPER('" + name + "')");
@@ -298,6 +306,13 @@ public class CorePlayerProvider implements CorePlayer {
 
     public static String getName(UUID uuid) {
         if (uuid.toString().equals(consoleUUID.toString())) return consoleName;
+
+        OfflinePlayer player;
+        if ((player = Bukkit.getPlayer(uuid)) != null) {
+            return player.getName();
+        } else if ((player = Bukkit.getOfflinePlayer(uuid)) != null)
+            return player.getName();
+
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT NAME FROM minecode_players WHERE UUID = '" + uuid + "'");
@@ -327,15 +342,7 @@ public class CorePlayerProvider implements CorePlayer {
         return id;
     }
 
-    public static HashMap<Integer, CorePlayerProvider> getIdCache() {
-        return idCache;
-    }
-
-    public static HashMap<UUID, CorePlayerProvider> getNameCache() {
-        return nameCache;
-    }
-
-    public static HashMap<String, CorePlayerProvider> getUuidCache() {
-        return uuidCache;
+    public static ArrayList<CorePlayer> getCorePlayers() {
+        return corePlayers;
     }
 }

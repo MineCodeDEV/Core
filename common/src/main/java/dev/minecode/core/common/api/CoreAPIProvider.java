@@ -8,7 +8,6 @@ import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.common.api.manager.*;
-import dev.minecode.core.common.api.object.CorePlayerProvider;
 import dev.minecode.core.common.api.object.FileObjectProvider;
 import dev.minecode.core.common.api.object.LanguageProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -85,54 +84,51 @@ public class CoreAPIProvider extends CoreAPI {
     // API-Objects
     @Override
     public CorePlayer getCorePlayer(int id) {
-        if (CorePlayerProvider.getIdCache().containsKey(id)) {
-            CorePlayerProvider corePlayerProvider = CorePlayerProvider.getIdCache().get(id);
-            corePlayerProvider.load();
-            return corePlayerProvider;
+        for (CorePlayer corePlayer : CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers()) {
+            if (corePlayer.getID() == id) {
+                corePlayer.reload();
+                return corePlayer;
+            }
         }
 
-        CorePlayerProvider corePlayerProvider = new CorePlayerProvider(id);
-        if (corePlayerProvider.isExists()) {
-            CorePlayerProvider.getIdCache().put(id, corePlayerProvider);
-            CorePlayerProvider.getUuidCache().put(corePlayerProvider.getName(), corePlayerProvider);
-            CorePlayerProvider.getNameCache().put(corePlayerProvider.getUuid(), corePlayerProvider);
-            return corePlayerProvider;
+        CorePlayer corePlayer = CoreCommon.getInstance().getCorePlayerAddon().newCorePlayer(id);
+        if (corePlayer.isExists()) {
+            CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers().add(corePlayer);
+            return corePlayer;
         }
         return null;
     }
 
     @Override
     public CorePlayer getCorePlayer(UUID uuid) {
-        if (CorePlayerProvider.getNameCache().containsKey(uuid)) {
-            CorePlayerProvider corePlayerProvider = CorePlayerProvider.getNameCache().get(uuid);
-            corePlayerProvider.load();
-            return corePlayerProvider;
+        for (CorePlayer corePlayer : CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers()) {
+            if (corePlayer.getUuid() == uuid) {
+                corePlayer.reload();
+                return corePlayer;
+            }
         }
 
-        CorePlayerProvider corePlayerProvider = new CorePlayerProvider(uuid);
-        if (corePlayerProvider.isExists()) {
-            CorePlayerProvider.getIdCache().put(corePlayerProvider.getID(), corePlayerProvider);
-            CorePlayerProvider.getUuidCache().put(corePlayerProvider.getName(), corePlayerProvider);
-            CorePlayerProvider.getNameCache().put(uuid, corePlayerProvider);
-            return corePlayerProvider;
+        CorePlayer corePlayer = CoreCommon.getInstance().getCorePlayerAddon().newCorePlayer(uuid);
+        if (corePlayer.isExists()) {
+            CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers().add(corePlayer);
+            return corePlayer;
         }
         return null;
     }
 
     @Override
     public CorePlayer getCorePlayer(String name) {
-        if (CorePlayerProvider.getUuidCache().containsKey(name)) {
-            CorePlayerProvider corePlayerProvider = CorePlayerProvider.getUuidCache().get(name);
-            corePlayerProvider.load();
-            return corePlayerProvider;
+        for (CorePlayer corePlayer : CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers()) {
+            if (corePlayer.getName().equals(name)) {
+                corePlayer.reload();
+                return corePlayer;
+            }
         }
 
-        CorePlayerProvider corePlayerProvider = new CorePlayerProvider(name);
-        if (corePlayerProvider.isExists()) {
-            CorePlayerProvider.getIdCache().put(corePlayerProvider.getID(), corePlayerProvider);
-            CorePlayerProvider.getUuidCache().put(name, corePlayerProvider);
-            CorePlayerProvider.getNameCache().put(corePlayerProvider.getUuid(), corePlayerProvider);
-            return corePlayerProvider;
+        CorePlayer corePlayer = CoreCommon.getInstance().getCorePlayerAddon().newCorePlayer(name);
+        if (corePlayer.isExists()) {
+            CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers().add(corePlayer);
+            return corePlayer;
         }
         return null;
     }
