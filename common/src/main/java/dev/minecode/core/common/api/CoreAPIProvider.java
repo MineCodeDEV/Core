@@ -114,7 +114,7 @@ public class CoreAPIProvider extends CoreAPI {
         if (FileObjectProvider.getFileObjects().containsKey(fileName + pluginName + Arrays.toString(folders)))
             return FileObjectProvider.getFileObjects().get(fileName + pluginName + Arrays.toString(folders));
 
-        FileObjectProvider fileObjectProvider = new FileObjectProvider(fileName, pluginName);
+        FileObjectProvider fileObjectProvider = new FileObjectProvider(fileName, pluginName, folders);
         FileObjectProvider.getFileObjects().put(fileName + pluginName + Arrays.toString(folders), fileObjectProvider);
         return fileObjectProvider;
     }
