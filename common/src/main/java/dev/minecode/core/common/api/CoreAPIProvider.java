@@ -157,11 +157,6 @@ public class CoreAPIProvider extends CoreAPI {
 
     // Variables
     @Override
-    public CorePlayer getConsole() {
-        return CoreCommon.getInstance().getConsole();
-    }
-
-    @Override
     public String getDefaultLanguage() {
         return defaultLanguage;
     }

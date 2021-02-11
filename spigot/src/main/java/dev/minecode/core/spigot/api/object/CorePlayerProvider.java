@@ -6,7 +6,6 @@ import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.common.CoreCommon;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -73,11 +72,14 @@ public class CorePlayerProvider implements CorePlayer {
                 name = getName(uuid);
                 if (uuid == consoleUUID && Objects.equals(name, consoleName)) id = consoleID;
                 if (id == 0) id = generateNewID();
-                if (id != 0 && uuid != null && name != null)
+                System.out.println(id);
+                System.out.println(uuid);
+                System.out.println(name);
+                if (id != 0 && uuid != null && name != null) {
                     create(id, uuid, name, null);
-                exists = true;
-            } else
-                reload();
+                    exists = true;
+                }
+            } else reload();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -307,10 +309,8 @@ public class CorePlayerProvider implements CorePlayer {
     public static String getName(UUID uuid) {
         if (uuid.toString().equals(consoleUUID.toString())) return consoleName;
 
-        OfflinePlayer player;
-        if ((player = Bukkit.getPlayer(uuid)) != null) {
-            return player.getName();
-        } else if ((player = Bukkit.getOfflinePlayer(uuid)) != null)
+        Player player;
+        if ((player = Bukkit.getPlayer(uuid)) != null)
             return player.getName();
 
         try {

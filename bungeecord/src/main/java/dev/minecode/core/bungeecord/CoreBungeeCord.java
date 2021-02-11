@@ -21,6 +21,8 @@ public class CoreBungeeCord {
         instance = this;
         new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
         CoreCommon.getInstance().setCorePlayerAddon(new CorePlayerAddonProvider());
+
+        CoreAPI.getInstance().getCorePlayer("CONSOLE"); //CONSOLE
     }
 
     public void onDisable() {

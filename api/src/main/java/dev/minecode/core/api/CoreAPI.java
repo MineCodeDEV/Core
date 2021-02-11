@@ -22,6 +22,7 @@ public abstract class CoreAPI {
         return coreAPI;
     }
 
+
     // API-Manager
     public abstract DatabaseManager getDatabaseManager();
 
@@ -53,8 +54,6 @@ public abstract class CoreAPI {
 
 
     // Variables
-    public abstract CorePlayer getConsole();
-
     public abstract String getDefaultLanguage();
 
     public abstract String getPluginName();

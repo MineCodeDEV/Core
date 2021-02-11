@@ -1,12 +1,8 @@
 package dev.minecode.core.common;
 
-import dev.minecode.core.api.CoreAPI;
-import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.common.api.CoreAPIProvider;
 import dev.minecode.core.common.api.object.CorePlayerAddon;
 import dev.minecode.core.common.util.UUIDFetcher;
-
-import java.util.UUID;
 
 public class CoreCommon {
     private static CoreCommon instance;
@@ -14,7 +10,6 @@ public class CoreCommon {
     private CorePlayerAddon corePlayerAddon;
 
     private UUIDFetcher uuidFetcher;
-    private CorePlayer console;
 
     private String pluginName;
     private String pluginVersion;
@@ -30,7 +25,6 @@ public class CoreCommon {
         uuidFetcher = new UUIDFetcher();
         new CoreAPIProvider();
 
-        console = CoreAPI.getInstance().getCorePlayer(new UUID(0, 0));
         /*
         UpdateManager updateManager = CoreAPI.getInstance().getUpdateManager();
         if (updateManager.updateAvailable()) {
@@ -53,10 +47,6 @@ public class CoreCommon {
 
     public UUIDFetcher getUuidFetcher() {
         return uuidFetcher;
-    }
-
-    public CorePlayer getConsole() {
-        return console;
     }
 
     public String getPluginName() {

@@ -15,16 +15,22 @@ public class CorePlayerAddonProvider implements CorePlayerAddon {
 
     @Override
     public CorePlayer newCorePlayer(int id) {
-        return new CorePlayerProvider(id);
+        CorePlayer corePlayer = new CorePlayerProvider(id);
+        getCorePlayers().add(corePlayer);
+        return corePlayer;
     }
 
     @Override
     public CorePlayer newCorePlayer(UUID uuid) {
-        return new CorePlayerProvider(uuid);
+        CorePlayer corePlayer = new CorePlayerProvider(uuid);
+        getCorePlayers().add(corePlayer);
+        return corePlayer;
     }
 
     @Override
     public CorePlayer newCorePlayer(String name) {
-        return new CorePlayerProvider(name);
+        CorePlayer corePlayer = new CorePlayerProvider(name);
+        getCorePlayers().add(corePlayer);
+        return corePlayer;
     }
 }
