@@ -72,9 +72,6 @@ public class CorePlayerProvider implements CorePlayer {
                 name = getName(uuid);
                 if (uuid == consoleUUID && Objects.equals(name, consoleName)) id = consoleID;
                 if (id == 0) id = generateNewID();
-                System.out.println(id);
-                System.out.println(uuid);
-                System.out.println(name);
                 if (id != 0 && uuid != null && name != null) {
                     create(id, uuid, name, null);
                     exists = true;
