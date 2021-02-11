@@ -84,16 +84,8 @@ public class CoreAPIProvider extends CoreAPI {
     // API-Objects
     @Override
     public CorePlayer getCorePlayer(int id) {
-        for (CorePlayer corePlayer : CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers()) {
-            if (corePlayer.getID() == id) {
-                corePlayer.reload();
-                return corePlayer;
-            }
-        }
-
         CorePlayer corePlayer = CoreCommon.getInstance().getCorePlayerAddon().newCorePlayer(id);
         if (corePlayer.isExists()) {
-            CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers().add(corePlayer);
             return corePlayer;
         }
         return null;
@@ -101,16 +93,8 @@ public class CoreAPIProvider extends CoreAPI {
 
     @Override
     public CorePlayer getCorePlayer(UUID uuid) {
-        for (CorePlayer corePlayer : CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers()) {
-            if (corePlayer.getUuid() == uuid) {
-                corePlayer.reload();
-                return corePlayer;
-            }
-        }
-
         CorePlayer corePlayer = CoreCommon.getInstance().getCorePlayerAddon().newCorePlayer(uuid);
         if (corePlayer.isExists()) {
-            CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers().add(corePlayer);
             return corePlayer;
         }
         return null;
@@ -118,16 +102,8 @@ public class CoreAPIProvider extends CoreAPI {
 
     @Override
     public CorePlayer getCorePlayer(String name) {
-        for (CorePlayer corePlayer : CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers()) {
-            if (corePlayer.getName().equals(name)) {
-                corePlayer.reload();
-                return corePlayer;
-            }
-        }
-
         CorePlayer corePlayer = CoreCommon.getInstance().getCorePlayerAddon().newCorePlayer(name);
         if (corePlayer.isExists()) {
-            CoreCommon.getInstance().getCorePlayerAddon().getCorePlayers().add(corePlayer);
             return corePlayer;
         }
         return null;
@@ -135,16 +111,21 @@ public class CoreAPIProvider extends CoreAPI {
 
     @Override
     public FileObject getFileObject(String fileName, String pluginName, String... folders) {
-        if (FileObjectProvider.getFileObjects().containsKey(fileName + Arrays.toString(folders)))
-            return FileObjectProvider.getFileObjects().get(fileName);
-        return new FileObjectProvider(fileName, pluginName, folders);
+        if (FileObjectProvider.getFileObjects().containsKey(fileName + pluginName + Arrays.toString(folders)))
+            return FileObjectProvider.getFileObjects().get(fileName + pluginName + Arrays.toString(folders));
+
+        FileObjectProvider fileObjectProvider = new FileObjectProvider(fileName, pluginName);
+        FileObjectProvider.getFileObjects().put(fileName + pluginName + Arrays.toString(folders), fileObjectProvider);
+        return fileObjectProvider;
     }
 
     @Override
     public FileObject getFileObject(String fileName, String pluginName) {
-        if (FileObjectProvider.getFileObjects().containsKey(fileName))
-            return FileObjectProvider.getFileObjects().get(fileName);
-        return new FileObjectProvider(fileName, pluginName);
+        if (FileObjectProvider.getFileObjects().containsKey(fileName + pluginName))
+            return FileObjectProvider.getFileObjects().get(fileName + pluginName);
+        FileObjectProvider fileObjectProvider = new FileObjectProvider(fileName, pluginName);
+        FileObjectProvider.getFileObjects().put(fileName + pluginName, fileObjectProvider);
+        return fileObjectProvider;
     }
 
     @Override
