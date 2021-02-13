@@ -44,7 +44,7 @@ public class FileObjectProvider implements FileObject {
         }
 
         this.fileDirectoryPath = pluginDirectoryPath + "/" + foldersStringBuilder.toString();
-        this.fileStreamPath =  pluginName + "/" + foldersStringBuilder.toString() + fileName;
+        this.fileStreamPath = pluginName + "/" + foldersStringBuilder.toString() + fileName;
         this.file = new File(fileDirectoryPath, fileName);
         createFile();
     }
@@ -54,9 +54,13 @@ public class FileObjectProvider implements FileObject {
         this.fileName = fileName;
 
         this.fileDirectoryPath = pluginDirectoryPath;
-        this.fileStreamPath =  pluginName + "/" + fileName;
+        this.fileStreamPath = pluginName + "/" + fileName;
         this.file = new File(fileDirectoryPath, fileName);
         createFile();
+    }
+
+    public static HashMap<String, FileObject> getFileObjects() {
+        return fileObjects;
     }
 
     public FileObject createFile() {
@@ -139,9 +143,5 @@ public class FileObjectProvider implements FileObject {
         } catch (IOException var4) {
             return null;
         }
-    }
-
-    public static HashMap<String, FileObject> getFileObjects() {
-        return fileObjects;
     }
 }

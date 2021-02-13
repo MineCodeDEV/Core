@@ -7,23 +7,23 @@ import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import net.md_5.bungee.api.chat.BaseComponent;
 
+import java.util.List;
 import java.util.UUID;
 
 public abstract class CoreAPI {
 
-    // instance
+    // Instance
     private static CoreAPI coreAPI;
-
-    public static void setInstance(CoreAPI coreAPI) {
-        CoreAPI.coreAPI = coreAPI;
-    }
 
     public static CoreAPI getInstance() {
         return coreAPI;
     }
 
+    public static void setInstance(CoreAPI coreAPI) {
+        CoreAPI.coreAPI = coreAPI;
+    }
 
-    // API-Manager
+    // Manager
     public abstract DatabaseManager getDatabaseManager();
 
     public abstract FileManager getFileManager();
@@ -39,7 +39,7 @@ public abstract class CoreAPI {
     public abstract UpdateManager getUpdateManager();
 
 
-    // API-Objects
+    // Objects
     public abstract CorePlayer getCorePlayer(int id);
 
     public abstract CorePlayer getCorePlayer(UUID uuid);
@@ -51,6 +51,8 @@ public abstract class CoreAPI {
     public abstract FileObject getFileObject(String fileName, String pluginName, String... folders);
 
     public abstract Language getLanguage(String iso_code);
+
+    public abstract List<Language> getLanguages();
 
 
     // Variables

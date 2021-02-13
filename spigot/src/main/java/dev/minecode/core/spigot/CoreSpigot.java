@@ -17,6 +17,10 @@ public class CoreSpigot {
         makeInstances();
     }
 
+    public static CoreSpigot getInstance() {
+        return instance;
+    }
+
     private void makeInstances() {
         instance = this;
         new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
@@ -30,12 +34,7 @@ public class CoreSpigot {
             CoreAPI.getInstance().getDatabaseManager().disconnect();
     }
 
-    public static CoreSpigot getInstance() {
-        return instance;
-    }
-
     public JavaPlugin getMainClass() {
         return mainClass;
     }
-
 }

@@ -20,6 +20,10 @@ public class CoreCommon {
         makeInstances();
     }
 
+    public static CoreCommon getInstance() {
+        return instance;
+    }
+
     private void makeInstances() {
         instance = this;
         uuidFetcher = new UUIDFetcher();
@@ -31,10 +35,6 @@ public class CoreCommon {
             System.out.println("[" + pluginName + "] There is a newer Version available! You can download it at " + updateManager.getVersionURL(updateManager.getRecommendVersion()));
         }
         */
-    }
-
-    public static CoreCommon getInstance() {
-        return instance;
     }
 
     public CorePlayerAddon getCorePlayerAddon() {

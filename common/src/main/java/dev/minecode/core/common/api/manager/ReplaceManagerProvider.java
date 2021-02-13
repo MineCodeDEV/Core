@@ -5,7 +5,6 @@ import dev.minecode.core.api.manager.ReplaceManager;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;

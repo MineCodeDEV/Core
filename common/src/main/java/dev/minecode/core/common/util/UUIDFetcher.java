@@ -16,10 +16,9 @@ import java.util.concurrent.Executors;
 public class UUIDFetcher {
 
     public final long FEBRUARY_2015 = 1422748800000L;
-
-    private Gson gson = new GsonBuilder().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
     private final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s?at=%d";
     private final String NAME_URL = "https://api.mojang.com/user/profiles/%s/names";
+    private Gson gson = new GsonBuilder().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
     private Map<String, UUID> uuidCache = new HashMap<String, UUID>();
     private Map<UUID, String> nameCache = new HashMap<UUID, String>();
     private ExecutorService pool = Executors.newCachedThreadPool();
@@ -48,7 +47,7 @@ public class UUIDFetcher {
             } else {
                 return null;
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         return null;
@@ -71,7 +70,7 @@ public class UUIDFetcher {
             } else {
                 return null;
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return null;
     }

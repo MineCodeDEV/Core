@@ -13,7 +13,9 @@ import dev.minecode.core.common.api.object.LanguageProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.spongepowered.configurate.ConfigurationNode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class CoreAPIProvider extends CoreAPI {
@@ -44,7 +46,7 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
 
-    // API-Manager
+    // Manager
     @Override
     public DatabaseManager getDatabaseManager() {
         return databaseManagerProvider;
@@ -81,7 +83,7 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
 
-    // API-Objects
+    // Objects
     @Override
     public CorePlayer getCorePlayer(int id) {
         CorePlayer corePlayer = CoreCommon.getInstance().getCorePlayerAddon().newCorePlayer(id);
@@ -133,6 +135,11 @@ public class CoreAPIProvider extends CoreAPI {
         if (LanguageProvider.getLanguages().containsKey(iso_code))
             return LanguageProvider.getLanguages().get(iso_code);
         return null;
+    }
+
+    @Override
+    public List<Language> getLanguages() {
+        return new ArrayList<>(LanguageProvider.getLanguages().values());
     }
 
 

@@ -41,6 +41,10 @@ public class LanguageProvider implements Language {
         this.texture = configNode.node("texture").getString();
     }
 
+    public static HashMap<String, LanguageProvider> getLanguages() {
+        return languages;
+    }
+
     @Override
     public String getIso_code() {
         return iso_code;
@@ -79,9 +83,5 @@ public class LanguageProvider implements Language {
     @Override
     public ConfigurationNode getConfigurationNode() {
         return configurationNode;
-    }
-
-    public static HashMap<String, LanguageProvider> getLanguages() {
-        return languages;
     }
 }

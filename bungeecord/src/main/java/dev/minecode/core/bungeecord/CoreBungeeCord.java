@@ -15,6 +15,10 @@ public class CoreBungeeCord {
         makeInstances();
     }
 
+    public static CoreBungeeCord getInstance() {
+        return instance;
+    }
+
     private void makeInstances() {
         instance = this;
         new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
@@ -26,10 +30,6 @@ public class CoreBungeeCord {
     public void onDisable() {
         if (CoreAPI.getInstance().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
-    }
-
-    public static CoreBungeeCord getInstance() {
-        return instance;
     }
 
     public Plugin getMainClass() {

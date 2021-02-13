@@ -19,12 +19,11 @@ public interface LanguageManager {
 
     List<Object> getList(Language language, LanguageAbstract message);
 
-    // spezifischere Methoden
 
+    // spezifischere Methoden
     List<String> getStringList(Language language, LanguageAbstract message);
 
+
     // Methoden zur Sprache
-
     Language getDefaultLanguage();
-
 }

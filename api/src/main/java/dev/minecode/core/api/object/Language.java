@@ -6,20 +6,20 @@ import java.util.List;
 
 public interface Language {
 
-     String getIso_code();
+    String getIso_code();
 
-     String getName();
+    String getName();
 
-     String getDisplayname();
+    String getDisplayname();
 
-     int getSlot();
+    int getSlot();
 
-     List<String> getLore();
+    List<String> getLore();
 
-     String getTexture();
+    String getTexture();
 
-     FileObject getFileObject();
+    FileObject getFileObject();
 
-     ConfigurationNode getConfigurationNode();
+    ConfigurationNode getConfigurationNode();
 
 }
