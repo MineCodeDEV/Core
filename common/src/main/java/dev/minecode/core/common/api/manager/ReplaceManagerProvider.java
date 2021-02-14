@@ -43,7 +43,8 @@ public class ReplaceManagerProvider implements ReplaceManager {
 
     @Override
     public ReplaceManager chatcolorColor() {
-        return replaceAll("&1", "§1")
+        return replaceAll("&0", "§0")
+                .replaceAll("&1", "§1")
                 .replaceAll("&2", "§2")
                 .replaceAll("&3", "§3")
                 .replaceAll("&4", "§4")

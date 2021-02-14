@@ -36,17 +36,20 @@ public class CorePlayerProvider implements CorePlayer {
     private ResultSet resultSet;
 
     public CorePlayerProvider(int id) {
+        fileObject.reload();
         this.id = id;
         load();
     }
 
     public CorePlayerProvider(UUID uuid) {
+        fileObject.reload();
         this.id = getID(uuid);
         this.uuid = uuid;
         load();
     }
 
     public CorePlayerProvider(String name) {
+        fileObject.reload();
         this.id = getID(name);
         if (id != 0) {
             this.name = getName(id);
@@ -250,6 +253,7 @@ public class CorePlayerProvider implements CorePlayer {
                     return exists;
                 }
             } else {
+                fileObject.reload();
                 String tempUUID = conf.node(String.valueOf(id), "uuid").getString();
                 if (tempUUID != null)
                     uuid = UUID.fromString(tempUUID);
