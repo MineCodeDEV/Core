@@ -69,20 +69,20 @@ public class CorePlayerProvider implements CorePlayer {
 
     private static void create(int id, UUID uuid, String name, Language language) {
         try {
-            String iso_code = null;
+            String isocode = null;
             if (language != null)
-                iso_code = language.getIsocode();
+                isocode = language.getIsocode();
 
             if (CoreAPI.getInstance().isUsingSQL()) {
-                if (iso_code != null)
-                    iso_code = "'" + language + "'";
-                CoreAPI.getInstance().getDatabaseManager().getStatement().executeUpdate("INSERT INTO minecode_players (ID, UUID, NAME, LANGUAGE) VALUES (" + id + ",'" + uuid.toString() + "', '" + name + "', " + iso_code + ")");
+                if (isocode != null)
+                    isocode = "'" + language + "'";
+                CoreAPI.getInstance().getDatabaseManager().getStatement().executeUpdate("INSERT INTO minecode_players (ID, UUID, NAME, LANGUAGE) VALUES (" + id + ",'" + uuid.toString() + "', '" + name + "', " + isocode + ")");
                 return;
             }
 
             conf.node(String.valueOf(id), "uuid").set(uuid.toString());
             conf.node(String.valueOf(id), "name").set(name);
-            conf.node(String.valueOf(id), "language").set(iso_code);
+            conf.node(String.valueOf(id), "language").set(isocode);
             fileObject.save();
         } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();

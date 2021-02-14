@@ -50,7 +50,7 @@ public abstract class CoreAPI {
 
     public abstract FileObject getFileObject(String fileName, String pluginName, String... folders);
 
-    public abstract Language getLanguage(String iso_code);
+    public abstract Language getLanguage(String isocode);
 
     public abstract List<Language> getLanguages();
 

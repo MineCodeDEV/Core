@@ -13,7 +13,7 @@ public class LanguageProvider implements Language {
 
     private static HashMap<String, LanguageProvider> languages = new HashMap<>();
 
-    private String iso_code;
+    private String isocode;
     private String name;
     private String displayname;
     private int slot;
@@ -23,12 +23,12 @@ public class LanguageProvider implements Language {
     private FileObject fileObject;
     private ConfigurationNode configurationNode;
 
-    public LanguageProvider(String iso_code) {
-        languages.put(iso_code, this);
-        this.iso_code = iso_code;
+    public LanguageProvider(String isocode) {
+        languages.put(isocode, this);
+        this.isocode = isocode;
 
-        ConfigurationNode configNode = CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages", this.iso_code);
-        this.fileObject = CoreAPI.getInstance().getFileObject(iso_code + ".yml", CoreAPI.getInstance().getPluginName(), "message");
+        ConfigurationNode configNode = CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages", this.isocode);
+        this.fileObject = CoreAPI.getInstance().getFileObject(isocode + ".yml", CoreAPI.getInstance().getPluginName(), "message");
         this.configurationNode = fileObject.getConf();
 
         this.name = configNode.node("name").getString();
@@ -47,7 +47,7 @@ public class LanguageProvider implements Language {
 
     @Override
     public String getIsocode() {
-        return iso_code;
+        return isocode;
     }
 
     @Override

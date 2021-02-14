@@ -36,13 +36,14 @@ public class CoreAPIProvider extends CoreAPI {
         CoreAPI.setInstance(this);
         fileManagerProvider = new FileManagerProvider();
 
-        ConfigurationNode configNode = fileManagerProvider.getConfig().getConf();
-        usingSQL = configNode.node("database", "enable").getBoolean();
-        defaultLanguage = getLanguage(configNode.node("language", "default").getString());
+        ConfigurationNode conf = fileManagerProvider.getConfig().getConf();
+        usingSQL = conf.node("database", "enable").getBoolean();
 
         databaseManagerProvider = new DatabaseManagerProvider();
         languageManagerProvider = new LanguageManagerProvider();
         updateManagerProvider = new UpdateManagerProvider();
+
+        defaultLanguage = getLanguage(conf.node("language", "default").getString());
     }
 
 
@@ -131,9 +132,9 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public Language getLanguage(String iso_code) {
-        if (LanguageProvider.getLanguages().containsKey(iso_code))
-            return LanguageProvider.getLanguages().get(iso_code);
+    public Language getLanguage(String isocode) {
+        if (LanguageProvider.getLanguages().containsKey(isocode))
+            return LanguageProvider.getLanguages().get(isocode);
         return null;
     }
 
