@@ -46,7 +46,7 @@ public class LanguageProvider implements Language {
     }
 
     @Override
-    public String getIso_code() {
+    public String getIsocode() {
         return iso_code;
     }
 

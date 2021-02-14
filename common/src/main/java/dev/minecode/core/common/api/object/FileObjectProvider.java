@@ -46,7 +46,7 @@ public class FileObjectProvider implements FileObject {
         this.fileDirectoryPath = pluginDirectoryPath + "/" + foldersStringBuilder.toString();
         this.fileStreamPath = pluginName + "/" + foldersStringBuilder.toString() + fileName;
         this.file = new File(fileDirectoryPath, fileName);
-        createFile();
+        load();
     }
 
     public FileObjectProvider(String fileName, String pluginName) {
@@ -56,35 +56,45 @@ public class FileObjectProvider implements FileObject {
         this.fileDirectoryPath = pluginDirectoryPath;
         this.fileStreamPath = pluginName + "/" + fileName;
         this.file = new File(fileDirectoryPath, fileName);
-        createFile();
+        load();
     }
 
     public static HashMap<String, FileObject> getFileObjects() {
         return fileObjects;
     }
 
-    public FileObject createFile() {
+    public boolean load() {
+        boolean success = true;
+        if (!file.exists())
+            success = createFile();
+
+        if (success) return reload();
+        return false;
+    }
+
+    public boolean createFile() {
         new File(fileDirectoryPath).mkdirs();
-        if (!file.exists()) {
-            InputStream inputStream = getResourceAsStream(fileStreamPath);
-            if (inputStream != null) {
-                try {
-                    Files.copy(inputStream, file.toPath());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                stream = true;
-            } else {
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                stream = false;
+
+        InputStream inputStream = getResourceAsStream(fileStreamPath);
+        if (inputStream != null) {
+            try {
+                Files.copy(inputStream, file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
             }
+            stream = true;
+            return true;
         }
-        reload();
-        return this;
+
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        stream = false;
+        return true;
     }
 
     @Override

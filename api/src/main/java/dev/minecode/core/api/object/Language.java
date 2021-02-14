@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Language {
 
-    String getIso_code();
+    String getIsocode();
 
     String getName();
 

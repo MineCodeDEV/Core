@@ -22,8 +22,4 @@ public interface LanguageManager {
 
     // spezifischere Methoden
     List<String> getStringList(Language language, LanguageAbstract message);
-
-
-    // Methoden zur Sprache
-    Language getDefaultLanguage();
 }

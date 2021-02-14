@@ -26,7 +26,7 @@ public class CoreAPIProvider extends CoreAPI {
     private UpdateManagerProvider updateManagerProvider;
 
     private boolean usingSQL;
-    private String defaultLanguage;
+    private Language defaultLanguage;
 
     public CoreAPIProvider() {
         makeInstances();
@@ -38,7 +38,7 @@ public class CoreAPIProvider extends CoreAPI {
 
         ConfigurationNode configNode = fileManagerProvider.getConfig().getConf();
         usingSQL = configNode.node("database", "enable").getBoolean();
-        defaultLanguage = configNode.node("language", "default").getString();
+        defaultLanguage = getLanguage(configNode.node("language", "default").getString());
 
         databaseManagerProvider = new DatabaseManagerProvider();
         languageManagerProvider = new LanguageManagerProvider();
@@ -142,16 +142,22 @@ public class CoreAPIProvider extends CoreAPI {
         return new ArrayList<>(LanguageProvider.getLanguages().values());
     }
 
-
-    // Variables
     @Override
-    public String getDefaultLanguage() {
+    public Language getDefaultLanguage() {
         return defaultLanguage;
     }
+
+
+    // Variables
 
     @Override
     public String getPluginName() {
         return CoreCommon.getInstance().getPluginName();
+    }
+
+    @Override
+    public String getPluginVersion() {
+        return CoreCommon.getInstance().getPluginVersion();
     }
 
     @Override

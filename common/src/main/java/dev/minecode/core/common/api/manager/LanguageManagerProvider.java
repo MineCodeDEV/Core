@@ -30,7 +30,7 @@ public class LanguageManagerProvider implements LanguageManager {
     @Override
     public Object get(Language language, LanguageAbstract message) {
         Object object = null;
-        if (language == null) language = getDefaultLanguage();
+        if (language == null) language = CoreAPI.getInstance().getDefaultLanguage();
 
         try {
             object = language.getConfigurationNode().node(message.getPath()).get(Object.class);
@@ -71,10 +71,5 @@ public class LanguageManagerProvider implements LanguageManager {
         List<String> stringList = new ArrayList<>();
         for (Object entry : getList(language, message)) stringList.add(entry.toString());
         return stringList;
-    }
-
-    @Override
-    public Language getDefaultLanguage() {
-        return CoreAPI.getInstance().getLanguage(CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "default").getString());
     }
 }

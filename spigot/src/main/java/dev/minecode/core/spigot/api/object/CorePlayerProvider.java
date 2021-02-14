@@ -25,7 +25,7 @@ public class CorePlayerProvider implements CorePlayer {
     private static String consoleName = "CONSOLE";
 
     private static FileObject fileObject = CoreAPI.getInstance().getFileManager().getPlayers();
-    private static ConfigurationNode conf = fileObject.getConf();
+    private static ConfigurationNode conf;
 
     private int id;
     private UUID uuid;
@@ -37,12 +37,16 @@ public class CorePlayerProvider implements CorePlayer {
 
     public CorePlayerProvider(int id) {
         fileObject.reload();
+        conf = fileObject.getConf();
+
         this.id = id;
         load();
     }
 
     public CorePlayerProvider(UUID uuid) {
         fileObject.reload();
+        conf = fileObject.getConf();
+
         this.id = getID(uuid);
         this.uuid = uuid;
         load();
@@ -50,6 +54,8 @@ public class CorePlayerProvider implements CorePlayer {
 
     public CorePlayerProvider(String name) {
         fileObject.reload();
+        conf = fileObject.getConf();
+
         this.id = getID(name);
         if (id != 0) {
             this.name = getName(id);
@@ -65,7 +71,7 @@ public class CorePlayerProvider implements CorePlayer {
         try {
             String iso_code = null;
             if (language != null)
-                iso_code = language.getIso_code();
+                iso_code = language.getIsocode();
 
             if (CoreAPI.getInstance().isUsingSQL()) {
                 if (iso_code != null)
@@ -253,7 +259,6 @@ public class CorePlayerProvider implements CorePlayer {
                     return exists;
                 }
             } else {
-                fileObject.reload();
                 String tempUUID = conf.node(String.valueOf(id), "uuid").getString();
                 if (tempUUID != null)
                     uuid = UUID.fromString(tempUUID);
@@ -274,13 +279,13 @@ public class CorePlayerProvider implements CorePlayer {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 resultSet.updateString("UUID", uuid.toString());
                 resultSet.updateString("NAME", name);
-                resultSet.updateString("LANGUAGE", language.getIso_code());
+                resultSet.updateString("LANGUAGE", language.getIsocode());
                 resultSet.updateRow();
                 return true;
             } else {
                 conf.node(String.valueOf(id), "uuid").set(uuid.toString());
                 conf.node(String.valueOf(id), "name").set(name);
-                conf.node(String.valueOf(id), "language").set(language.getIso_code());
+                conf.node(String.valueOf(id), "language").set(language.getIsocode());
                 fileObject.save();
                 return true;
             }

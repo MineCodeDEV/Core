@@ -54,11 +54,13 @@ public abstract class CoreAPI {
 
     public abstract List<Language> getLanguages();
 
+    public abstract Language getDefaultLanguage();
+
 
     // Variables
-    public abstract String getDefaultLanguage();
-
     public abstract String getPluginName();
+
+    public abstract String getPluginVersion();
 
     public abstract boolean isUsingSQL();
 }
