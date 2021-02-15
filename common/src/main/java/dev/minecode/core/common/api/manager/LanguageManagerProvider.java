@@ -34,7 +34,7 @@ public class LanguageManagerProvider implements LanguageManager {
         if (language == null) language = CoreAPI.getInstance().getDefaultLanguage();
 
         try {
-            object = language.getConfigurationNode().node((Object[]) message.getPath()).get(Object.class);
+            object = language.getConfigurationNode().node(message.getPath()).get(Object.class);
         } catch (SerializationException e) {
             e.printStackTrace();
         }
