@@ -2,7 +2,6 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.UpdateManager;
-import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.common.CoreCommon;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
@@ -18,9 +17,6 @@ public class UpdateManagerProvider implements UpdateManager {
     private GsonConfigurationLoader loader;
     private ConfigurationNode conf;
 
-    private String pluginVersion = CoreAPI.getInstance().getPluginVersion();
-
-
     public UpdateManagerProvider() {
         try {
             url = new URL("https://api.github.com/repos/MineCodeDEV/" + CoreCommon.getInstance().getPluginName() + "/releases");
@@ -35,16 +31,13 @@ public class UpdateManagerProvider implements UpdateManager {
     public boolean updateAvailable() {
         String recommendRelease = getMatchingRelease();
         if (recommendRelease != null)
-            return !getMatchingRelease()
-                    .equals(pluginVersion);
+            return !getMatchingRelease().equals(CoreAPI.getInstance().getPluginVersion());
         return false;
     }
 
     public String getMatchingRelease() {
-        FileObject fileConfig = CoreAPI.getInstance().getFileManager().getConfig();
-        if (fileConfig.getConf().node("update", "prereleases").getBoolean()) {
+        if (CoreAPI.getInstance().isUpdatePreReleases())
             return getLatestRelease();
-        }
         return getLatestFullRelease();
     }
 

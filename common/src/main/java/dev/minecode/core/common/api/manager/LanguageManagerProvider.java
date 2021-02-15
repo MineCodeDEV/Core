@@ -21,9 +21,10 @@ public class LanguageManagerProvider implements LanguageManager {
 
     private void loadMessageFiles() {
         File messsageDirectory = new File("plugins/MineCode/" + CoreAPI.getInstance().getPluginName() + "/message/");
-        messsageDirectory.mkdirs();
-        for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
-            new LanguageProvider((String) node.getValue().key());
+        if (messsageDirectory.mkdirs()) {
+            for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
+                new LanguageProvider((String) node.getValue().key());
+            }
         }
     }
 
@@ -33,11 +34,10 @@ public class LanguageManagerProvider implements LanguageManager {
         if (language == null) language = CoreAPI.getInstance().getDefaultLanguage();
 
         try {
-            object = language.getConfigurationNode().node(message.getPath()).get(Object.class);
+            object = language.getConfigurationNode().node((Object[]) message.getPath()).get(Object.class);
         } catch (SerializationException e) {
             e.printStackTrace();
         }
-
         return object;
     }
 

@@ -26,6 +26,8 @@ public class CoreAPIProvider extends CoreAPI {
     private UpdateManagerProvider updateManagerProvider;
 
     private boolean usingSQL;
+    private boolean updateNotification;
+    private boolean updatePreReleases;
     private Language defaultLanguage;
 
     public CoreAPIProvider() {
@@ -38,6 +40,8 @@ public class CoreAPIProvider extends CoreAPI {
 
         ConfigurationNode conf = fileManagerProvider.getConfig().getConf();
         usingSQL = conf.node("database", "enable").getBoolean();
+        updateNotification = conf.node("update", "notification").getBoolean();
+        updatePreReleases = conf.node("update", "prereleases").getBoolean();
 
         databaseManagerProvider = new DatabaseManagerProvider();
         languageManagerProvider = new LanguageManagerProvider();
@@ -143,11 +147,6 @@ public class CoreAPIProvider extends CoreAPI {
         return new ArrayList<>(LanguageProvider.getLanguages().values());
     }
 
-    @Override
-    public Language getDefaultLanguage() {
-        return defaultLanguage;
-    }
-
 
     // Variables
 
@@ -164,5 +163,20 @@ public class CoreAPIProvider extends CoreAPI {
     @Override
     public boolean isUsingSQL() {
         return usingSQL;
+    }
+
+    @Override
+    public boolean isUpdateNotification() {
+        return updateNotification;
+    }
+
+    @Override
+    public boolean isUpdatePreReleases() {
+        return updatePreReleases;
+    }
+
+    @Override
+    public Language getDefaultLanguage() {
+        return defaultLanguage;
     }
 }

@@ -5,8 +5,6 @@ import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.spigot.object.CorePlayerAddonProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.UUID;
-
 public class CoreSpigot {
     private static CoreSpigot instance;
 
@@ -25,8 +23,7 @@ public class CoreSpigot {
         instance = this;
         new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
         CoreCommon.getInstance().setCorePlayerAddon(new CorePlayerAddonProvider());
-
-        CoreAPI.getInstance().getCorePlayer(new UUID(0, 0)); // Console
+        CoreAPI.getInstance().getCorePlayer(1); // Console
     }
 
     public void onDisable() {

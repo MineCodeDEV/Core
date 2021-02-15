@@ -90,7 +90,6 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static int getID(UUID uuid) {
-        if (uuid.toString().equals(consoleUUID.toString())) return consoleID;
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT ID FROM minecode_players WHERE UUID = '" + uuid.toString() + "'");
@@ -108,7 +107,6 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static int getID(String name) {
-        if (name.equals(consoleName)) return consoleID;
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT ID FROM minecode_players UPPER(NAME) = UPPER('" + name + "')");
@@ -126,7 +124,6 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static UUID getUuid(int id) {
-        if (id == 0) return consoleUUID;
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT UUID FROM minecode_players WHERE ID = '" + id + "'");
@@ -143,8 +140,6 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static UUID getUuid(String name) {
-        if (name.equals(consoleName)) return consoleUUID;
-
         ProxiedPlayer proxiedPlayer;
         if ((proxiedPlayer = ProxyServer.getInstance().getPlayer(name)) != null)
             return proxiedPlayer.getUniqueId();
@@ -166,7 +161,6 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static String getName(int id) {
-        if (id == consoleID) return consoleName;
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT NAME FROM minecode_players WHERE ID = '" + id + "'");
@@ -184,8 +178,6 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static String getName(UUID uuid) {
-        if (uuid.toString().equals(consoleUUID.toString())) return consoleName;
-
         ProxiedPlayer proxiedPlayer;
         if ((proxiedPlayer = ProxyServer.getInstance().getPlayer(uuid)) != null)
             return proxiedPlayer.getName();
