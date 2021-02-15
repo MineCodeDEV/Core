@@ -28,13 +28,6 @@ public class CoreCommon {
         instance = this;
         uuidFetcher = new UUIDFetcher();
         new CoreAPIProvider();
-
-        /*
-        UpdateManager updateManager = CoreAPI.getInstance().getUpdateManager();
-        if (updateManager.updateAvailable()) {
-            System.out.println("[" + pluginName + "] There is a newer Version available! You can download it at " + updateManager.getVersionURL(updateManager.getRecommendVersion()));
-        }
-        */
     }
 
     public CorePlayerAddon getCorePlayerAddon() {

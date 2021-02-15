@@ -4,16 +4,14 @@ public interface UpdateManager {
 
     boolean updateAvailable();
 
-    String getRecommendVersion();
+    String getMatchingRelease();
 
-    String getVersionURL(String version);
+    String getReleaseURL(String version);
 
-    String getLatestRelease();
+    String getLatestFullRelease();
 
     String getLatestPreRelease();
 
-    boolean isRelease(String version);
-
-    String getLatestVersion();
+    String getLatestRelease();
 
 }

@@ -18,7 +18,7 @@ public class UpdateManagerProvider implements UpdateManager {
     private GsonConfigurationLoader loader;
     private ConfigurationNode conf;
 
-    private String pluginVersion = CoreCommon.getInstance().getPluginVersion();
+    private String pluginVersion = CoreAPI.getInstance().getPluginVersion();
 
 
     public UpdateManagerProvider() {
@@ -33,21 +33,23 @@ public class UpdateManagerProvider implements UpdateManager {
 
     @Override
     public boolean updateAvailable() {
-        System.out.println(getRecommendVersion());
-        return !getRecommendVersion()
-                .equals(pluginVersion);
+        String recommendRelease = getMatchingRelease();
+        if (recommendRelease != null)
+            return !getMatchingRelease()
+                    .equals(pluginVersion);
+        return false;
     }
 
-    public String getRecommendVersion() {
+    public String getMatchingRelease() {
         FileObject fileConfig = CoreAPI.getInstance().getFileManager().getConfig();
         if (fileConfig.getConf().node("update", "prereleases").getBoolean()) {
-            return getLatestVersion();
+            return getLatestRelease();
         }
-        return getLatestRelease();
+        return getLatestFullRelease();
     }
 
     @Override
-    public String getVersionURL(String version) {
+    public String getReleaseURL(String version) {
         for (Map.Entry<Object, ? extends ConfigurationNode> node : conf.childrenMap().entrySet()) {
             if (node.getValue().node("tag_name").getString().equals(version)) {
                 return conf.node("html_url").getString();
@@ -58,6 +60,16 @@ public class UpdateManagerProvider implements UpdateManager {
 
     @Override
     public String getLatestRelease() {
+        for (Map.Entry<Object, ? extends ConfigurationNode> node : conf.childrenMap().entrySet()) {
+            if (!node.getValue().node("draft").getBoolean()) {
+                return node.getValue().node("tag_name").getString();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getLatestFullRelease() {
         for (Map.Entry<Object, ? extends ConfigurationNode> node : conf.childrenMap().entrySet()) {
             if (!node.getValue().node("prerelease").getBoolean()) {
                 if (!node.getValue().node("draft").getBoolean()) {
@@ -75,30 +87,6 @@ public class UpdateManagerProvider implements UpdateManager {
                 if (!node.getValue().node("draft").getBoolean()) {
                     return node.getValue().node("tag_name").getString();
                 }
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public boolean isRelease(String version) {
-        for (Map.Entry<Object, ? extends ConfigurationNode> node : conf.childrenMap().entrySet()) {
-            if (node.getValue().node("tag_name").getString().equals(version)) {
-                if (!node.getValue().node("prerelease").getBoolean()) {
-                    if (!node.getValue().node("draft").getBoolean()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public String getLatestVersion() {
-        for (Map.Entry<Object, ? extends ConfigurationNode> node : conf.childrenMap().entrySet()) {
-            if (!node.getValue().node("draft").getBoolean()) {
-                return node.getValue().node("tag_name").getString();
             }
         }
         return null;
