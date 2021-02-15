@@ -67,7 +67,7 @@ public class CorePlayerProvider implements CorePlayer {
         }
     }
 
-    private static void create(int id, UUID uuid, String name, Language language) {
+    private static boolean create(int id, UUID uuid, String name, Language language) {
         try {
             String isocode = null;
             if (language != null)
@@ -77,15 +77,16 @@ public class CorePlayerProvider implements CorePlayer {
                 if (isocode != null)
                     isocode = "'" + language + "'";
                 CoreAPI.getInstance().getDatabaseManager().getStatement().executeUpdate("INSERT INTO minecode_players (ID, UUID, NAME, LANGUAGE) VALUES (" + id + ",'" + uuid.toString() + "', '" + name + "', " + isocode + ")");
-                return;
+                return true;
             }
 
             conf.node(String.valueOf(id), "uuid").set(uuid.toString());
             conf.node(String.valueOf(id), "name").set(name);
             conf.node(String.valueOf(id), "language").set(isocode);
-            fileObject.save();
+            return fileObject.save();
         } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();
+            return false;
         }
     }
 
@@ -225,6 +226,7 @@ public class CorePlayerProvider implements CorePlayer {
                     id = consoleID;
                     uuid = consoleUUID;
                     name = consoleName;
+                    create(id, uuid, name, null);
                     exists = true;
                     return;
                 }
