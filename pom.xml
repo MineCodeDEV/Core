@@ -15,6 +15,10 @@
         <module>bungeecord</module>
     </modules>
 
+    <name>Core</name>
+    <description>Main dependency from MineCode</description>
+    <url>https://github.com/MineCodeDEV/Core</url>
+
     <organization>
         <name>MineCode</name>
         <url>https://github.com/MineCodeDEV</url>

@@ -11,6 +11,9 @@
 
     <artifactId>spigot</artifactId>
 
+    <name>Spigot</name>
+    <url>https://github.com/MineCodeDEV/Core/tree/master/spigot</url>
+
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -54,6 +57,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.parent.name}-${project.name}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

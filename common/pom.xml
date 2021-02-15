@@ -11,6 +11,8 @@
 
     <artifactId>common</artifactId>
 
+    <name>Common</name>
+    <url>https://github.com/MineCodeDEV/Core/tree/master/common</url>
 
     <dependencies>
         <!-- MineCode Core -->
@@ -22,6 +24,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.parent.name}-${project.name}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

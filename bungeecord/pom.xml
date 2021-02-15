@@ -11,6 +11,9 @@
 
     <artifactId>bungeecord</artifactId>
 
+    <name>BungeeCord</name>
+    <url>https://github.com/MineCodeDEV/Core/tree/master/bungeecord</url>
+
     <repositories>
         <repository>
             <id>bungeecord-repo</id>
@@ -57,6 +60,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.parent.name}-${project.name}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -229,11 +229,18 @@ public class CorePlayerProvider implements CorePlayer {
                 exists = !conf.node(String.valueOf(id)).empty();
 
             if (!exists) {
+                if (id == consoleID || uuid == consoleUUID || Objects.equals(name, consoleName)) {
+                    id = consoleID;
+                    uuid = consoleUUID;
+                    name = consoleName;
+                    exists = true;
+                    return;
+                }
+
                 if (uuid == null && name == null) return;
                 if (uuid == null && (uuid = getUuid(name)) == null) return;
                 name = getName(uuid);
-                if (uuid == consoleUUID && Objects.equals(name, consoleName)) id = consoleID;
-                if (id == 0) id = generateNewID();
+                id = generateNewID();
                 if (id != 0 && uuid != null && name != null) {
                     create(id, uuid, name, null);
                     exists = true;
@@ -246,53 +253,57 @@ public class CorePlayerProvider implements CorePlayer {
 
     @Override
     public boolean reload() {
-        try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
-                resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE ID = " + id + "");
-                if (resultSet.next()) {
-                    uuid = UUID.fromString(resultSet.getString("UUID"));
-                    name = resultSet.getString("NAME");
-                    language = CoreAPI.getInstance().getLanguage(resultSet.getString("LANGUAGE"));
-                    return true;
+        if (exists) {
+            try {
+                if (CoreAPI.getInstance().isUsingSQL()) {
+                    resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE ID = " + id + "");
+                    if (resultSet.next()) {
+                        uuid = UUID.fromString(resultSet.getString("UUID"));
+                        name = resultSet.getString("NAME");
+                        language = CoreAPI.getInstance().getLanguage(resultSet.getString("LANGUAGE"));
+                        return true;
+                    } else {
+                        load();
+                        return exists;
+                    }
                 } else {
-                    load();
-                    return exists;
+                    uuid = UUID.fromString(Objects.requireNonNull(conf.node(String.valueOf(id), "uuid").getString()));
+                    name = conf.node(String.valueOf(id), "name").getString();
+                    language = CoreAPI.getInstance().getLanguage(conf.node(String.valueOf(id), "language").getString());
+                    return true;
+
                 }
-            } else {
-                String tempUUID = conf.node(String.valueOf(id), "uuid").getString();
-                if (tempUUID != null)
-                    uuid = UUID.fromString(tempUUID);
-                else uuid = null;
-                name = conf.node(String.valueOf(id), "name").getString();
-                language = CoreAPI.getInstance().getLanguage(conf.node(String.valueOf(id), "language").getString());
-                return true;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                return false;
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     @Override
     public boolean save() {
-        try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
-                resultSet.updateString("UUID", uuid.toString());
-                resultSet.updateString("NAME", name);
-                resultSet.updateString("LANGUAGE", language.getIsocode());
-                resultSet.updateRow();
-                return true;
-            } else {
-                conf.node(String.valueOf(id), "uuid").set(uuid.toString());
-                conf.node(String.valueOf(id), "name").set(name);
-                conf.node(String.valueOf(id), "language").set(language.getIsocode());
-                fileObject.save();
-                return true;
+        if (exists) {
+            try {
+                if (CoreAPI.getInstance().isUsingSQL()) {
+                    resultSet.updateString("UUID", uuid.toString());
+                    resultSet.updateString("NAME", name);
+                    resultSet.updateString("LANGUAGE", language.getIsocode());
+                    resultSet.updateRow();
+                    return true;
+                } else {
+                    conf.node(String.valueOf(id), "uuid").set(uuid.toString());
+                    conf.node(String.valueOf(id), "name").set(name);
+                    conf.node(String.valueOf(id), "language").set(language.getIsocode());
+                    fileObject.save();
+                    return true;
+                }
+            } catch (SQLException | SerializationException throwables) {
+                throwables.printStackTrace();
+                return false;
             }
-        } catch (SQLException | SerializationException throwables) {
-            throwables.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     @Override

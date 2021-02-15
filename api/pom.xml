@@ -11,6 +11,9 @@
 
     <artifactId>api</artifactId>
 
+    <name>API</name>
+    <url>https://github.com/MineCodeDEV/Core/tree/master/api</url>
+
     <dependencies>
         <!-- Spongepowered Conrigurate -->
         <dependency>
@@ -53,6 +56,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.parent.name}-${project.name}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
