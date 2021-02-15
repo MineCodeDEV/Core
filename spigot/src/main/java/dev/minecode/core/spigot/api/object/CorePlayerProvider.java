@@ -110,7 +110,7 @@ public class CorePlayerProvider implements CorePlayer {
     public static int getID(String name) {
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
-                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT ID FROM minecode_players UPPER(NAME) = UPPER('" + name + "')");
+                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT ID FROM minecode_players WHERE UPPER(NAME) = UPPER('" + name + "')");
                 if (resultSet.next())
                     return resultSet.getInt("ID");
             } else
