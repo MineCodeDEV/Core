@@ -210,7 +210,7 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public void makeInstances() {
-        if (!CoreAPI.getInstance().isUsingSQL()) {
+        if (CoreAPI.getInstance().isUsingSQL()) {
             statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
             return;
         }
