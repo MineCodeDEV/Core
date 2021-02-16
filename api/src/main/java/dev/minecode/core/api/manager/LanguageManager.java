@@ -19,7 +19,5 @@ public interface LanguageManager {
 
     List<Object> getList(Language language, LanguageAbstract message);
 
-
-    // spezifischere Methoden
     List<String> getStringList(Language language, LanguageAbstract message);
 }

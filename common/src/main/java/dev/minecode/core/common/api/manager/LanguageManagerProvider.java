@@ -69,8 +69,6 @@ public class LanguageManagerProvider implements LanguageManager {
 
     @Override
     public List<String> getStringList(Language language, LanguageAbstract message) {
-        List<String> stringList = new ArrayList<>();
-        for (Object entry : getList(language, message)) stringList.add(entry.toString());
-        return stringList;
+        return (List<String>) get(language, message);
     }
 }
