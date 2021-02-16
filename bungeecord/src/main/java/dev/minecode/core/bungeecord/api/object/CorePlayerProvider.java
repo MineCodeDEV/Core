@@ -24,8 +24,8 @@ public class CorePlayerProvider implements CorePlayer {
     private static int consoleID = 1;
     private static String consoleName = "CONSOLE";
 
-    private static FileObject fileObject = CoreAPI.getInstance().getFileManager().getPlayers();
-    private static ConfigurationNode conf;
+    private static FileObject dataFileObject = CoreAPI.getInstance().getFileManager().getPlayers();
+    private static ConfigurationNode dataConf;
 
     private int id;
     private UUID uuid;
@@ -36,16 +36,14 @@ public class CorePlayerProvider implements CorePlayer {
     private ResultSet resultSet;
 
     public CorePlayerProvider(int id) {
-        fileObject.reload();
-        conf = fileObject.getConf();
+        makeInstances();
 
         this.id = id;
         load();
     }
 
     public CorePlayerProvider(UUID uuid) {
-        fileObject.reload();
-        conf = fileObject.getConf();
+        makeInstances();
 
         this.id = getID(uuid);
         this.uuid = uuid;
@@ -53,8 +51,7 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public CorePlayerProvider(String name) {
-        fileObject.reload();
-        conf = fileObject.getConf();
+        makeInstances();
 
         this.id = getID(name);
         if (id != 0) {
@@ -80,10 +77,10 @@ public class CorePlayerProvider implements CorePlayer {
                 return true;
             }
 
-            conf.node(String.valueOf(id), "uuid").set(uuid.toString());
-            conf.node(String.valueOf(id), "name").set(name);
-            conf.node(String.valueOf(id), "language").set(isocode);
-            return fileObject.save();
+            dataConf.node(String.valueOf(id), "uuid").set(uuid.toString());
+            dataConf.node(String.valueOf(id), "name").set(name);
+            dataConf.node(String.valueOf(id), "language").set(isocode);
+            return dataFileObject.save();
         } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();
             return false;
@@ -97,7 +94,7 @@ public class CorePlayerProvider implements CorePlayer {
                 if (resultSet.next())
                     return resultSet.getInt("ID");
             } else
-                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet())
+                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : dataConf.childrenMap().entrySet())
                     if (!uuidNode.getValue().empty())
                         if (uuidNode.getValue().node("uuid").getString().equalsIgnoreCase(uuid.toString()))
                             return Integer.parseInt((String) uuidNode.getValue().key());
@@ -114,7 +111,7 @@ public class CorePlayerProvider implements CorePlayer {
                 if (resultSet.next())
                     return resultSet.getInt("ID");
             } else
-                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet())
+                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : dataConf.childrenMap().entrySet())
                     if (!uuidNode.getValue().empty())
                         if (uuidNode.getValue().node("name").getString().equalsIgnoreCase(name))
                             return Integer.parseInt((String) uuidNode.getValue().key());
@@ -131,7 +128,7 @@ public class CorePlayerProvider implements CorePlayer {
                 if (resultSet.next())
                     return UUID.fromString(resultSet.getString("UUID"));
             } else {
-                String temp = conf.node(String.valueOf(id), "name").getString();
+                String temp = dataConf.node(String.valueOf(id), "name").getString();
                 if (temp != null) return UUID.fromString(temp);
             }
         } catch (SQLException throwables) {
@@ -151,7 +148,7 @@ public class CorePlayerProvider implements CorePlayer {
                 if (resultSet.next())
                     return UUID.fromString(resultSet.getString("UUID"));
             } else
-                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet())
+                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : dataConf.childrenMap().entrySet())
                     if (!uuidNode.getValue().empty())
                         if (uuidNode.getValue().node("uuid").getString().equalsIgnoreCase(name))
                             return UUID.fromString(uuidNode.getValue().node("uuid").getString());
@@ -168,7 +165,7 @@ public class CorePlayerProvider implements CorePlayer {
                 if (resultSet.next())
                     return resultSet.getString("NAME");
             } else {
-                String temp = conf.node(String.valueOf(id), "name").getString();
+                String temp = dataConf.node(String.valueOf(id), "name").getString();
                 if (temp != null) return temp;
             }
 
@@ -189,7 +186,7 @@ public class CorePlayerProvider implements CorePlayer {
                 if (resultSet.next())
                     return resultSet.getString("NAME");
             } else {
-                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : fileObject.getConf().childrenMap().entrySet())
+                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : dataConf.childrenMap().entrySet())
                     if (!uuidNode.getValue().empty())
                         if (uuidNode.getValue().node("uuid").getString().equalsIgnoreCase(uuid.toString()))
                             return uuidNode.getValue().node("name").getString();
@@ -212,14 +209,23 @@ public class CorePlayerProvider implements CorePlayer {
         return id;
     }
 
+    public void makeInstances() {
+        if (!CoreAPI.getInstance().isUsingSQL()) {
+            statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
+            return;
+        }
+
+        dataFileObject.reload();
+        dataConf = dataFileObject.getConf();
+    }
+
     public void load() {
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
-                statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
                 resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE ID = " + id + "");
                 exists = resultSet.next();
             } else
-                exists = !conf.node(String.valueOf(id)).empty();
+                exists = !dataConf.node(String.valueOf(id)).empty();
 
             if (!exists) {
                 if (id == consoleID || uuid == consoleUUID || Objects.equals(name, consoleName)) {
@@ -261,9 +267,9 @@ public class CorePlayerProvider implements CorePlayer {
                         return exists;
                     }
                 } else {
-                    uuid = UUID.fromString(Objects.requireNonNull(conf.node(String.valueOf(id), "uuid").getString()));
-                    name = conf.node(String.valueOf(id), "name").getString();
-                    language = CoreAPI.getInstance().getLanguage(conf.node(String.valueOf(id), "language").getString());
+                    uuid = UUID.fromString(Objects.requireNonNull(dataConf.node(String.valueOf(id), "uuid").getString()));
+                    name = dataConf.node(String.valueOf(id), "name").getString();
+                    language = CoreAPI.getInstance().getLanguage(dataConf.node(String.valueOf(id), "language").getString());
                     return true;
 
                 }
@@ -286,10 +292,10 @@ public class CorePlayerProvider implements CorePlayer {
                     resultSet.updateRow();
                     return true;
                 } else {
-                    conf.node(String.valueOf(id), "uuid").set(uuid.toString());
-                    conf.node(String.valueOf(id), "name").set(name);
-                    conf.node(String.valueOf(id), "language").set(language.getIsocode());
-                    fileObject.save();
+                    dataConf.node(String.valueOf(id), "uuid").set(uuid.toString());
+                    dataConf.node(String.valueOf(id), "name").set(name);
+                    dataConf.node(String.valueOf(id), "language").set(language.getIsocode());
+                    dataFileObject.save();
                     return true;
                 }
             } catch (SQLException | SerializationException throwables) {
