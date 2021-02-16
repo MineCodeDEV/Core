@@ -21,44 +21,45 @@ public class LanguageManagerProvider implements LanguageManager {
 
     private void loadMessageFiles() {
         File messsageDirectory = new File("plugins/MineCode/" + CoreAPI.getInstance().getPluginName() + "/message/");
-        if (messsageDirectory.mkdirs()) {
-            for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
-                new LanguageProvider((String) node.getValue().key());
-            }
+        messsageDirectory.mkdirs();
+
+        for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
+            new LanguageProvider((String) node.getValue().key());
         }
     }
 
     @Override
     public Object get(Language language, LanguageAbstract message) {
-        Object object = null;
         if (language == null) language = CoreAPI.getInstance().getDefaultLanguage();
 
         try {
-            object = language.getConfigurationNode().node(message.getPath()).get(Object.class);
+            ConfigurationNode tempNode = language.getConfigurationNode().node(message.getPath());
+            if (!tempNode.empty())
+                return tempNode.get(Object.class);
         } catch (SerializationException e) {
             e.printStackTrace();
         }
-        return object;
+        return null;
     }
 
     @Override
     public String getString(Language language, LanguageAbstract message) {
-        return (String) get(language, message);
+        return String.valueOf(get(language, message));
     }
 
     @Override
     public int getInt(Language language, LanguageAbstract message) {
-        return (int) get(language, message);
+        return Integer.parseInt(String.valueOf(get(language, message)));
     }
 
     @Override
     public boolean getBoolean(Language language, LanguageAbstract message) {
-        return (boolean) get(language, message);
+        return Boolean.parseBoolean(String.valueOf(get(language, message)));
     }
 
     @Override
     public long getLong(Language language, LanguageAbstract message) {
-        return (long) get(language, message);
+        return Long.parseLong(String.valueOf(get(language, message)));
     }
 
     @Override
