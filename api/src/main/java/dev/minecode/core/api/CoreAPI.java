@@ -13,14 +13,14 @@ import java.util.UUID;
 public abstract class CoreAPI {
 
     // Instance
-    private static CoreAPI coreAPI;
+    private static CoreAPI instance;
 
     public static CoreAPI getInstance() {
-        return coreAPI;
+        return instance;
     }
 
     public static void setInstance(CoreAPI coreAPI) {
-        CoreAPI.coreAPI = coreAPI;
+        CoreAPI.instance = coreAPI;
     }
 
     // Manager
