@@ -11,11 +11,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
-import java.util.HashMap;
 
 public class FileObjectProvider implements FileObject {
-
-    private static HashMap<String, FileObject> fileObjects = new HashMap<>();
 
     // directories
     private static String minecodeDirectoryPath = "plugins/MineCode";
@@ -57,10 +54,6 @@ public class FileObjectProvider implements FileObject {
         this.fileStreamPath = pluginName + "/" + fileName;
         this.file = new File(fileDirectoryPath, fileName);
         load();
-    }
-
-    public static HashMap<String, FileObject> getFileObjects() {
-        return fileObjects;
     }
 
     public boolean load() {

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>dev.minecode.core</groupId>
-        <version>0.1.0-Pre.41</version>
+        <version>0.1.0-Pre.43</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,6 +13,13 @@
 
     <name>API</name>
     <url>https://github.com/MineCodeDEV/Core/tree/master/api</url>
+
+    <repositories>
+        <repository>
+            <id>bungeecord-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <!-- Spongepowered Conrigurate -->

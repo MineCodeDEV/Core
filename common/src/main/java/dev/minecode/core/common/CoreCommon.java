@@ -1,14 +1,13 @@
 package dev.minecode.core.common;
 
 import dev.minecode.core.common.api.CoreAPIProvider;
-import dev.minecode.core.common.api.object.CorePlayerAddon;
+import dev.minecode.core.common.api.manager.PlayerManagerProvider;
 import dev.minecode.core.common.util.UUIDFetcher;
 
 public class CoreCommon {
     private static CoreCommon instance;
 
-    private CorePlayerAddon corePlayerAddon;
-
+    private PlayerManagerProvider playerManager;
     private UUIDFetcher uuidFetcher;
 
     private String pluginName;
@@ -30,12 +29,12 @@ public class CoreCommon {
         new CoreAPIProvider();
     }
 
-    public CorePlayerAddon getCorePlayerAddon() {
-        return corePlayerAddon;
+    public PlayerManagerProvider getPlayerManager() {
+        return playerManager;
     }
 
-    public void setCorePlayerAddon(CorePlayerAddon corePlayerAddon) {
-        this.corePlayerAddon = corePlayerAddon;
+    public void setPlayerManager(PlayerManagerProvider playerManager) {
+        this.playerManager = playerManager;
     }
 
     public UUIDFetcher getUuidFetcher() {

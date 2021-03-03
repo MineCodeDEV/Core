@@ -9,17 +9,30 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class LanguageManagerProvider implements LanguageManager {
 
+    private static HashMap<String, LanguageProvider> languages = new HashMap<>();
+
+    private Language defaultLanguage;
+
     public LanguageManagerProvider() {
         loadMessageFiles();
     }
 
+    public static HashMap<String, LanguageProvider> getLanguages() {
+        return languages;
+    }
+
     private void loadMessageFiles() {
-        File messsageDirectory = new File("plugins/MineCode/" + CoreAPI.getInstance().getPluginName() + "/message/");
+        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
+        defaultLanguage = getLanguage(conf.node("language", "default").getString());
+
+        File messsageDirectory = new File("plugins/MineCode/" + CoreAPI.getInstance().getPluginManager().getPluginName() + "/message/");
         messsageDirectory.mkdirs();
 
         for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
@@ -29,7 +42,7 @@ public class LanguageManagerProvider implements LanguageManager {
 
     @Override
     public Object get(Language language, LanguageAbstract message) {
-        if (language == null) language = CoreAPI.getInstance().getDefaultLanguage();
+        if (language == null) language = CoreAPI.getInstance().getLanguageManager().getDefaultLanguage();
 
         try {
             ConfigurationNode tempNode = language.getConfigurationNode().node(message.getPath());
@@ -69,5 +82,22 @@ public class LanguageManagerProvider implements LanguageManager {
     @Override
     public List<String> getStringList(Language language, LanguageAbstract message) {
         return (List<String>) get(language, message);
+    }
+
+    @Override
+    public Language getLanguage(String isocode) {
+        if (languages.containsKey(isocode))
+            return languages.get(isocode);
+        return null;
+    }
+
+    @Override
+    public List<Language> getAllLanguages() {
+        return new ArrayList<>(languages.values());
+    }
+
+    @Override
+    public Language getDefaultLanguage() {
+        return defaultLanguage;
     }
 }

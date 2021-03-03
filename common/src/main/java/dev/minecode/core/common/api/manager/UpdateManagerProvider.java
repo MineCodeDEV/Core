@@ -31,12 +31,12 @@ public class UpdateManagerProvider implements UpdateManager {
     public boolean updateAvailable() {
         String recommendRelease = getMatchingRelease();
         if (recommendRelease != null)
-            return !getMatchingRelease().equals(CoreAPI.getInstance().getPluginVersion());
+            return !getMatchingRelease().equals(CoreAPI.getInstance().getPluginManager().getPluginVersion());
         return false;
     }
 
     public String getMatchingRelease() {
-        if (CoreAPI.getInstance().isUpdatePreReleases())
+        if (updatePreReleases)
             return getLatestRelease();
         return getLatestFullRelease();
     }
@@ -59,6 +59,16 @@ public class UpdateManagerProvider implements UpdateManager {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean isUpdateNotification() {
+        return updateNotification;
+    }
+
+    @Override
+    public boolean isUpdatePreReleases() {
+        return updatePreReleases;
     }
 
     @Override

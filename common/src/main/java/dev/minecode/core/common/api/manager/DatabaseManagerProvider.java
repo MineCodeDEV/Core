@@ -39,6 +39,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
             return true;
         } catch (SQLException throwables) {
             System.out.println("A connection to the SQL database could not be established!");
+            throwables.printStackTrace();
             return false;
         }
     }
@@ -50,9 +51,8 @@ public class DatabaseManagerProvider implements DatabaseManager {
                 connection.close();
                 return true;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return false;
     }
@@ -60,15 +60,15 @@ public class DatabaseManagerProvider implements DatabaseManager {
     public void checkTables() {
         try {
             getStatement().executeUpdate("CREATE TABLE IF NOT EXISTS minecode_players (ID INT, UUID VARCHAR (37), NAME VARCHAR (16), LANGUAGE VARCHAR (5), PRIMARY KEY (ID))");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
     @Override
     public Connection getConnection() {
         try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
+            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
                 if (connection == null || connection.isClosed() || !connection.isValid(2))
                     connect();
             }

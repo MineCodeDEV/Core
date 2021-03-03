@@ -289,14 +289,13 @@ public class CorePlayerProvider implements CorePlayer {
                     resultSet.updateString("NAME", name);
                     resultSet.updateString("LANGUAGE", language.getIsocode());
                     resultSet.updateRow();
-                    return true;
                 } else {
                     dataConf.node(String.valueOf(id), "uuid").set(uuid.toString());
                     dataConf.node(String.valueOf(id), "name").set(name);
                     dataConf.node(String.valueOf(id), "language").set(language.getIsocode());
                     dataFileObject.save();
-                    return true;
                 }
+                return true;
             } catch (SQLException | SerializationException throwables) {
                 throwables.printStackTrace();
                 return false;

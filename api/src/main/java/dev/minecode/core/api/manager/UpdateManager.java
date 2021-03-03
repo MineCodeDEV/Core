@@ -14,4 +14,8 @@ public interface UpdateManager {
 
     String getLatestRelease();
 
+    boolean isUpdateNotification();
+
+    boolean isUpdatePreReleases();
+
 }

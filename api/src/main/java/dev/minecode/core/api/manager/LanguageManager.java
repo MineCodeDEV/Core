@@ -20,4 +20,10 @@ public interface LanguageManager {
     List<Object> getList(Language language, LanguageAbstract message);
 
     List<String> getStringList(Language language, LanguageAbstract message);
+
+    Language getLanguage(String isocode);
+
+    List<Language> getAllLanguages();
+
+    Language getDefaultLanguage();
 }

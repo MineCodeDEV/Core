@@ -2,7 +2,7 @@ package dev.minecode.core.spigot;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.common.CoreCommon;
-import dev.minecode.core.spigot.object.CorePlayerAddonProvider;
+import dev.minecode.core.spigot.manager.PlayerManagerProviderAddon;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CoreSpigot {

@@ -10,4 +10,7 @@ public interface FileManager {
 
     FileObject getConfig();
 
+    FileObject getFileObject(String fileName, String pluginName);
+
+    FileObject getFileObject(String fileName, String pluginName, String... folders);
 }
