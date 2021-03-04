@@ -346,12 +346,17 @@ public class CorePlayerProvider implements CorePlayer {
 
     @Override
     public Language getLanguage() {
-        return language;
+        return language == null ? language : CoreAPI.getInstance().getLanguageManager().getDefaultLanguage();
     }
 
     @Override
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    @Override
+    public boolean isLanguageEmpty() {
+        return language == null;
     }
 
     @Override

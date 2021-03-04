@@ -24,6 +24,8 @@ public interface CorePlayer {
 
     void setLanguage(Language language);
 
+    boolean isLanguageEmpty();
+
     boolean isExists();
 
 }
