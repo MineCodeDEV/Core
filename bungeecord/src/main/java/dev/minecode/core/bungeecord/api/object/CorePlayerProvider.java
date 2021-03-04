@@ -288,7 +288,7 @@ public class CorePlayerProvider implements CorePlayer {
                 if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
                     resultSet.updateString("UUID", uuid.toString());
                     resultSet.updateString("NAME", name);
-                    resultSet.updateString("LANGUAGE", language.getIsocode() != null ? language.getIsocode() : null);
+                    resultSet.updateString("LANGUAGE", language != null ? language.getIsocode() : null);
                     resultSet.updateRow();
                 } else {
                     dataConf.node(String.valueOf(id), "uuid").set(uuid.toString());
@@ -346,7 +346,7 @@ public class CorePlayerProvider implements CorePlayer {
 
     @Override
     public Language getLanguage() {
-        return language == null ? language : CoreAPI.getInstance().getLanguageManager().getDefaultLanguage();
+        return language != null ? language : CoreAPI.getInstance().getLanguageManager().getDefaultLanguage();
     }
 
     @Override
