@@ -7,7 +7,7 @@ import dev.minecode.core.common.util.UUIDFetcher;
 public class CoreCommon {
     private static CoreCommon instance;
 
-    private PlayerManagerProvider playerManager;
+    private PlayerManagerProvider playerManagerProvider;
     private UUIDFetcher uuidFetcher;
 
     private String pluginName;
@@ -29,12 +29,12 @@ public class CoreCommon {
         new CoreAPIProvider();
     }
 
-    public PlayerManagerProvider getPlayerManager() {
-        return playerManager;
+    public PlayerManagerProvider getPlayerManagerProvider() {
+        return playerManagerProvider;
     }
 
-    public void setPlayerManager(PlayerManagerProvider playerManager) {
-        this.playerManager = playerManager;
+    public void setPlayerManagerProvider(PlayerManagerProvider playerManagerProvider) {
+        this.playerManagerProvider = playerManagerProvider;
     }
 
     public UUIDFetcher getUuidFetcher() {

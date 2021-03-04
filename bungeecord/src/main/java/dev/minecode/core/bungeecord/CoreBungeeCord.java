@@ -22,7 +22,7 @@ public class CoreBungeeCord {
     private void makeInstances() {
         instance = this;
         new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
-        CoreCommon.getInstance().setPlayerManager(new PlayerManagerProviderAddon());
+        CoreCommon.getInstance().setPlayerManagerProvider(new PlayerManagerProviderAddon());
         CoreAPI.getInstance().getPlayerManager().getCorePlayer(1); //CONSOLE
     }
 

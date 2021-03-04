@@ -13,7 +13,6 @@ public class CoreAPIProvider extends CoreAPI {
     private DatabaseManagerProvider databaseManagerProvider;
     private FileManagerProvider fileManagerProvider;
     private LanguageManagerProvider languageManagerProvider;
-    private PlayerManagerProvider playerManagerProvider;
     private PluginManagerProvider pluginManagerProvider;
     private UpdateManagerProvider updateManagerProvider;
 
@@ -24,12 +23,7 @@ public class CoreAPIProvider extends CoreAPI {
     private void makeInstances() {
         CoreAPI.setInstance(this);
         fileManagerProvider = new FileManagerProvider();
-
-        ConfigurationNode conf = fileManagerProvider.getConfig().getConf();
-        usingSQL = conf.node("database", "enable").getBoolean();
-        updateNotification = conf.node("update", "notification").getBoolean();
-        updatePreReleases = conf.node("update", "prereleases").getBoolean();
-
+        pluginManagerProvider = new PluginManagerProvider(); // requires FileManager
         databaseManagerProvider = new DatabaseManagerProvider(); // requires FileManager & PluginManager
         languageManagerProvider = new LanguageManagerProvider(); // requires FileManager & PluginManager
         updateManagerProvider = new UpdateManagerProvider(); // requires FileManager

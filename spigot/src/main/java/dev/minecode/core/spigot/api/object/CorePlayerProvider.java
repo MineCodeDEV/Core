@@ -228,6 +228,7 @@ public class CorePlayerProvider implements CorePlayer {
                 exists = !dataConf.node(String.valueOf(id)).empty();
 
             if (!exists) {
+                System.out.println(1);
                 if (id == consoleID || uuid == consoleUUID || Objects.equals(name, consoleName)) {
                     id = consoleID;
                     uuid = consoleUUID;
@@ -287,12 +288,12 @@ public class CorePlayerProvider implements CorePlayer {
                 if (CoreAPI.getInstance().isUsingSQL()) {
                     resultSet.updateString("UUID", uuid.toString());
                     resultSet.updateString("NAME", name);
-                    resultSet.updateString("LANGUAGE", language.getIsocode());
+                    resultSet.updateString("LANGUAGE", language.getIsocode() != null ? language.getIsocode() : null);
                     resultSet.updateRow();
                 } else {
                     dataConf.node(String.valueOf(id), "uuid").set(uuid.toString());
                     dataConf.node(String.valueOf(id), "name").set(name);
-                    dataConf.node(String.valueOf(id), "language").set(language.getIsocode());
+                    dataConf.node(String.valueOf(id), "language").set(language != null ? language.getIsocode() : null);
                     dataFileObject.save();
                 }
                 return true;
