@@ -29,15 +29,15 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     private void loadMessageFiles() {
-        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
-        defaultLanguage = getLanguage(conf.node("language", "default").getString());
-
         File messsageDirectory = new File("plugins/MineCode/" + CoreAPI.getInstance().getPluginManager().getPluginName() + "/message/");
         messsageDirectory.mkdirs();
 
         for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
             new LanguageProvider((String) node.getValue().key());
         }
+
+        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
+        defaultLanguage = getLanguage(conf.node("language", "default").getString());
     }
 
     @Override
