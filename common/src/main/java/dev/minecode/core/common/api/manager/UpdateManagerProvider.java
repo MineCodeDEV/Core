@@ -17,7 +17,15 @@ public class UpdateManagerProvider implements UpdateManager {
     private GsonConfigurationLoader loader;
     private ConfigurationNode conf;
 
+    private boolean updateNotification,
+            updatePreReleases;
+
+
     public UpdateManagerProvider() {
+        makeInstances();
+    }
+
+    private void makeInstances() {
         try {
             url = new URL("https://api.github.com/repos/MineCodeDEV/" + CoreCommon.getInstance().getPluginName() + "/releases");
             loader = GsonConfigurationLoader.builder().url(url).build();
@@ -25,6 +33,9 @@ public class UpdateManagerProvider implements UpdateManager {
         } catch (ConfigurateException | MalformedURLException e) {
             e.printStackTrace();
         }
+
+        updateNotification = CoreAPI.getInstance().getFileManager().getConfig().getConf().node("update", "notification").getBoolean();
+        updatePreReleases = CoreAPI.getInstance().getFileManager().getConfig().getConf().node("update", "prereleases").getBoolean();
     }
 
     @Override

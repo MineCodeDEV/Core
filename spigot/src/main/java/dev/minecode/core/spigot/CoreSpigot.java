@@ -23,12 +23,12 @@ public class CoreSpigot {
     private void makeInstances() {
         instance = this;
         new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
-        CoreCommon.getInstance().setCorePlayerAddon(new CorePlayerAddonProvider());
-        CoreAPI.getInstance().getCorePlayer(1); // Console
+        CoreCommon.getInstance().setPlayerManagerProvider(new PlayerManagerProviderAddon());
+        CorePlayer player = CoreAPI.getInstance().getPlayerManager().getCorePlayer(1); // Console
     }
 
     public void onDisable() {
-        if (CoreAPI.getInstance().isUsingSQL())
+        if (CoreAPI.getInstance().getPluginManager().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
     }
 

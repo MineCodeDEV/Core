@@ -47,6 +47,16 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
+    public PlayerManagerProvider getPlayerManager() {
+        return CoreCommon.getInstance().getPlayerManagerProvider();
+    }
+
+    @Override
+    public PluginManagerProvider getPluginManager() {
+        return pluginManagerProvider;
+    }
+
+    @Override
     public ReplaceManager getReplaceManager(String message) {
         return new ReplaceManagerProvider(message);
     }
