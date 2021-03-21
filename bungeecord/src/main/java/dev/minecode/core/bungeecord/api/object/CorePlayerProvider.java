@@ -228,7 +228,6 @@ public class CorePlayerProvider implements CorePlayer {
                 exists = !dataConf.node(String.valueOf(id)).empty();
 
             if (!exists) {
-                System.out.println(1);
                 if (id == consoleID || uuid == consoleUUID || Objects.equals(name, consoleName)) {
                     id = consoleID;
                     uuid = consoleUUID;
