@@ -18,25 +18,24 @@ public class LanguageManagerProvider implements LanguageManager {
 
     private static final ArrayList<LanguageProvider> languages = new ArrayList<>();
 
-    private String defaultLanguageIsocode;
+    private final String defaultLanguageIsocode;
 
     public LanguageManagerProvider() {
+        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
+        defaultLanguageIsocode = conf.node("language", "default").getString();
     }
 
     public static ArrayList<LanguageProvider> getLanguages() {
         return languages;
     }
 
-    public void loadMessageFiles(CorePlugin corePlugin) {
+    public static void loadMessageFiles(CorePlugin corePlugin) {
         File messsageDirectory = new File("plugins/MineCode/" + corePlugin.getName() + "/message/");
         messsageDirectory.mkdirs();
 
         for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
             new LanguageProvider(corePlugin, (String) node.getValue().key());
         }
-
-        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
-        defaultLanguageIsocode = conf.node("language", "default").getString();
     }
 
     @Override

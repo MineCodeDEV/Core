@@ -16,8 +16,12 @@ public class CoreCommon {
     }
 
     public static CoreCommon getInstance() {
-        if (instance == null)
+        System.out.println(1);
+        if (instance == null) {
+            System.out.println(2);
             new CoreCommon();
+        }
+        System.out.println(3);
         return instance;
     }
 

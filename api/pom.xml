@@ -22,7 +22,7 @@
     </repositories>
 
     <dependencies>
-        <!-- Spongepowered Conrigurate -->
+        <!-- Spongepowered Configurate -->
         <dependency>
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-yaml</artifactId>

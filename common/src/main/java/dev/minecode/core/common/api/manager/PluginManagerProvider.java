@@ -2,7 +2,6 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.manager.PluginManager;
 import dev.minecode.core.api.object.CorePlugin;
-import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.common.api.object.CorePluginProvider;
 
 import java.util.ArrayList;
@@ -32,11 +31,11 @@ public class PluginManagerProvider implements PluginManager {
     public CorePlugin registerPlugin(String name, String version, Class mainClass) {
         CorePlugin corePlugin = new CorePluginProvider(name, version, mainClass);
         if (!plugins.add(corePlugin)) return null;
-        CoreCommon.getInstance().getCoreAPIProvider().getLanguageManagerProvider().loadMessageFiles(corePlugin);
+        LanguageManagerProvider.loadMessageFiles(corePlugin);
 
-        UpdateManagerProvider updateManagerProvider = new UpdateManagerProvider(corePlugin);
+        new UpdateManagerProvider(corePlugin);
 
-        return null;
+        return corePlugin;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class LanguageProvider implements Language {
         this.isocode = isocode;
 
         ConfigurationNode configNode = CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages", this.isocode);
-        this.fileObject = CoreAPI.getInstance().getFileManager().getFileObject(CoreAPI.getInstance().getThisCorePlugin(), isocode + ".yml", "message");
+        this.fileObject = CoreAPI.getInstance().getFileManager().getFileObject(corePlugin, isocode + ".yml", "message");
         this.configurationNode = fileObject.getConf();
 
         this.name = configNode.node("name").getString();

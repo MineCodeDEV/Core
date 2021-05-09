@@ -1,9 +1,9 @@
 package dev.minecode.core.common.api.manager;
 
-import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.FileManager;
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
+import dev.minecode.core.common.api.object.CorePluginProvider;
 import dev.minecode.core.common.api.object.FileObjectProvider;
 
 import java.util.Arrays;
@@ -21,14 +21,14 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void makeInstances() {
-        config = getFileObject(CoreAPI.getInstance().getThisCorePlugin(), "config.yml");
-        players = getFileObject(CoreAPI.getInstance().getThisCorePlugin(), "players.yml");
+        CorePluginProvider tempCorePlugin = new CorePluginProvider("Core", "1.0.0", null);
+        config = getFileObject(tempCorePlugin, "config.yml");
+        players = getFileObject(tempCorePlugin, "players.yml");
     }
 
     @Override
     public boolean saveDatas() {
-        boolean saved = players.save();
-        return saved;
+        return players.save();
     }
 
     @Override
