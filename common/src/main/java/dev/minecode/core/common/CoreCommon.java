@@ -16,9 +16,7 @@ public class CoreCommon {
     }
 
     public static CoreCommon getInstance() {
-        if (instance == null) {
-            new CoreCommon();
-        }
+        if (instance == null) new CoreCommon();
         return instance;
     }
 
