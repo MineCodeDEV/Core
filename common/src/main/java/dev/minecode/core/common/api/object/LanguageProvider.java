@@ -17,11 +17,10 @@ public class LanguageProvider implements Language {
     private final String name;
     private final String displayname;
     private final int slot;
-    private List<String> lore;
     private final String texture;
-
     private final FileObject fileObject;
     private final ConfigurationNode configurationNode;
+    private List<String> lore;
 
     public LanguageProvider(CorePlugin corePlugin, String isocode) {
         LanguageManagerProvider.getLanguages().add(this);
