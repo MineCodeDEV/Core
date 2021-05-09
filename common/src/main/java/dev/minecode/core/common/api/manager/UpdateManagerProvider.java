@@ -2,16 +2,21 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.UpdateManager;
-import dev.minecode.core.common.CoreCommon;
+import dev.minecode.core.api.object.CorePlugin;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateManagerProvider implements UpdateManager {
+
+    private static final HashMap<CorePlugin, UpdateManagerProvider> updateManagerProviders = new HashMap<>();
+
+    private final CorePlugin corePlugin;
 
     private URL url;
     private GsonConfigurationLoader loader;
@@ -21,13 +26,19 @@ public class UpdateManagerProvider implements UpdateManager {
             updatePreReleases;
 
 
-    public UpdateManagerProvider() {
+    public UpdateManagerProvider(CorePlugin corePlugin) {
+        this.corePlugin = corePlugin;
+        updateManagerProviders.put(corePlugin, this);
         makeInstances();
+    }
+
+    public static HashMap<CorePlugin, UpdateManagerProvider> getUpdateManagerProviders() {
+        return updateManagerProviders;
     }
 
     private void makeInstances() {
         try {
-            url = new URL("https://api.github.com/repos/MineCodeDEV/" + CoreCommon.getInstance().getPluginName() + "/releases");
+            url = new URL("https://api.github.com/repos/MineCodeDEV/" + corePlugin.getName() + "/releases");
             loader = GsonConfigurationLoader.builder().url(url).build();
             conf = loader.load();
         } catch (ConfigurateException | MalformedURLException e) {
@@ -42,7 +53,7 @@ public class UpdateManagerProvider implements UpdateManager {
     public boolean updateAvailable() {
         String recommendRelease = getMatchingRelease();
         if (recommendRelease != null)
-            return !getMatchingRelease().equals(CoreAPI.getInstance().getPluginManager().getPluginVersion());
+            return !getMatchingRelease().equals(corePlugin.getVersion());
         return false;
     }
 

@@ -8,10 +8,6 @@ public interface CorePlayer {
 
     boolean save();
 
-    int getID();
-
-    boolean setID(int id);
-
     UUID getUuid();
 
     boolean setUuid(UUID uuid);
@@ -20,9 +16,13 @@ public interface CorePlayer {
 
     boolean setName(String name);
 
-    Language getLanguage();
+    Language getLanguage(CorePlugin corePlugin);
+
+    String getLanguageIsoCode();
 
     void setLanguage(Language language);
+
+    void setLanguage(String isocode);
 
     boolean isLanguageEmpty();
 

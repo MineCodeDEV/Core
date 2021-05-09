@@ -1,39 +1,51 @@
 package dev.minecode.core.common.api.manager;
 
-import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.PluginManager;
+import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.common.CoreCommon;
-import org.spongepowered.configurate.ConfigurationNode;
+import dev.minecode.core.common.api.object.CorePluginProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PluginManagerProvider implements PluginManager {
 
-    private String pluginName, pluginVersion;
-    private boolean usingSQL;
+    private ArrayList<CorePlugin> plugins;
 
     public PluginManagerProvider() {
         makeInstances();
     }
 
     private void makeInstances() {
-        pluginName = CoreCommon.getInstance().getPluginName();
-        pluginVersion = CoreCommon.getInstance().getPluginVersion();
-
-        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
-        usingSQL = conf.node("database", "enable").getBoolean();
+        plugins = new ArrayList<>();
     }
 
     @Override
-    public String getPluginName() {
-        return pluginName;
+    public CorePlugin getPlugin(String name) {
+        for (CorePlugin corePlugin : plugins)
+            if (corePlugin.getName().equals(name))
+                return corePlugin;
+        return null;
     }
 
     @Override
-    public String getPluginVersion() {
-        return pluginVersion;
+    public CorePlugin registerPlugin(String name, String version, Class mainClass) {
+        CorePlugin corePlugin = new CorePluginProvider(name, version, mainClass);
+        if (!plugins.add(corePlugin)) return null;
+        CoreCommon.getInstance().getCoreAPIProvider().getLanguageManagerProvider().loadMessageFiles(corePlugin);
+
+        UpdateManagerProvider updateManagerProvider = new UpdateManagerProvider(corePlugin);
+
+        return null;
     }
 
     @Override
-    public boolean isUsingSQL() {
-        return usingSQL;
+    public boolean unregisterPlugin(CorePlugin corePlugin) {
+        return plugins.remove(corePlugin);
+    }
+
+    @Override
+    public List<CorePlugin> getPlugins() {
+        return plugins;
     }
 }

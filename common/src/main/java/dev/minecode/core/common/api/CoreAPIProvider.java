@@ -2,6 +2,7 @@ package dev.minecode.core.common.api;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.*;
+import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import dev.minecode.core.common.CoreCommon;
@@ -14,7 +15,9 @@ public class CoreAPIProvider extends CoreAPI {
     private FileManagerProvider fileManagerProvider;
     private LanguageManagerProvider languageManagerProvider;
     private PluginManagerProvider pluginManagerProvider;
-    private UpdateManagerProvider updateManagerProvider;
+
+    private CorePlugin thisCorePlugin;
+    private boolean usingSQL;
 
     public CoreAPIProvider() {
         makeInstances();
@@ -24,9 +27,12 @@ public class CoreAPIProvider extends CoreAPI {
         CoreAPI.setInstance(this);
         fileManagerProvider = new FileManagerProvider();
         pluginManagerProvider = new PluginManagerProvider(); // requires FileManager
-        databaseManagerProvider = new DatabaseManagerProvider(); // requires FileManager & PluginManager
         languageManagerProvider = new LanguageManagerProvider(); // requires FileManager & PluginManager
-        updateManagerProvider = new UpdateManagerProvider(); // requires FileManager
+
+        thisCorePlugin = pluginManagerProvider.registerPlugin("Core", "1.0.0", CoreCommon.class);
+        usingSQL = fileManagerProvider.getConfig().getConf().node("database", "enable").getBoolean();
+
+        databaseManagerProvider = new DatabaseManagerProvider(); // requires FileManager & PluginManager & usinSQL
     }
 
 
@@ -43,6 +49,10 @@ public class CoreAPIProvider extends CoreAPI {
 
     @Override
     public LanguageManager getLanguageManager() {
+        return languageManagerProvider;
+    }
+
+    public LanguageManagerProvider getLanguageManagerProvider() {
         return languageManagerProvider;
     }
 
@@ -72,7 +82,19 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public UpdateManager getUpdateManager() {
-        return updateManagerProvider;
+    public UpdateManager getUpdateManager(CorePlugin corePlugin) {
+        if (UpdateManagerProvider.getUpdateManagerProviders().containsKey(corePlugin))
+            return UpdateManagerProvider.getUpdateManagerProviders().get(corePlugin);
+        return null;
+    }
+
+    @Override
+    public CorePlugin getThisCorePlugin() {
+        return thisCorePlugin;
+    }
+
+    @Override
+    public boolean isUsingSQL() {
+        return false;
     }
 }

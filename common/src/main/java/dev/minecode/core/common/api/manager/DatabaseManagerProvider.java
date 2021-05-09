@@ -9,14 +9,13 @@ import java.sql.*;
 public class DatabaseManagerProvider implements DatabaseManager {
 
     private Connection connection;
-    private boolean sql;
     private String host, database, username, password;
     private int port;
     private Statement statement;
 
     public DatabaseManagerProvider() {
         setData();
-        if (sql) {
+        if (CoreAPI.getInstance().isUsingSQL()) {
             connect();
             checkTables();
         }
@@ -24,7 +23,6 @@ public class DatabaseManagerProvider implements DatabaseManager {
 
     private void setData() {
         ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
-        sql = conf.node("database", "enable").getBoolean();
         host = conf.node("database", "host").getString();
         port = conf.node("database", "port").getInt();
         database = conf.node("database", "database").getString();
@@ -49,6 +47,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
         try {
             if (connection != null || !connection.isClosed() || connection.isValid(2)) {
                 connection.close();
+                connection = null;
                 return true;
             }
         } catch (SQLException throwables) {
@@ -68,7 +67,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
     @Override
     public Connection getConnection() {
         try {
-            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
+            if (CoreAPI.getInstance().isUsingSQL()) {
                 if (connection == null || connection.isClosed() || !connection.isValid(2))
                     connect();
             }

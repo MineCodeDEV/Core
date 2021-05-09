@@ -1,6 +1,7 @@
 package dev.minecode.core.common.api.object;
 
 import dev.minecode.core.api.CoreAPI;
+import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.common.api.manager.LanguageManagerProvider;
@@ -11,22 +12,24 @@ import java.util.List;
 
 public class LanguageProvider implements Language {
 
-    private String isocode;
-    private String name;
-    private String displayname;
-    private int slot;
+    private final CorePlugin corePlugin;
+    private final String isocode;
+    private final String name;
+    private final String displayname;
+    private final int slot;
     private List<String> lore;
-    private String texture;
+    private final String texture;
 
-    private FileObject fileObject;
-    private ConfigurationNode configurationNode;
+    private final FileObject fileObject;
+    private final ConfigurationNode configurationNode;
 
-    public LanguageProvider(String isocode) {
-        LanguageManagerProvider.getLanguages().put(isocode, this);
+    public LanguageProvider(CorePlugin corePlugin, String isocode) {
+        LanguageManagerProvider.getLanguages().add(this);
+        this.corePlugin = corePlugin;
         this.isocode = isocode;
 
         ConfigurationNode configNode = CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages", this.isocode);
-        this.fileObject = CoreAPI.getInstance().getFileManager().getFileObject(isocode + ".yml", CoreAPI.getInstance().getPluginManager().getPluginName(), "message");
+        this.fileObject = CoreAPI.getInstance().getFileManager().getFileObject(CoreAPI.getInstance().getThisCorePlugin(), isocode + ".yml", "message");
         this.configurationNode = fileObject.getConf();
 
         this.name = configNode.node("name").getString();
@@ -37,6 +40,11 @@ public class LanguageProvider implements Language {
         } catch (SerializationException ignored) {
         }
         this.texture = configNode.node("texture").getString();
+    }
+
+    @Override
+    public CorePlugin getPlugin() {
+        return corePlugin;
     }
 
     @Override

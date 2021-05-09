@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface Language {
 
+    CorePlugin getPlugin();
+
     String getIsocode();
 
     String getName();

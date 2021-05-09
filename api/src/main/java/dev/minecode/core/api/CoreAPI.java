@@ -1,6 +1,7 @@
 package dev.minecode.core.api;
 
 import dev.minecode.core.api.manager.*;
+import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -35,5 +36,10 @@ public abstract class CoreAPI {
 
     public abstract ReplaceManager getReplaceManager(Language language, LanguageAbstract path);
 
-    public abstract UpdateManager getUpdateManager();
+    public abstract UpdateManager getUpdateManager(CorePlugin corePlugin);
+
+    // Getter & Setter
+    public abstract CorePlugin getThisCorePlugin();
+
+    public abstract boolean isUsingSQL();
 }

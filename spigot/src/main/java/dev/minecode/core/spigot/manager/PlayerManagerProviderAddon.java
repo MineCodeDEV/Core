@@ -8,17 +8,12 @@ import java.util.UUID;
 
 public class PlayerManagerProviderAddon extends PlayerManagerProvider {
     @Override
-    public CorePlayer newCorePlayer(int id) {
-        return new CorePlayerProvider(id);
-    }
-
-    @Override
-    public CorePlayer newCorePlayer(UUID uuid) {
+    public CorePlayer newPlayer(UUID uuid) {
         return new CorePlayerProvider(uuid);
     }
 
     @Override
-    public CorePlayer newCorePlayer(String name) {
+    public CorePlayer newPlayer(String name) {
         return new CorePlayerProvider(name);
     }
 }

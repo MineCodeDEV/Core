@@ -8,7 +8,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 public class CoreBungeeCord {
     private static CoreBungeeCord instance;
 
-    private Plugin mainClass;
+    private final Plugin mainClass;
 
     public CoreBungeeCord(Plugin mainClass) {
         this.mainClass = mainClass;
@@ -21,14 +21,13 @@ public class CoreBungeeCord {
 
     private void makeInstances() {
         instance = this;
-        new CoreCommon(mainClass.getDescription().getName(), mainClass.getDescription().getVersion());
         CoreCommon.getInstance().setPlayerManagerProvider(new PlayerManagerProviderAddon());
-        CoreAPI.getInstance().getPlayerManager().getCorePlayer(1); //CONSOLE
     }
 
     public void onDisable() {
-        if (CoreAPI.getInstance().getPluginManager().isUsingSQL())
+        if (CoreAPI.getInstance().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
+        CoreAPI.getInstance().getFileManager().saveDatas();
     }
 
     public Plugin getMainClass() {

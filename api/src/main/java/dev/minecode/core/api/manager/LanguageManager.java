@@ -1,5 +1,6 @@
 package dev.minecode.core.api.manager;
 
+import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 
@@ -21,9 +22,13 @@ public interface LanguageManager {
 
     List<String> getStringList(Language language, LanguageAbstract message);
 
-    Language getLanguage(String isocode);
+    Language getLanguage(CorePlugin corePlugin, String isocode);
 
-    List<Language> getAllLanguages();
+    List<Language> getAllLanguages(CorePlugin corePlugin);
 
-    Language getDefaultLanguage();
+    List<String> getAllLanguageIsocodes(CorePlugin corePlugin);
+
+    Language getDefaultLanguage(CorePlugin corePlugin);
+
+    String getDefaultLanguageIsocode();
 }

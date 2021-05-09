@@ -6,9 +6,10 @@ import dev.minecode.core.api.object.CorePlayer;
 import java.util.UUID;
 
 public abstract class PlayerManagerProvider implements PlayerManager {
+
     @Override
-    public CorePlayer getCorePlayer(int id) {
-        CorePlayer corePlayer = newCorePlayer(id);
+    public CorePlayer getPlayer(UUID uuid) {
+        CorePlayer corePlayer = newPlayer(uuid);
         if (corePlayer.isExists()) {
             return corePlayer;
         }
@@ -16,26 +17,15 @@ public abstract class PlayerManagerProvider implements PlayerManager {
     }
 
     @Override
-    public CorePlayer getCorePlayer(UUID uuid) {
-        CorePlayer corePlayer = newCorePlayer(uuid);
+    public CorePlayer getPlayer(String name) {
+        CorePlayer corePlayer = newPlayer(name);
         if (corePlayer.isExists()) {
             return corePlayer;
         }
         return null;
     }
 
-    @Override
-    public CorePlayer getCorePlayer(String name) {
-        CorePlayer corePlayer = newCorePlayer(name);
-        if (corePlayer.isExists()) {
-            return corePlayer;
-        }
-        return null;
-    }
+    public abstract CorePlayer newPlayer(UUID uuid);
 
-    public abstract CorePlayer newCorePlayer(int id);
-
-    public abstract CorePlayer newCorePlayer(UUID uuid);
-
-    public abstract CorePlayer newCorePlayer(String name);
+    public abstract CorePlayer newPlayer(String name);
 }

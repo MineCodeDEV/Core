@@ -6,10 +6,8 @@ import java.util.UUID;
 
 public interface PlayerManager {
 
-    CorePlayer getCorePlayer(int id);
+    CorePlayer getPlayer(UUID uuid);
 
-    CorePlayer getCorePlayer(UUID uuid);
-
-    CorePlayer getCorePlayer(String name);
+    CorePlayer getPlayer(String name);
 
 }

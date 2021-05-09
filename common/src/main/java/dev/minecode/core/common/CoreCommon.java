@@ -9,24 +9,22 @@ public class CoreCommon {
 
     private PlayerManagerProvider playerManagerProvider;
     private UUIDFetcher uuidFetcher;
+    private CoreAPIProvider coreAPIProvider;
 
-    private String pluginName;
-    private String pluginVersion;
-
-    public CoreCommon(String pluginName, String pluginVersion) {
-        this.pluginName = pluginName;
-        this.pluginVersion = pluginVersion;
+    public CoreCommon() {
         makeInstances();
     }
 
     public static CoreCommon getInstance() {
+        if (instance == null)
+            new CoreCommon();
         return instance;
     }
 
     private void makeInstances() {
         instance = this;
         uuidFetcher = new UUIDFetcher();
-        new CoreAPIProvider();
+        coreAPIProvider = new CoreAPIProvider();
     }
 
     public PlayerManagerProvider getPlayerManagerProvider() {
@@ -41,11 +39,7 @@ public class CoreCommon {
         return uuidFetcher;
     }
 
-    public String getPluginName() {
-        return pluginName;
-    }
-
-    public String getPluginVersion() {
-        return pluginVersion;
+    public CoreAPIProvider getCoreAPIProvider() {
+        return coreAPIProvider;
     }
 }

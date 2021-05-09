@@ -1,11 +1,17 @@
 package dev.minecode.core.api.manager;
 
+import dev.minecode.core.api.object.CorePlugin;
+
+import java.util.List;
+
 public interface PluginManager {
 
-    String getPluginName();
+    CorePlugin getPlugin(String name);
 
-    String getPluginVersion();
+    CorePlugin registerPlugin(String name, String version, Class mainClass);
 
-    boolean isUsingSQL();
+    boolean unregisterPlugin(CorePlugin corePlugin);
+
+    List<CorePlugin> getPlugins();
 
 }

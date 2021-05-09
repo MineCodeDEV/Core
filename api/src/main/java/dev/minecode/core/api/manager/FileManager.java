@@ -1,5 +1,6 @@
 package dev.minecode.core.api.manager;
 
+import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
 
 public interface FileManager {
@@ -10,7 +11,7 @@ public interface FileManager {
 
     FileObject getConfig();
 
-    FileObject getFileObject(String fileName, String pluginName);
+    FileObject getFileObject(CorePlugin corePlugin, String fileName);
 
-    FileObject getFileObject(String fileName, String pluginName, String... folders);
+    FileObject getFileObject(CorePlugin corePlugin, String fileName, String... folders);
 }

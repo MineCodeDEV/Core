@@ -1,5 +1,6 @@
 package dev.minecode.core.common.api.object;
 
+import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
@@ -15,14 +16,14 @@ import java.nio.file.Files;
 public class FileObjectProvider implements FileObject {
 
     // directories
-    private static String minecodeDirectoryPath = "plugins/MineCode";
-    private String pluginDirectoryPath;
-    private String fileDirectoryPath;
+    private static final String minecodeDirectoryPath = "plugins/MineCode";
+    private final String pluginDirectoryPath;
+    private final String fileDirectoryPath;
 
     // file
-    private String fileName;
-    private String fileStreamPath;
-    private File file;
+    private final String fileName;
+    private final String fileStreamPath;
+    private final File file;
 
     // Configurate
     private YamlConfigurationLoader loader;
@@ -31,8 +32,8 @@ public class FileObjectProvider implements FileObject {
     // other
     private boolean stream;
 
-    public FileObjectProvider(String fileName, String pluginName, String... folders) {
-        this.pluginDirectoryPath = minecodeDirectoryPath + "/" + pluginName;
+    public FileObjectProvider(CorePlugin corePlugin, String fileName, String... folders) {
+        this.pluginDirectoryPath = minecodeDirectoryPath + "/" + corePlugin.getName();
         this.fileName = fileName;
 
         StringBuilder foldersStringBuilder = new StringBuilder();
@@ -40,18 +41,18 @@ public class FileObjectProvider implements FileObject {
             foldersStringBuilder.append(temp).append("/");
         }
 
-        this.fileDirectoryPath = pluginDirectoryPath + "/" + foldersStringBuilder.toString();
-        this.fileStreamPath = pluginName + "/" + foldersStringBuilder.toString() + fileName;
+        this.fileDirectoryPath = pluginDirectoryPath + "/" + foldersStringBuilder;
+        this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName;
         this.file = new File(fileDirectoryPath, fileName);
         load();
     }
 
-    public FileObjectProvider(String fileName, String pluginName) {
-        this.pluginDirectoryPath = minecodeDirectoryPath + "/" + pluginName;
+    public FileObjectProvider(CorePlugin corePlugin, String fileName) {
+        this.pluginDirectoryPath = minecodeDirectoryPath + "/" + corePlugin.getName();
         this.fileName = fileName;
 
         this.fileDirectoryPath = pluginDirectoryPath;
-        this.fileStreamPath = pluginName + "/" + fileName;
+        this.fileStreamPath = corePlugin.getName() + "/" + fileName;
         this.file = new File(fileDirectoryPath, fileName);
         load();
     }

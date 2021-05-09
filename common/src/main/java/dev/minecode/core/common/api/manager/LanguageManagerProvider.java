@@ -2,6 +2,7 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.LanguageManager;
+import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import dev.minecode.core.common.api.object.LanguageProvider;
@@ -10,39 +11,38 @@ import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class LanguageManagerProvider implements LanguageManager {
 
-    private static HashMap<String, LanguageProvider> languages = new HashMap<>();
+    private static final ArrayList<LanguageProvider> languages = new ArrayList<>();
 
-    private Language defaultLanguage;
+    private String defaultLanguageIsocode;
 
     public LanguageManagerProvider() {
-        loadMessageFiles();
     }
 
-    public static HashMap<String, LanguageProvider> getLanguages() {
+    public static ArrayList<LanguageProvider> getLanguages() {
         return languages;
     }
 
-    private void loadMessageFiles() {
-        File messsageDirectory = new File("plugins/MineCode/" + CoreAPI.getInstance().getPluginManager().getPluginName() + "/message/");
+    public void loadMessageFiles(CorePlugin corePlugin) {
+        File messsageDirectory = new File("plugins/MineCode/" + corePlugin.getName() + "/message/");
         messsageDirectory.mkdirs();
 
         for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
-            new LanguageProvider((String) node.getValue().key());
+            new LanguageProvider(corePlugin, (String) node.getValue().key());
         }
 
         ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
-        defaultLanguage = getLanguage(conf.node("language", "default").getString());
+        defaultLanguageIsocode = conf.node("language", "default").getString();
     }
 
     @Override
     public Object get(Language language, LanguageAbstract message) {
-        if (language == null) language = CoreAPI.getInstance().getLanguageManager().getDefaultLanguage();
+        if (language == null)
+            language = CoreAPI.getInstance().getLanguageManager().getDefaultLanguage(CoreAPI.getInstance().getThisCorePlugin());
 
         try {
             ConfigurationNode tempNode = language.getConfigurationNode().node(message.getPath());
@@ -85,19 +85,37 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public Language getLanguage(String isocode) {
-        if (languages.containsKey(isocode))
-            return languages.get(isocode);
+    public Language getLanguage(CorePlugin corePlugin, String isocode) {
+        for (LanguageProvider languageProvider : languages) {
+            if (languageProvider.getIsocode().equals(isocode) && languageProvider.getPlugin() == corePlugin)
+                return languageProvider;
+        }
         return null;
     }
 
     @Override
-    public List<Language> getAllLanguages() {
-        return new ArrayList<>(languages.values());
+    public List<Language> getAllLanguages(CorePlugin corePlugin) {
+        ArrayList<Language> temp = new ArrayList<>();
+        for (LanguageProvider languageProvider : languages)
+            if (languageProvider.getPlugin().getName().equals(corePlugin.getName()))
+                temp.add(languageProvider);
+        return temp;
     }
 
     @Override
-    public Language getDefaultLanguage() {
-        return defaultLanguage;
+    public List<String> getAllLanguageIsocodes(CorePlugin corePlugin) {
+        ArrayList<String> temp = new ArrayList<>();
+        for (Language language : getAllLanguages(corePlugin)) temp.add(language.getName());
+        return temp;
+    }
+
+    @Override
+    public Language getDefaultLanguage(CorePlugin corePlugin) {
+        return getLanguage(corePlugin, defaultLanguageIsocode);
+    }
+
+    @Override
+    public String getDefaultLanguageIsocode() {
+        return defaultLanguageIsocode;
     }
 }
