@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-gson</artifactId>
-            <version>4.1.0</version>
+            <version>4.1.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.code.gson</groupId>
