@@ -21,7 +21,7 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void makeInstances() {
-        CorePluginProvider tempCorePlugin = new CorePluginProvider("Core", "1.0.0", null);
+        CorePluginProvider tempCorePlugin = new CorePluginProvider("Core", "1.0.0", this.getClass());
         config = getFileObject(tempCorePlugin, "config.yml");
         players = getFileObject(tempCorePlugin, "players.yml");
     }

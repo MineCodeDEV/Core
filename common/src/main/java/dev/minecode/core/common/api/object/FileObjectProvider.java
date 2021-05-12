@@ -30,7 +30,7 @@ public class FileObjectProvider implements FileObject {
     private ConfigurationNode conf;
 
     // other
-    private CorePlugin corePlugin;
+    private final CorePlugin corePlugin;
     private boolean stream;
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, String... folders) {
@@ -50,6 +50,7 @@ public class FileObjectProvider implements FileObject {
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName) {
+        this.corePlugin = corePlugin;
         this.pluginDirectoryPath = minecodeDirectoryPath + "/" + corePlugin.getName();
         this.fileName = fileName;
 
