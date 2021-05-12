@@ -30,9 +30,11 @@ public class FileObjectProvider implements FileObject {
     private ConfigurationNode conf;
 
     // other
+    private CorePlugin corePlugin;
     private boolean stream;
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, String... folders) {
+        this.corePlugin = corePlugin;
         this.pluginDirectoryPath = minecodeDirectoryPath + "/" + corePlugin.getName();
         this.fileName = fileName;
 
@@ -136,7 +138,7 @@ public class FileObjectProvider implements FileObject {
 
     public InputStream getResourceAsStream(String fileName) {
         try {
-            URL url = this.getClass().getClassLoader().getResource(fileName);
+            URL url = corePlugin.getMainClass().getClassLoader().getResource(fileName);
             if (url == null) {
                 return null;
             } else {
