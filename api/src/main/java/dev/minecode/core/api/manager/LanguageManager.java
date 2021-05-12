@@ -31,4 +31,6 @@ public interface LanguageManager {
     Language getDefaultLanguage(CorePlugin corePlugin);
 
     String getDefaultLanguageIsocode();
+
+    void setDefaultLanguageIsocode(CorePlugin corePlugin, String isocode);
 }

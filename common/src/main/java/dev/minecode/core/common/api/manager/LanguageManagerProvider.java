@@ -18,7 +18,7 @@ public class LanguageManagerProvider implements LanguageManager {
 
     private static final ArrayList<LanguageProvider> languages = new ArrayList<>();
 
-    private final String defaultLanguageIsocode;
+    private String defaultLanguageIsocode;
 
     public LanguageManagerProvider() {
         ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
@@ -116,5 +116,10 @@ public class LanguageManagerProvider implements LanguageManager {
     @Override
     public String getDefaultLanguageIsocode() {
         return defaultLanguageIsocode;
+    }
+
+    @Override
+    public void setDefaultLanguageIsocode(CorePlugin corePlugin, String isocode) {
+        defaultLanguageIsocode = isocode;
     }
 }
