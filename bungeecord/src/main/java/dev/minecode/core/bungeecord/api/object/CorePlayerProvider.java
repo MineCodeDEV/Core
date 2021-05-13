@@ -57,9 +57,8 @@ public class CorePlayerProvider implements CorePlayer {
                 return true;
             }
 
-            ConfigurationNode uuidNode = dataConf.set(uuid.toString());
-            uuidNode.node("name").set(name);
-            uuidNode.node("language").set(languageIsocode);
+            dataConf.node(uuid.toString(), "name").set(name);
+            dataConf.node(uuid.toString(), "language").set(languageIsocode);
             return true;
         } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();
@@ -68,9 +67,9 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static UUID getUuid(String name) {
-        ProxiedPlayer proxiedPlayer;
-        if ((proxiedPlayer = ProxyServer.getInstance().getPlayer(name)) != null)
-            return proxiedPlayer.getUniqueId();
+        ProxiedPlayer player;
+        if ((player = ProxyServer.getInstance().getPlayer(name)) != null)
+            return player.getUniqueId();
 
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
@@ -88,13 +87,13 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static String getName(UUID uuid) {
-        ProxiedPlayer proxiedPlayer;
-        if ((proxiedPlayer = ProxyServer.getInstance().getPlayer(uuid)) != null)
-            return proxiedPlayer.getName();
+        ProxiedPlayer player;
+        if ((player = ProxyServer.getInstance().getPlayer(uuid)) != null)
+            return player.getName();
 
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
-                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT NAME FROM minecode_players WHERE UUID = '" + uuid.toString() + "'");
+                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT NAME FROM minecode_players WHERE UUID = '" + uuid + "'");
                 if (resultSet.next())
                     return resultSet.getString("NAME");
             } else return dataConf.node(uuid.toString(), "name").getString();

@@ -57,9 +57,8 @@ public class CorePlayerProvider implements CorePlayer {
                 return true;
             }
 
-            ConfigurationNode uuidNode = dataConf.set(uuid.toString());
-            uuidNode.node("name").set(name);
-            uuidNode.node("language").set(languageIsocode);
+            dataConf.node(uuid.toString(), "name").set(name);
+            dataConf.node(uuid.toString(), "language").set(languageIsocode);
             return true;
         } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();
