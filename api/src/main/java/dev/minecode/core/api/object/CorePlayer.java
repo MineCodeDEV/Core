@@ -20,8 +20,6 @@ public interface CorePlayer {
 
     String getLanguageIsoCode();
 
-    void setLanguage(Language language);
-
     void setLanguage(String isocode);
 
     boolean isLanguageEmpty();

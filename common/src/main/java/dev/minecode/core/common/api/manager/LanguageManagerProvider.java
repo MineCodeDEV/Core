@@ -47,9 +47,18 @@ public class LanguageManagerProvider implements LanguageManager {
             ConfigurationNode tempNode = language.getConfigurationNode().node(message.getPath());
             if (!tempNode.empty())
                 return tempNode.get(Object.class);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String temp : message.getPath()) {
+                stringBuilder.append(temp);
+                stringBuilder.append(".");
+            }
+            return stringBuilder.toString();
+
         } catch (SerializationException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 

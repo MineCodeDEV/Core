@@ -94,7 +94,7 @@ public class CorePlayerProvider implements CorePlayer {
 
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
-                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT NAME FROM minecode_players WHERE UUID = '" + uuid.toString() + "'");
+                ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT NAME FROM minecode_players WHERE UUID = '" + uuid + "'");
                 if (resultSet.next())
                     return resultSet.getString("NAME");
             } else return dataConf.node(uuid.toString(), "name").getString();
@@ -218,7 +218,7 @@ public class CorePlayerProvider implements CorePlayer {
     public Language getLanguage(CorePlugin corePlugin) {
         if (languageIsocode != null)
             return CoreAPI.getInstance().getLanguageManager().getLanguage(corePlugin, languageIsocode);
-        return null;
+        return CoreAPI.getInstance().getLanguageManager().getDefaultLanguage(corePlugin);
     }
 
     @Override
@@ -229,14 +229,6 @@ public class CorePlayerProvider implements CorePlayer {
     @Override
     public void setLanguage(String isocode) {
         this.languageIsocode = isocode;
-    }
-
-    @Override
-    public void setLanguage(Language language) {
-        if (language != null) {
-            this.languageIsocode = language.getIsocode();
-        } else
-            this.languageIsocode = null;
     }
 
     @Override
