@@ -80,9 +80,4 @@ public class LanguageProvider implements Language {
     public FileObject getFileObject() {
         return fileObject;
     }
-
-    @Override
-    public ConfigurationNode getConfigurationNode() {
-        return configurationNode;
-    }
 }

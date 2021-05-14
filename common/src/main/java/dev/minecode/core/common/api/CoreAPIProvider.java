@@ -29,7 +29,7 @@ public class CoreAPIProvider extends CoreAPI {
         pluginManagerProvider = new PluginManagerProvider(); // requires FileManager
         languageManagerProvider = new LanguageManagerProvider(); // requires FileManager & PluginManager
 
-        thisCorePlugin = pluginManagerProvider.registerPlugin("Core", "0.1.0-Pre.57", CoreCommon.class);
+        thisCorePlugin = pluginManagerProvider.registerPlugin(CoreCommon.class, "Core", "0.1.0-Pre.58", false);
         usingSQL = fileManagerProvider.getConfig().getConf().node("database", "enable").getBoolean();
 
         databaseManagerProvider = new DatabaseManagerProvider(); // requires FileManager & PluginManager & usingSQL

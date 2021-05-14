@@ -16,7 +16,7 @@ import java.nio.file.Files;
 public class FileObjectProvider implements FileObject {
 
     // directories
-    private static final String minecodeDirectoryPath = "plugins/MineCode";
+    private static final String minecodeDirectoryPath = "plugins/";
     private final String pluginDirectoryPath;
     private final String fileDirectoryPath;
 
@@ -25,17 +25,17 @@ public class FileObjectProvider implements FileObject {
     private final String fileStreamPath;
     private final File file;
 
+    // other
+    private final CorePlugin corePlugin;
+
     // Configurate
     private YamlConfigurationLoader loader;
     private ConfigurationNode conf;
-
-    // other
-    private final CorePlugin corePlugin;
     private boolean stream;
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, String... folders) {
         this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = minecodeDirectoryPath + "/" + corePlugin.getName();
+        this.pluginDirectoryPath = minecodeDirectoryPath + corePlugin.getName();
         this.fileName = fileName;
 
         StringBuilder foldersStringBuilder = new StringBuilder();
@@ -51,7 +51,7 @@ public class FileObjectProvider implements FileObject {
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName) {
         this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = minecodeDirectoryPath + "/" + corePlugin.getName();
+        this.pluginDirectoryPath = minecodeDirectoryPath + corePlugin.getName();
         this.fileName = fileName;
 
         this.fileDirectoryPath = pluginDirectoryPath;

@@ -1,16 +1,24 @@
 package dev.minecode.core.common.api.object;
 
 import dev.minecode.core.api.object.CorePlugin;
+import dev.minecode.core.common.api.manager.LanguageManagerProvider;
 
 public class CorePluginProvider implements CorePlugin {
 
-    String name, version;
     Class mainClass;
+    String name, version;
+    boolean loadMessageFiles;
 
-    public CorePluginProvider(String name, String version, Class mainClass) {
+    public CorePluginProvider(Class mainClass, String name, String version, boolean loadMessageFiles) {
+        this.mainClass = mainClass;
         this.name = name;
         this.version = version;
-        this.mainClass = mainClass;
+        this.loadMessageFiles = loadMessageFiles;
+    }
+
+    @Override
+    public Class getMainClass() {
+        return mainClass;
     }
 
     @Override
@@ -24,7 +32,13 @@ public class CorePluginProvider implements CorePlugin {
     }
 
     @Override
-    public Class getMainClass() {
-        return mainClass;
+    public boolean isLoadMessageFiles() {
+        return loadMessageFiles;
+    }
+
+    @Override
+    public void loadMessageFiles() {
+        LanguageManagerProvider.loadMessageFiles(this);
+        loadMessageFiles = true;
     }
 }

@@ -7,7 +7,7 @@
     <groupId>dev.minecode.core</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.0-Pre.57</version>
+    <version>0.1.0-Pre.58</version>
     <modules>
         <module>common</module>
         <module>api</module>

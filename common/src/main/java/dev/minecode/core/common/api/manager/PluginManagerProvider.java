@@ -28,11 +28,13 @@ public class PluginManagerProvider implements PluginManager {
     }
 
     @Override
-    public CorePlugin registerPlugin(String name, String version, Class mainClass) {
-        CorePlugin corePlugin = new CorePluginProvider(name, version, mainClass);
-        if (!plugins.add(corePlugin)) return null;
-        LanguageManagerProvider.loadMessageFiles(corePlugin);
+    public CorePlugin registerPlugin(Class mainClass, String name, String version, boolean loadMessageFiles) {
+        CorePlugin corePlugin = getPlugin(name);
+        if (corePlugin != null) return corePlugin;
 
+        corePlugin = new CorePluginProvider(mainClass, name, version, loadMessageFiles);
+
+        if (loadMessageFiles) LanguageManagerProvider.loadMessageFiles(corePlugin);
         new UpdateManagerProvider(corePlugin);
 
         return corePlugin;

@@ -30,7 +30,7 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     public static void loadMessageFiles(CorePlugin corePlugin) {
-        File messsageDirectory = new File("plugins/MineCode/" + corePlugin.getName() + "/message/");
+        File messsageDirectory = new File("plugins/" + corePlugin.getName() + "/message/");
         messsageDirectory.mkdirs();
 
         for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
@@ -39,12 +39,10 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public Object get(Language language, LanguageAbstract message) {
-        if (language == null)
-            language = CoreAPI.getInstance().getLanguageManager().getDefaultLanguage(CoreAPI.getInstance().getThisCorePlugin());
+    public Object get(Language language, String... path) {
 
         try {
-            ConfigurationNode tempNode = language.getConfigurationNode().node(message.getPath());
+            ConfigurationNode tempNode = language.getFileObject().getConf().node(path);
             if (!tempNode.empty())
                 return tempNode.get(Object.class);
 
@@ -56,33 +54,68 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public String getString(Language language, LanguageAbstract message) {
-        return String.valueOf(get(language, message));
+    public Object get(Language language, LanguageAbstract path) {
+        return get(language, path.getPath());
     }
 
     @Override
-    public int getInt(Language language, LanguageAbstract message) {
-        return Integer.parseInt(String.valueOf(get(language, message)));
+    public String getString(Language language, String... path) {
+        return String.valueOf(get(language, path));
     }
 
     @Override
-    public boolean getBoolean(Language language, LanguageAbstract message) {
-        return Boolean.parseBoolean(String.valueOf(get(language, message)));
+    public String getString(Language language, LanguageAbstract path) {
+        return String.valueOf(get(language, path));
     }
 
     @Override
-    public long getLong(Language language, LanguageAbstract message) {
-        return Long.parseLong(String.valueOf(get(language, message)));
+    public int getInt(Language language, String... path) {
+        return Integer.parseInt(String.valueOf(get(language, path)));
     }
 
     @Override
-    public List<Object> getList(Language language, LanguageAbstract message) {
-        return (List<Object>) get(language, message);
+    public int getInt(Language language, LanguageAbstract path) {
+        return Integer.parseInt(String.valueOf(get(language, path)));
     }
 
     @Override
-    public List<String> getStringList(Language language, LanguageAbstract message) {
-        return (List<String>) get(language, message);
+    public boolean getBoolean(Language language, String... path) {
+        return Boolean.parseBoolean(String.valueOf(get(language, path)));
+    }
+
+    @Override
+    public boolean getBoolean(Language language, LanguageAbstract path) {
+        return Boolean.parseBoolean(String.valueOf(get(language, path)));
+    }
+
+    @Override
+    public long getLong(Language language, String... path) {
+        return Long.parseLong(String.valueOf(get(language, path)));
+    }
+
+    @Override
+    public long getLong(Language language, LanguageAbstract path) {
+        return Long.parseLong(String.valueOf(get(language, path)));
+    }
+
+    @Override
+    public List<Object> getList(Language language, String... path) {
+        return (List<Object>) get(language, path);
+    }
+
+    @Override
+    public List<Object> getList(Language language, LanguageAbstract path) {
+        return (List<Object>) get(language, path);
+    }
+
+    @Override
+    public List<String> getStringList(Language language, String... path) {
+        return (List<String>) get(language, path);
+    }
+
+    @Override
+    public List<String> getStringList(Language language, LanguageAbstract path) {
+        return (List<String>) get(language, path);
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface PluginManager {
 
     CorePlugin getPlugin(String name);
 
-    CorePlugin registerPlugin(String name, String version, Class mainClass);
+    CorePlugin registerPlugin(Class mainClass, String name, String version, boolean loadMessageFiles);
 
     boolean unregisterPlugin(CorePlugin corePlugin);
 

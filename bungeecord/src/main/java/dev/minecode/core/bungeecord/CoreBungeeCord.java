@@ -29,7 +29,7 @@ public class CoreBungeeCord {
         CoreAPI.getInstance().getFileManager().saveDatas();
     }
 
-    public CorePlugin registerPlugin(String name, String version, Plugin mainClass) {
-        return CoreAPI.getInstance().getPluginManager().registerPlugin(name, version, mainClass.getClass());
+    public CorePlugin registerPlugin(Plugin mainClass, boolean loadMessageFiles) {
+        return CoreAPI.getInstance().getPluginManager().registerPlugin(mainClass.getClass(), mainClass.getDescription().getName(), mainClass.getDescription().getVersion(), loadMessageFiles);
     }
 }
