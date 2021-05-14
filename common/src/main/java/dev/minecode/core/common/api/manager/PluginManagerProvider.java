@@ -33,6 +33,7 @@ public class PluginManagerProvider implements PluginManager {
         if (corePlugin != null) return corePlugin;
 
         corePlugin = new CorePluginProvider(mainClass, name, version, loadMessageFiles);
+        plugins.add(corePlugin);
 
         if (loadMessageFiles) LanguageManagerProvider.loadMessageFiles(corePlugin);
         new UpdateManagerProvider(corePlugin);

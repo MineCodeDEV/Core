@@ -21,7 +21,6 @@ public class FileObjectProvider implements FileObject {
     private final String fileDirectoryPath;
 
     // file
-    private final String fileName;
     private final String fileStreamPath;
     private final File file;
 
@@ -35,27 +34,24 @@ public class FileObjectProvider implements FileObject {
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, String... folders) {
         this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = minecodeDirectoryPath + corePlugin.getName();
-        this.fileName = fileName;
+        this.pluginDirectoryPath = minecodeDirectoryPath + corePlugin.getName() + "/";
 
         StringBuilder foldersStringBuilder = new StringBuilder();
-        for (String temp : folders) {
+        for (String temp : folders)
             foldersStringBuilder.append(temp).append("/");
-        }
 
-        this.fileDirectoryPath = pluginDirectoryPath + "/" + foldersStringBuilder;
-        this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName;
+        this.fileDirectoryPath = pluginDirectoryPath + foldersStringBuilder + "/";
+        this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName + "/";
         this.file = new File(fileDirectoryPath, fileName);
         load();
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName) {
         this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = minecodeDirectoryPath + corePlugin.getName();
-        this.fileName = fileName;
+        this.pluginDirectoryPath = minecodeDirectoryPath + corePlugin.getName() + "/";
 
         this.fileDirectoryPath = pluginDirectoryPath;
-        this.fileStreamPath = corePlugin.getName() + "/" + fileName;
+        this.fileStreamPath = corePlugin.getName() + "/" + fileName + "/";
         this.file = new File(fileDirectoryPath, fileName);
         load();
     }
