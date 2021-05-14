@@ -5,7 +5,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>dev.minecode.core</groupId>
-        <version>0.1.0-Pre.60</version>
+        <version>0.1.0-Pre.61</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>common</artifactId>
-            <version>0.1.0-Pre.60</version>
+            <version>0.1.0-Pre.61</version>
         </dependency>
 
         <!-- SpigotMC Spigot -->
