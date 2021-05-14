@@ -4,6 +4,7 @@ import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
@@ -92,7 +93,7 @@ public class FileObjectProvider implements FileObject {
 
     @Override
     public boolean reload() {
-        this.loader = YamlConfigurationLoader.builder().file(file).build();
+        this.loader = YamlConfigurationLoader.builder().nodeStyle(NodeStyle.BLOCK).file(file).build();
         try {
             conf = loader.load();
             return true;
