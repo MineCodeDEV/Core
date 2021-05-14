@@ -22,17 +22,11 @@
     </repositories>
 
     <dependencies>
-        <!-- MineCode Core -->
+        <!-- MineCodeDEV Core -->
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>common</artifactId>
             <version>0.1.0-Pre.59</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.md-5</groupId>
-                    <artifactId>bungeecord-chat</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- md_5 BungeeCord -->
@@ -42,20 +36,6 @@
             <version>1.16-R0.5-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 

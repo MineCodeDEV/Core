@@ -15,7 +15,7 @@
     <url>https://github.com/MineCodeDEV/Core/tree/master/common</url>
 
     <dependencies>
-        <!-- MineCode Core -->
+        <!-- MineCodeDEV Core -->
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>api</artifactId>

@@ -22,7 +22,7 @@
     </repositories>
 
     <dependencies>
-        <!-- MineCode Core -->
+        <!-- MineCodeDEV Core -->
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>common</artifactId>
@@ -34,25 +34,6 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.md-5</groupId>
-                    <artifactId>bungeecord-chat</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
