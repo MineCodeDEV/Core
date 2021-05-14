@@ -9,7 +9,6 @@ public class CoreCommon {
 
     private PlayerManagerProvider playerManagerProvider;
     private UUIDFetcher uuidFetcher;
-    private CoreAPIProvider coreAPIProvider;
 
     public CoreCommon() {
         makeInstances();
@@ -23,7 +22,7 @@ public class CoreCommon {
     private void makeInstances() {
         instance = this;
         uuidFetcher = new UUIDFetcher();
-        coreAPIProvider = new CoreAPIProvider();
+        new CoreAPIProvider();
     }
 
     public PlayerManagerProvider getPlayerManagerProvider() {
@@ -38,7 +37,4 @@ public class CoreCommon {
         return uuidFetcher;
     }
 
-    public CoreAPIProvider getCoreAPIProvider() {
-        return coreAPIProvider;
-    }
 }
