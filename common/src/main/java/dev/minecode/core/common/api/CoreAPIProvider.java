@@ -29,7 +29,7 @@ public class CoreAPIProvider extends CoreAPI {
         pluginManagerProvider = new PluginManagerProvider(); // requires FileManager
         languageManagerProvider = new LanguageManagerProvider(); // requires FileManager & PluginManager
 
-        thisCorePlugin = pluginManagerProvider.registerPlugin(CoreCommon.class, "Core", "0.1.0-Pre.64", false);
+        thisCorePlugin = pluginManagerProvider.registerPlugin(CoreCommon.class, "Core", "0.1.0-Pre.65", false);
         usingSQL = fileManagerProvider.getConfig().getConf().node("database", "enable").getBoolean();
 
         databaseManagerProvider = new DatabaseManagerProvider(); // requires FileManager & PluginManager & usingSQL
@@ -74,6 +74,11 @@ public class CoreAPIProvider extends CoreAPI {
     @Override
     public ReplaceManager getReplaceManager(BaseComponent[] message) {
         return new ReplaceManagerProvider(message);
+    }
+
+    @Override
+    public ReplaceManager getReplaceManager(Language language, String path) {
+        return new ReplaceManagerProvider(language, path);
     }
 
     @Override
