@@ -22,7 +22,7 @@ public class ReplaceManagerProvider implements ReplaceManager {
         this.message = ComponentSerializer.toString(message);
     }
 
-    public ReplaceManagerProvider(Language language, String path) {
+    public ReplaceManagerProvider(Language language, String... path) {
         this.message = CoreAPI.getInstance().getLanguageManager().getString(language, path);
     }
 

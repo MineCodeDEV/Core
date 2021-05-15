@@ -36,7 +36,7 @@ public abstract class CoreAPI {
 
     public abstract ReplaceManager getReplaceManager(Language language, LanguageAbstract path);
 
-    public abstract ReplaceManager getReplaceManager(Language language, String path);
+    public abstract ReplaceManager getReplaceManager(Language language, String... path);
 
     public abstract UpdateManager getUpdateManager(CorePlugin corePlugin);
 
