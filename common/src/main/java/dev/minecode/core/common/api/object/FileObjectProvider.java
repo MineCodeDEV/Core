@@ -42,7 +42,7 @@ public class FileObjectProvider implements FileObject {
             foldersStringBuilder.append(temp).append("/");
 
         this.fileDirectoryPath = pluginDirectoryPath + foldersStringBuilder + "/";
-        this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName + "/";
+        this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName;
         this.file = new File(fileDirectoryPath, fileName);
         load();
     }
@@ -52,7 +52,7 @@ public class FileObjectProvider implements FileObject {
         this.pluginDirectoryPath = minecodeDirectoryPath + corePlugin.getName() + "/";
 
         this.fileDirectoryPath = pluginDirectoryPath;
-        this.fileStreamPath = corePlugin.getName() + "/" + fileName + "/";
+        this.fileStreamPath = corePlugin.getName() + "/" + fileName;
         this.file = new File(fileDirectoryPath, fileName);
         load();
     }
@@ -67,6 +67,12 @@ public class FileObjectProvider implements FileObject {
     }
 
     public boolean createFile() {
+        System.out.println(minecodeDirectoryPath);
+        System.out.println(pluginDirectoryPath);
+        System.out.println(fileDirectoryPath);
+        System.out.println(fileStreamPath);
+
+
         new File(fileDirectoryPath).mkdirs();
 
         InputStream inputStream = getResourceAsStream(fileStreamPath);
@@ -135,6 +141,8 @@ public class FileObjectProvider implements FileObject {
     }
 
     public InputStream getResourceAsStream(String fileName) {
+        System.out.println(corePlugin.getMainClass().getName());
+        System.out.println(corePlugin.getMainClass().getSimpleName());
         System.out.println(1);
         try {
             System.out.println(2);
