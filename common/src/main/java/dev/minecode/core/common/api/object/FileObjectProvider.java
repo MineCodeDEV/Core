@@ -67,12 +67,6 @@ public class FileObjectProvider implements FileObject {
     }
 
     public boolean createFile() {
-        System.out.println(minecodeDirectoryPath);
-        System.out.println(pluginDirectoryPath);
-        System.out.println(fileDirectoryPath);
-        System.out.println(fileStreamPath);
-
-
         new File(fileDirectoryPath).mkdirs();
 
         InputStream inputStream = getResourceAsStream(fileStreamPath);
@@ -141,23 +135,16 @@ public class FileObjectProvider implements FileObject {
     }
 
     public InputStream getResourceAsStream(String fileName) {
-        System.out.println(corePlugin.getMainClass().getName());
-        System.out.println(corePlugin.getMainClass().getSimpleName());
-        System.out.println(1);
         try {
-            System.out.println(2);
             URL url = corePlugin.getMainClass().getClassLoader().getResource(fileName);
             if (url == null) {
-                System.out.println(3);
                 return null;
             } else {
-                System.out.println(4);
                 URLConnection connection = url.openConnection();
                 connection.setUseCaches(false);
                 return connection.getInputStream();
             }
         } catch (IOException e) {
-            System.out.println(5);
             return null;
         }
     }
