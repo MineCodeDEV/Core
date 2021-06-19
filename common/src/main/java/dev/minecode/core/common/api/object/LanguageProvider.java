@@ -19,7 +19,6 @@ public class LanguageProvider implements Language {
     private final int slot;
     private final String texture;
     private final FileObject fileObject;
-    private final ConfigurationNode configurationNode;
     private List<String> lore;
 
     public LanguageProvider(CorePlugin corePlugin, String isocode) {
@@ -29,7 +28,6 @@ public class LanguageProvider implements Language {
 
         ConfigurationNode configNode = CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages", this.isocode);
         this.fileObject = CoreAPI.getInstance().getFileManager().getFileObject(corePlugin, isocode + ".yml", "message");
-        this.configurationNode = fileObject.getConf();
 
         this.name = configNode.node("name").getString();
         this.displayname = configNode.node("displayname").getString();

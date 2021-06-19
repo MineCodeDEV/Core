@@ -36,7 +36,6 @@ public class DatabaseManagerProvider implements DatabaseManager {
             connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
             return true;
         } catch (SQLException throwables) {
-            System.out.println("A connection to the SQL database could not be established!");
             throwables.printStackTrace();
             return false;
         }

@@ -17,7 +17,7 @@ import java.nio.file.Files;
 public class FileObjectProvider implements FileObject {
 
     // directories
-    private static final String minecodeDirectoryPath = "plugins/";
+    private static final String pluginsDirectoryPath = "plugins/";
     private final String pluginDirectoryPath;
     private final String fileDirectoryPath;
 
@@ -35,7 +35,7 @@ public class FileObjectProvider implements FileObject {
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, String... folders) {
         this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = minecodeDirectoryPath + corePlugin.getName() + "/";
+        this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
 
         StringBuilder foldersStringBuilder = new StringBuilder();
         for (String temp : folders)
@@ -49,7 +49,7 @@ public class FileObjectProvider implements FileObject {
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName) {
         this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = minecodeDirectoryPath + corePlugin.getName() + "/";
+        this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
 
         this.fileDirectoryPath = pluginDirectoryPath;
         this.fileStreamPath = corePlugin.getName() + "/" + fileName;

@@ -15,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 public class CorePlayerProvider implements CorePlayer {
@@ -67,6 +66,8 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static UUID getUuid(String name) {
+        if (name.equals(consoleName)) return consoleUUID;
+
         Player player;
         if ((player = Bukkit.getPlayer(name)) != null)
             return player.getUniqueId();
@@ -83,10 +84,13 @@ public class CorePlayerProvider implements CorePlayer {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
         return CoreCommon.getInstance().getUuidFetcher().getUUID(name);
     }
 
     public static String getName(UUID uuid) {
+        if (uuid == consoleUUID) return consoleName;
+
         Player player;
         if ((player = Bukkit.getPlayer(uuid)) != null)
             return player.getName();
@@ -100,6 +104,7 @@ public class CorePlayerProvider implements CorePlayer {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
         return CoreCommon.getInstance().getUuidFetcher().getName(uuid);
     }
 
@@ -111,6 +116,13 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public void load() {
+        if (uuid == consoleUUID || name.equals(consoleName)) {
+            uuid = consoleUUID;
+            name = consoleName;
+            exists = true;
+            return;
+        }
+
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
                 resultSet = statement.executeQuery("SELECT UUID FROM minecode_players WHERE UUID = '" + uuid.toString() + "'");
@@ -119,13 +131,6 @@ public class CorePlayerProvider implements CorePlayer {
                 exists = !dataConf.node(uuid.toString()).empty();
 
             if (!exists) {
-                if (uuid == consoleUUID || Objects.equals(name, consoleName)) {
-                    uuid = consoleUUID;
-                    name = consoleName;
-                    exists = true;
-                    return;
-                }
-
                 if (uuid == null) return;
                 name = getName(uuid);
 
@@ -140,6 +145,13 @@ public class CorePlayerProvider implements CorePlayer {
     @Override
     public boolean reload() {
         if (exists) {
+            if (uuid == consoleUUID || name.equals(consoleName)) {
+                uuid = consoleUUID;
+                name = consoleName;
+                exists = true;
+                return true;
+            }
+
             try {
                 if (CoreAPI.getInstance().isUsingSQL()) {
                     resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE UUID = '" + uuid + "'");
@@ -168,6 +180,10 @@ public class CorePlayerProvider implements CorePlayer {
     @Override
     public boolean save() {
         if (exists) {
+            if (uuid == consoleUUID || name.equals(consoleName)) {
+                return true;
+            }
+
             try {
                 if (CoreAPI.getInstance().isUsingSQL()) {
                     resultSet.updateString("UUID", uuid.toString());

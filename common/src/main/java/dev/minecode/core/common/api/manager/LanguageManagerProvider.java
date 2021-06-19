@@ -46,6 +46,7 @@ public class LanguageManagerProvider implements LanguageManager {
             if (!tempNode.empty())
                 return tempNode.get(Object.class);
 
+            return tempNode.path();
         } catch (SerializationException e) {
             e.printStackTrace();
         }
@@ -154,7 +155,7 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public void setDefaultLanguageIsocode(CorePlugin corePlugin, String isocode) {
+    public void setDefaultLanguageIsocode(String isocode) {
         defaultLanguageIsocode = isocode;
     }
 }

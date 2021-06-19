@@ -7,6 +7,7 @@ import dev.minecode.core.api.object.LanguageAbstract;
 import java.util.List;
 
 public interface LanguageManager {
+
     Object get(Language language, String... path);
 
     Object get(Language language, LanguageAbstract path);
@@ -45,5 +46,6 @@ public interface LanguageManager {
 
     String getDefaultLanguageIsocode();
 
-    void setDefaultLanguageIsocode(CorePlugin corePlugin, String isocode);
+    void setDefaultLanguageIsocode(String isocode);
+
 }

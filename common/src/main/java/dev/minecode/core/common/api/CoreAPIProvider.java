@@ -52,10 +52,6 @@ public class CoreAPIProvider extends CoreAPI {
         return languageManagerProvider;
     }
 
-    public LanguageManagerProvider getLanguageManagerProvider() {
-        return languageManagerProvider;
-    }
-
     @Override
     public PlayerManagerProvider getPlayerManager() {
         return CoreCommon.getInstance().getPlayerManagerProvider();
