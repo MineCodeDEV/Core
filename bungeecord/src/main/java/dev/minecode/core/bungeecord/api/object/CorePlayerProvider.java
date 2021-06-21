@@ -66,9 +66,9 @@ public class CorePlayerProvider implements CorePlayer {
     public static UUID getUuid(String name) {
         if (name.equals(consoleName)) return consoleUUID;
 
-        ProxiedPlayer player;
-        if ((player = ProxyServer.getInstance().getPlayer(name)) != null)
-            return player.getUniqueId();
+        ProxiedPlayer proxiedPlayer;
+        if ((proxiedPlayer = ProxyServer.getInstance().getPlayer(name)) != null)
+            return proxiedPlayer.getUniqueId();
 
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
@@ -89,9 +89,9 @@ public class CorePlayerProvider implements CorePlayer {
     public static String getName(UUID uuid) {
         if (uuid == consoleUUID) return consoleName;
 
-        ProxiedPlayer player;
-        if ((player = ProxyServer.getInstance().getPlayer(uuid)) != null)
-            return player.getName();
+        ProxiedPlayer proxiedPlayer;
+        if ((proxiedPlayer = ProxyServer.getInstance().getPlayer(uuid)) != null)
+            return proxiedPlayer.getName();
 
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
