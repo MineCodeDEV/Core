@@ -34,14 +34,12 @@ public class CorePlayerProvider implements CorePlayer {
 
     public CorePlayerProvider(UUID uuid) {
         makeInstances();
-
         this.uuid = uuid;
         load();
     }
 
     public CorePlayerProvider(String name) {
         makeInstances();
-
         this.uuid = getUuid(name);
         load();
     }
@@ -116,6 +114,11 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public void load() {
+        if (uuid == null) {
+            exists = false;
+            return;
+        }
+
         if (uuid == consoleUUID || name.equals(consoleName)) {
             uuid = consoleUUID;
             name = consoleName;
@@ -131,11 +134,9 @@ public class CorePlayerProvider implements CorePlayer {
                 exists = !dataConf.node(uuid.toString()).empty();
 
             if (!exists) {
-                if (uuid == null) return;
                 name = getName(uuid);
 
                 if (uuid != null && name != null) exists = create(uuid, name, null);
-
             } else reload();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -144,14 +145,14 @@ public class CorePlayerProvider implements CorePlayer {
 
     @Override
     public boolean reload() {
-        if (exists) {
-            if (uuid == consoleUUID || name.equals(consoleName)) {
-                uuid = consoleUUID;
-                name = consoleName;
-                exists = true;
-                return true;
-            }
+        if (uuid == consoleUUID || name.equals(consoleName)) {
+            uuid = consoleUUID;
+            name = consoleName;
+            exists = true;
+            return true;
+        }
 
+        if (exists) {
             try {
                 if (CoreAPI.getInstance().isUsingSQL()) {
                     resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE UUID = '" + uuid + "'");
@@ -159,15 +160,11 @@ public class CorePlayerProvider implements CorePlayer {
                         name = resultSet.getString("NAME");
                         languageIsocode = resultSet.getString("LANGUAGE");
                         return true;
-                    } else {
-                        load();
-                        return exists;
                     }
                 } else {
                     name = dataConf.node(uuid.toString(), "name").getString();
                     languageIsocode = dataConf.node(uuid.toString(), "language").getString();
                     return true;
-
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -179,11 +176,9 @@ public class CorePlayerProvider implements CorePlayer {
 
     @Override
     public boolean save() {
-        if (exists) {
-            if (uuid == consoleUUID || name.equals(consoleName)) {
-                return true;
-            }
+        if (uuid == consoleUUID || name.equals(consoleName)) return true;
 
+        if (exists) {
             try {
                 if (CoreAPI.getInstance().isUsingSQL()) {
                     resultSet.updateString("UUID", uuid.toString());
