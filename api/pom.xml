@@ -5,7 +5,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>dev.minecode.core</groupId>
-        <version>0.1.0-Pre.69</version>
+        <version>0.1.0-Pre.70</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -32,26 +32,13 @@
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-gson</artifactId>
             <version>4.1.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
-        <!-- md_5 BungeeCord -->
+        <!-- SpigotMC BungeeCord -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-chat</artifactId>
-            <version>1.16-R0.4</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>1.17-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

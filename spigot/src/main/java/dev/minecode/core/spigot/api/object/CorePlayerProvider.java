@@ -64,11 +64,11 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public static UUID getUuid(String name) {
-        if (name.equals(consoleName)) return consoleUUID;
+        if (name != null && name.equals(consoleName)) return consoleUUID;
 
-        Player player;
-        if ((player = Bukkit.getPlayer(name)) != null)
-            return player.getUniqueId();
+        Player proxiedPlayer;
+        if ((proxiedPlayer = Bukkit.getPlayer(name)) != null)
+            return proxiedPlayer.getUniqueId();
 
         try {
             if (CoreAPI.getInstance().isUsingSQL()) {
@@ -119,7 +119,7 @@ public class CorePlayerProvider implements CorePlayer {
             return;
         }
 
-        if (uuid == consoleUUID || name.equals(consoleName)) {
+        if (uuid == consoleUUID || (name != null && name.equalsIgnoreCase(consoleName))) {
             uuid = consoleUUID;
             name = consoleName;
             exists = true;
@@ -131,7 +131,7 @@ public class CorePlayerProvider implements CorePlayer {
                 resultSet = statement.executeQuery("SELECT UUID FROM minecode_players WHERE UUID = '" + uuid.toString() + "'");
                 exists = resultSet.next();
             } else
-                exists = !dataConf.node(uuid.toString()).empty();
+                exists = !dataConf.node(String.valueOf(uuid)).empty();
 
             if (!exists) {
                 name = getName(uuid);
@@ -145,7 +145,7 @@ public class CorePlayerProvider implements CorePlayer {
 
     @Override
     public boolean reload() {
-        if (uuid == consoleUUID || name.equals(consoleName)) {
+        if (uuid == consoleUUID || (name != null && name.equalsIgnoreCase(consoleName))) {
             uuid = consoleUUID;
             name = consoleName;
             exists = true;
@@ -176,12 +176,12 @@ public class CorePlayerProvider implements CorePlayer {
 
     @Override
     public boolean save() {
-        if (uuid == consoleUUID || name.equals(consoleName)) return true;
+        if (uuid == consoleUUID || (name != null && name.equalsIgnoreCase(consoleName))) return true;
 
         if (exists) {
             try {
                 if (CoreAPI.getInstance().isUsingSQL()) {
-                    resultSet.updateString("UUID", uuid.toString());
+                    resultSet.updateString("UUID", String.valueOf(uuid));
                     resultSet.updateString("NAME", name);
                     resultSet.updateString("LANGUAGE", languageIsocode);
                     resultSet.updateRow();
