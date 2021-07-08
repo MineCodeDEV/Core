@@ -29,11 +29,11 @@
             <version>0.1.0-Pre.68</version>
         </dependency>
 
-        <!-- md_5 BungeeCord -->
+        <!-- SpigotMC BungeeCord -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.16-R0.5-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
