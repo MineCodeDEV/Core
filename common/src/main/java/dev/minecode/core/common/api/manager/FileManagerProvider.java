@@ -5,6 +5,7 @@ import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.common.api.object.CorePluginProvider;
 import dev.minecode.core.common.api.object.FileObjectProvider;
+import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,12 +43,12 @@ public class FileManagerProvider implements FileManager {
     }
 
     @Override
-    public FileObject getFileObject(CorePlugin corePluign, String fileName, String... folders) {
-        if (fileObjects.containsKey(corePluign.getName() + fileName + Arrays.toString(folders)))
-            return fileObjects.get(corePluign.getName() + fileName + Arrays.toString(folders));
+    public FileObject getFileObject(CorePlugin corePlugin, String fileName, String... folders) {
+        if (fileObjects.containsKey(corePlugin.getName() + fileName + Arrays.toString(folders)))
+            return fileObjects.get(corePlugin.getName() + fileName + Arrays.toString(folders));
 
-        FileObjectProvider fileObjectProvider = new FileObjectProvider(corePluign, fileName, folders);
-        fileObjects.put(corePluign.getName() + fileName + Arrays.toString(folders), fileObjectProvider);
+        FileObjectProvider fileObjectProvider = new FileObjectProvider(corePlugin, fileName, folders);
+        fileObjects.put(corePlugin.getName() + fileName + Arrays.toString(folders), fileObjectProvider);
         return fileObjectProvider;
     }
 
@@ -58,6 +59,26 @@ public class FileManagerProvider implements FileManager {
 
         FileObjectProvider fileObjectProvider = new FileObjectProvider(corePlugin, fileName);
         fileObjects.put(corePlugin.getName() + fileName, fileObjectProvider);
+        return fileObjectProvider;
+    }
+
+    @Override
+    public FileObject getFileObject(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers, String... folders) {
+        if (fileObjects.containsKey(corePlugin.getName() + fileName + typeSerializers.toString() + Arrays.toString(folders)))
+            return fileObjects.get(corePlugin.getName() + fileName + typeSerializers + Arrays.toString(folders));
+
+        FileObjectProvider fileObjectProvider = new FileObjectProvider(corePlugin, fileName, typeSerializers, folders);
+        fileObjects.put(corePlugin.getName() + fileName + typeSerializers + Arrays.toString(folders), fileObjectProvider);
+        return fileObjectProvider;
+    }
+
+    @Override
+    public FileObject getFileObject(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers) {
+        if (fileObjects.containsKey(corePlugin.getName() + fileName + typeSerializers.toString()))
+            return fileObjects.get(corePlugin.getName() + fileName + typeSerializers);
+
+        FileObjectProvider fileObjectProvider = new FileObjectProvider(corePlugin, fileName, typeSerializers);
+        fileObjects.put(corePlugin.getName() + fileName + typeSerializers, fileObjectProvider);
         return fileObjectProvider;
     }
 }
