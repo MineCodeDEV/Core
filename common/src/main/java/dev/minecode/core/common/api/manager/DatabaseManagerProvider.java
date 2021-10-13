@@ -57,7 +57,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
 
     public void checkTables() {
         try {
-            getStatement().executeUpdate("CREATE TABLE IF NOT EXISTS minecode_players (ID INT, UUID VARCHAR (37), NAME VARCHAR (16), LANGUAGE VARCHAR (5), PRIMARY KEY (ID))");
+            getStatement().executeUpdate("CREATE TABLE IF NOT EXISTS minecode_players (UUID VARCHAR (37), NAME VARCHAR (16), LANGUAGE VARCHAR (5), PRIMARY KEY (UUID))");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
