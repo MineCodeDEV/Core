@@ -101,22 +101,46 @@ public class LanguageManagerProvider implements LanguageManager {
 
     @Override
     public List<Object> getList(Language language, String... path) {
-        return (List<Object>) get(language, path);
+        List<Object> list;
+        try {
+            list = (List<Object>) get(language, path);
+        } catch (ClassCastException exception) {
+            list = new ArrayList<>();
+        }
+        return list;
     }
 
     @Override
     public List<Object> getList(Language language, LanguageAbstract path) {
-        return (List<Object>) get(language, path);
+        List<Object> list;
+        try {
+            list = (List<Object>) get(language, path);
+        } catch (ClassCastException exception) {
+            list = new ArrayList<>();
+        }
+        return list;
     }
 
     @Override
     public List<String> getStringList(Language language, String... path) {
-        return (List<String>) get(language, path);
+        List<String> list;
+        try {
+            list = (List<String>) get(language, path);
+        } catch (ClassCastException exception) {
+            list = new ArrayList<>();
+        }
+        return list;
     }
 
     @Override
     public List<String> getStringList(Language language, LanguageAbstract path) {
-        return (List<String>) get(language, path);
+        List<String> list;
+        try {
+            list = (List<String>) get(language, path);
+        } catch (ClassCastException exception) {
+            list = new ArrayList<>();
+        }
+        return list;
     }
 
     @Override
