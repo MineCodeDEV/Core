@@ -1,5 +1,6 @@
 package dev.minecode.core.common.api.manager;
 
+import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.FileManager;
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
@@ -22,9 +23,11 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void makeInstances() {
-        CorePluginProvider tempCorePlugin = new CorePluginProvider(FileManagerProvider.class, "Core", "0.1.0-Pre.75", false);
+        CorePluginProvider tempCorePlugin = new CorePluginProvider(FileManagerProvider.class, "Core", "0.1.0-Pre.76", false);
         config = getFileObject(tempCorePlugin, "config.yml");
-        players = getFileObject(tempCorePlugin, "players.yml");
+
+        if (!CoreAPI.getInstance().isUsingSQL())
+            players = getFileObject(tempCorePlugin, "players.yml");
     }
 
     @Override
