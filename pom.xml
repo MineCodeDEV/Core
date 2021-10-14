@@ -16,11 +16,11 @@
     </modules>
 
     <name>Core</name>
-    <description>Main dependency from MineCode</description>
+    <description>Main dependency from MineCodeDEV</description>
     <url>https://github.com/MineCodeDEV/Core</url>
 
     <organization>
-        <name>MineCode</name>
+        <name>MineCodeDEV</name>
         <url>https://github.com/MineCodeDEV</url>
     </organization>
 
