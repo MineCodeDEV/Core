@@ -25,22 +25,10 @@ language:
     'en_us':
       name: "English (US)"
       displayname: "&1En&fgli&4sh &8(&1U&fS&4A&8)"
-      slot: 3
-      lore: [ ]
-      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNhYzk3NzRkYTEyMTcyNDg1MzJjZTE0N2Y3ODMxZjY3YTEyZmRjY2ExY2YwY2I0YjM4NDhkZTZiYzk0YjQifX19"
     'de_de':
       name: "Deutsch"
       displayname: "&0De&4ut&6sch"
-      slot: 7
-      lore: [ ]
-      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWU3ODk5YjQ4MDY4NTg2OTdlMjgzZjA4NGQ5MTczZmU0ODc4ODY0NTM3NzQ2MjZiMjRiZDhjZmVjYzc3YjNmIn19fQ=="
-# https://minecraft.fandom.com/wiki/Language
-#    'example': Locale Code
-#      name: "ExampleName"
-#      displayname: "&7ExampleDisplayName"
-#      slot: 5
-#      lore:
-#        - "&7Example-Line"
-#        - "&8Example-Line2"
-#      # https://minecraft-heads.com/custom-heads/search?searchword=flags
-#      texture: "Flag -> Other -> Value"
+#   # https://minecraft.fandom.com/wiki/Language
+#   'example': Locale Code
+#     name: "ExampleName"
+#     displayname: "&7ExampleDisplayName"

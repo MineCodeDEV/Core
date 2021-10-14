@@ -6,9 +6,6 @@ import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.common.api.manager.LanguageManagerProvider;
 import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.serialize.SerializationException;
-
-import java.util.List;
 
 public class LanguageProvider implements Language {
 
@@ -16,10 +13,7 @@ public class LanguageProvider implements Language {
     private final String isocode;
     private final String name;
     private final String displayname;
-    private final int slot;
-    private final String texture;
     private final FileObject fileObject;
-    private List<String> lore;
 
     public LanguageProvider(CorePlugin corePlugin, String isocode) {
         LanguageManagerProvider.getLanguages().add(this);
@@ -31,12 +25,6 @@ public class LanguageProvider implements Language {
 
         this.name = configNode.node("name").getString();
         this.displayname = configNode.node("displayname").getString();
-        this.slot = configNode.node("slot").getInt();
-        try {
-            this.lore = configNode.node("lore").getList(String.class);
-        } catch (SerializationException ignored) {
-        }
-        this.texture = configNode.node("texture").getString();
     }
 
     @Override
@@ -57,21 +45,6 @@ public class LanguageProvider implements Language {
     @Override
     public String getDisplayname() {
         return displayname;
-    }
-
-    @Override
-    public int getSlot() {
-        return slot;
-    }
-
-    @Override
-    public List<String> getLore() {
-        return lore;
-    }
-
-    @Override
-    public String getTexture() {
-        return texture;
     }
 
     @Override

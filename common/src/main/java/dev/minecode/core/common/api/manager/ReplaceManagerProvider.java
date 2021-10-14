@@ -108,9 +108,7 @@ public class ReplaceManagerProvider implements ReplaceManager {
     public ReplaceManager language(Language language, String replacement) {
         return replaceAll("%" + replacement + "Isocode%", language.getIsocode())
                 .replaceAll("%" + replacement + "Name%", language.getName())
-                .replaceAll("%" + replacement + "Displayname%", language.getDisplayname())
-                .replaceAll("%" + replacement + "Slot%", String.valueOf(language.getSlot()))
-                .replaceAll("%" + replacement + "Texture%", language.getTexture());
+                .replaceAll("%" + replacement + "Displayname%", language.getDisplayname());
     }
 
     @Override
