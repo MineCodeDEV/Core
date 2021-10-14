@@ -26,7 +26,8 @@ public class CoreSpigot {
     public void onDisable() {
         if (CoreAPI.getInstance().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
-        CoreAPI.getInstance().getFileManager().saveDatas();
+        else
+            CoreAPI.getInstance().getFileManager().saveData();
     }
 
     public CorePlugin registerPlugin(JavaPlugin mainClass, boolean loadMessageFiles) {

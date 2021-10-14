@@ -37,6 +37,7 @@ public class FileObjectProvider implements FileObject {
     private boolean stream;
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, String... folders) {
+        System.out.println("1: " + fileName);
         this.corePlugin = corePlugin;
         this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
 
@@ -51,6 +52,7 @@ public class FileObjectProvider implements FileObject {
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName) {
+        System.out.println("2: " + fileName);
         this.corePlugin = corePlugin;
         this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
 
@@ -61,6 +63,7 @@ public class FileObjectProvider implements FileObject {
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers, String... folders) {
+        System.out.println("3: " + fileName);
         this.corePlugin = corePlugin;
         this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
 
@@ -75,6 +78,7 @@ public class FileObjectProvider implements FileObject {
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers) {
+        System.out.println("4: " + fileName);
         this.corePlugin = corePlugin;
         this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
 

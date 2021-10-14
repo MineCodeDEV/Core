@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public interface FileManager {
 
-    boolean saveDatas();
+    boolean saveData();
 
     FileObject getPlayers();
 

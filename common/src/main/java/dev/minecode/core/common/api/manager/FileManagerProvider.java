@@ -23,7 +23,7 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void makeInstances() {
-        CorePluginProvider tempCorePlugin = new CorePluginProvider(FileManagerProvider.class, "Core", "0.1.0-Pre.76", false);
+        CorePluginProvider tempCorePlugin = new CorePluginProvider(FileManagerProvider.class, "Core", "0.1.0-Pre.77", false);
         config = getFileObject(tempCorePlugin, "config.yml");
 
         if (!CoreAPI.getInstance().isUsingSQL())
@@ -31,8 +31,10 @@ public class FileManagerProvider implements FileManager {
     }
 
     @Override
-    public boolean saveDatas() {
-        return players.save();
+    public boolean saveData() {
+        if (!CoreAPI.getInstance().isUsingSQL())
+            return players.save();
+        return false;
     }
 
     @Override
