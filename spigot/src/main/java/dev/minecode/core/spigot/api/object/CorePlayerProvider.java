@@ -109,8 +109,8 @@ public class CorePlayerProvider implements CorePlayer {
     public void makeInstances() {
         if (CoreAPI.getInstance().isUsingSQL())
             statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
-
-        dataConf = dataFileObject.getConf();
+        else
+            dataConf = dataFileObject.getConf();
     }
 
     public void load() {
