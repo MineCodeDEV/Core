@@ -23,10 +23,10 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void makeInstances() {
-        CorePluginProvider tempCorePlugin = new CorePluginProvider(FileManagerProvider.class, "Core", "0.1.0-Pre.77", false);
+        CorePluginProvider tempCorePlugin = new CorePluginProvider(FileManagerProvider.class, "Core", "0.1.0-Pre.78", false);
         config = getFileObject(tempCorePlugin, "config.yml");
 
-        if (!CoreAPI.getInstance().isUsingSQL())
+        if (!config.getConf().node("database", "enable").getBoolean())
             players = getFileObject(tempCorePlugin, "players.yml");
     }
 
