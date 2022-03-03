@@ -3,10 +3,12 @@ package dev.minecode.core.common.api;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.*;
 import dev.minecode.core.api.object.CorePlugin;
+import dev.minecode.core.api.object.CorePluginVersion;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.common.api.manager.*;
+import dev.minecode.core.common.api.object.CorePluginProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
 
 public class CoreAPIProvider extends CoreAPI {
@@ -25,12 +27,14 @@ public class CoreAPIProvider extends CoreAPI {
 
     private void makeInstances() {
         CoreAPI.setInstance(this);
+
+        thisCorePlugin = new CorePluginProvider(CoreCommon.class, "Core", "0.1.0-Pre.81", CorePluginVersion.MINECODE_CORE, false);
+
         fileManagerProvider = new FileManagerProvider();
         pluginManagerProvider = new PluginManagerProvider(); // requires FileManager
         languageManagerProvider = new LanguageManagerProvider(); // requires FileManager & PluginManager
 
-        thisCorePlugin = pluginManagerProvider.registerPlugin(CoreCommon.class, "Core", "0.1.0-Pre.80", false);
-        usingSQL = fileManagerProvider.getConfig().getConf().node("database", "enable").getBoolean();
+        usingSQL = fileManagerProvider.getConfig().getConf().node("database", "enable").getBoolean(); // requires FileManager
 
         databaseManagerProvider = new DatabaseManagerProvider(); // requires FileManager & PluginManager & usingSQL
     }

@@ -2,6 +2,7 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.manager.PluginManager;
 import dev.minecode.core.api.object.CorePlugin;
+import dev.minecode.core.api.object.CorePluginVersion;
 import dev.minecode.core.common.api.object.CorePluginProvider;
 
 import java.util.ArrayList;
@@ -28,14 +29,15 @@ public class PluginManagerProvider implements PluginManager {
     }
 
     @Override
-    public CorePlugin registerPlugin(Class mainClass, String name, String version, boolean loadMessageFiles) {
+    public CorePlugin registerPlugin(Class mainClass, String name, String version, CorePluginVersion pluginVersion, boolean loadMessageFiles) {
         CorePlugin corePlugin = getPlugin(name);
         if (corePlugin != null) return corePlugin;
 
-        corePlugin = new CorePluginProvider(mainClass, name, version, loadMessageFiles);
+        corePlugin = new CorePluginProvider(mainClass, name, version, pluginVersion, loadMessageFiles);
         plugins.add(corePlugin);
 
         if (loadMessageFiles) LanguageManagerProvider.loadMessageFiles(corePlugin);
+
         new UpdateManagerProvider(corePlugin);
 
         return corePlugin;

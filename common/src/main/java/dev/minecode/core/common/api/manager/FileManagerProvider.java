@@ -4,7 +4,6 @@ import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.FileManager;
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
-import dev.minecode.core.common.api.object.CorePluginProvider;
 import dev.minecode.core.common.api.object.FileObjectProvider;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
@@ -23,11 +22,10 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void makeInstances() {
-        CorePluginProvider tempCorePlugin = new CorePluginProvider(FileManagerProvider.class, "Core", "0.1.0-Pre.80", false);
-        config = getFileObject(tempCorePlugin, "config.yml");
+        config = getFileObject(CoreAPI.getInstance().getThisCorePlugin(), "config.yml");
 
         if (!config.getConf().node("database", "enable").getBoolean())
-            players = getFileObject(tempCorePlugin, "players.yml");
+            players = getFileObject(CoreAPI.getInstance().getThisCorePlugin(), "players.yml");
     }
 
     @Override

@@ -21,66 +21,55 @@ public class FileObjectProvider implements FileObject {
 
     // directories
     private static final String pluginsDirectoryPath = "plugins/";
-    private final String pluginDirectoryPath;
-    private final String fileDirectoryPath;
 
-    // file
+    // files
     private final String fileStreamPath;
     private final File file;
 
-    // other
+    // MineCode
     private final CorePlugin corePlugin;
 
     // Configurate
     private YamlConfigurationLoader loader;
     private ConfigurationNode conf;
-    private boolean stream;
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, String... folders) {
-        this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
-
         StringBuilder foldersStringBuilder = new StringBuilder();
         for (String temp : folders)
             foldersStringBuilder.append(temp).append("/");
 
-        this.fileDirectoryPath = pluginDirectoryPath + foldersStringBuilder + "/";
+        this.corePlugin = corePlugin;
         this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName;
-        this.file = new File(fileDirectoryPath, fileName);
+        this.file = new File(pluginsDirectoryPath + "/" + corePlugin.getName() + "/" + foldersStringBuilder, fileName);
+
         load();
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName) {
         this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
-
-        this.fileDirectoryPath = pluginDirectoryPath;
         this.fileStreamPath = corePlugin.getName() + "/" + fileName;
-        this.file = new File(fileDirectoryPath, fileName);
+        this.file = new File(pluginsDirectoryPath + "/" + corePlugin.getName(), fileName);
+
         load();
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers, String... folders) {
-        this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
-
         StringBuilder foldersStringBuilder = new StringBuilder();
         for (String temp : folders)
             foldersStringBuilder.append(temp).append("/");
 
-        this.fileDirectoryPath = pluginDirectoryPath + foldersStringBuilder + "/";
+        this.corePlugin = corePlugin;
         this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName;
-        this.file = new File(fileDirectoryPath, fileName);
+        this.file = new File(pluginsDirectoryPath + "/" + corePlugin.getName() + "/" + foldersStringBuilder, fileName);
+
         load(typeSerializers);
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers) {
         this.corePlugin = corePlugin;
-        this.pluginDirectoryPath = pluginsDirectoryPath + corePlugin.getName() + "/";
-
-        this.fileDirectoryPath = pluginDirectoryPath;
         this.fileStreamPath = corePlugin.getName() + "/" + fileName;
-        this.file = new File(fileDirectoryPath, fileName);
+        this.file = new File(pluginsDirectoryPath + "/" + corePlugin.getName(), fileName);
+
         load(typeSerializers);
     }
 
@@ -103,7 +92,8 @@ public class FileObjectProvider implements FileObject {
     }
 
     public boolean createFile() {
-        new File(fileDirectoryPath).mkdirs();
+        if (!file.getParentFile().exists())
+            file.getParentFile().mkdirs();
 
         InputStream inputStream = getResourceAsStream(fileStreamPath);
         if (inputStream != null) {
@@ -113,18 +103,16 @@ public class FileObjectProvider implements FileObject {
                 e.printStackTrace();
                 return false;
             }
-            stream = true;
             return true;
         }
 
         try {
             file.createNewFile();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-        stream = false;
-        return true;
     }
 
     @Override
@@ -180,12 +168,7 @@ public class FileObjectProvider implements FileObject {
         return conf;
     }
 
-    @Override
-    public boolean isStream() {
-        return stream;
-    }
-
-    public InputStream getResourceAsStream(String fileName) {
+    private InputStream getResourceAsStream(String fileName) {
         try {
             URL url = corePlugin.getMainClass().getClassLoader().getResource(fileName);
             if (url == null) {

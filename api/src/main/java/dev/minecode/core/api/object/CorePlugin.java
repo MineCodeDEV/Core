@@ -8,6 +8,8 @@ public interface CorePlugin {
 
     String getVersion();
 
+    CorePluginVersion getPluginVersion();
+
     boolean isLoadMessageFiles();
 
     void loadMessageFiles();

@@ -11,5 +11,4 @@ public interface Language {
     String getDisplayname();
 
     FileObject getFileObject();
-
 }
