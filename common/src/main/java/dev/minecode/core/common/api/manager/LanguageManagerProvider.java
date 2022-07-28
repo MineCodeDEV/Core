@@ -6,6 +6,8 @@ import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import dev.minecode.core.common.api.object.LanguageProvider;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
@@ -21,130 +23,75 @@ public class LanguageManagerProvider implements LanguageManager {
     private String defaultLanguageIsocode;
 
     public LanguageManagerProvider() {
-        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
-        defaultLanguageIsocode = conf.node("language", "default").getString();
-    }
-
-    public static ArrayList<LanguageProvider> getLanguages() {
-        return languages;
+        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getRoot();
+        defaultLanguageIsocode = conf.node("language", "default").getString("en_us");
     }
 
     public static void loadMessageFiles(CorePlugin corePlugin) {
         File messsageDirectory = new File("plugins/" + corePlugin.getName() + "/message/");
         messsageDirectory.mkdirs();
 
-        for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages").childrenMap().entrySet()) {
-            new LanguageProvider(corePlugin, (String) node.getValue().key());
-        }
+        for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getRoot().node("language", "languages").childrenMap().entrySet())
+            languages.add(new LanguageProvider(corePlugin, (String) node.getValue().key()));
+    }
+
+    private ConfigurationNode getNode(@NotNull Language language, @NotNull String... path) {
+        return language.getFileObject().getRoot().node((Object[]) path);
     }
 
     @Override
-    public Object get(Language language, String... path) {
-
+    public @Nullable <T> T get(Class<T> type, @NotNull Language language, @NotNull String... path) {
         try {
-            ConfigurationNode tempNode = language.getFileObject().getConf().node(path);
-            if (!tempNode.empty())
-                return tempNode.get(Object.class);
-
-            return tempNode.path();
+            ConfigurationNode node = getNode(language, path);
+            if (!node.empty())
+                return node.get(type);
         } catch (SerializationException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
     @Override
-    public Object get(Language language, LanguageAbstract path) {
-        return get(language, path.getPath());
+    public @Nullable <T> T get(Class<T> type, @NotNull Language language, @NotNull LanguageAbstract path) {
+        return get(type, language, path.getPath());
     }
 
     @Override
-    public String getString(Language language, String... path) {
-        return String.valueOf(get(language, path));
-    }
-
-    @Override
-    public String getString(Language language, LanguageAbstract path) {
-        return String.valueOf(get(language, path));
-    }
-
-    @Override
-    public int getInt(Language language, String... path) {
-        return Integer.parseInt(String.valueOf(get(language, path)));
-    }
-
-    @Override
-    public int getInt(Language language, LanguageAbstract path) {
-        return Integer.parseInt(String.valueOf(get(language, path)));
-    }
-
-    @Override
-    public boolean getBoolean(Language language, String... path) {
-        return Boolean.parseBoolean(String.valueOf(get(language, path)));
-    }
-
-    @Override
-    public boolean getBoolean(Language language, LanguageAbstract path) {
-        return Boolean.parseBoolean(String.valueOf(get(language, path)));
-    }
-
-    @Override
-    public long getLong(Language language, String... path) {
-        return Long.parseLong(String.valueOf(get(language, path)));
-    }
-
-    @Override
-    public long getLong(Language language, LanguageAbstract path) {
-        return Long.parseLong(String.valueOf(get(language, path)));
-    }
-
-    @Override
-    public List<Object> getList(Language language, String... path) {
-        List<Object> list;
+    public @Nullable <T> List<T> getList(@NotNull Class<T> type, @NotNull Language language, @NotNull String... path) {
         try {
-            list = (List<Object>) get(language, path);
-        } catch (ClassCastException exception) {
-            list = new ArrayList<>();
+            return getNode(language, path).getList(type);
+        } catch (SerializationException ignored) {
+            return null;
         }
-        return list;
     }
 
     @Override
-    public List<Object> getList(Language language, LanguageAbstract path) {
-        List<Object> list;
-        try {
-            list = (List<Object>) get(language, path);
-        } catch (ClassCastException exception) {
-            list = new ArrayList<>();
-        }
-        return list;
+    public @Nullable <T> List<T> getList(@NotNull Class<T> type, @NotNull Language language, @NotNull LanguageAbstract path) {
+        return getList(type, language, path.getPath());
     }
 
     @Override
-    public List<String> getStringList(Language language, String... path) {
-        List<String> list;
-        try {
-            list = (List<String>) get(language, path);
-        } catch (ClassCastException exception) {
-            list = new ArrayList<>();
-        }
-        return list;
+    public @Nullable String getString(@NotNull Language language, @NotNull String... path) {
+        return getNode(language, path).getString();
     }
 
     @Override
-    public List<String> getStringList(Language language, LanguageAbstract path) {
-        List<String> list;
-        try {
-            list = (List<String>) get(language, path);
-        } catch (ClassCastException exception) {
-            list = new ArrayList<>();
-        }
-        return list;
+    public @Nullable String getString(@NotNull Language language, @NotNull LanguageAbstract path) {
+        return getString(language, path.getPath());
     }
 
     @Override
-    public Language getLanguage(CorePlugin corePlugin, String isocode) {
+    public @Nullable List<String> getStringList(@NotNull Language language, @NotNull String... path) {
+        return getList(String.class, language, path);
+    }
+
+    @Override
+    public @Nullable List<String> getStringList(@NotNull Language language, @NotNull LanguageAbstract path) {
+        return getStringList(language, path.getPath());
+    }
+
+    @Override
+    public @Nullable Language getLanguage(@NotNull CorePlugin corePlugin, @NotNull String isocode) {
         for (LanguageProvider languageProvider : languages) {
             if (languageProvider.getIsocode().equals(isocode) && languageProvider.getPlugin() == corePlugin)
                 return languageProvider;
@@ -153,7 +100,7 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public List<Language> getAllLanguages(CorePlugin corePlugin) {
+    public @NotNull List<Language> getLanguages(@NotNull CorePlugin corePlugin) {
         ArrayList<Language> temp = new ArrayList<>();
         for (LanguageProvider languageProvider : languages)
             if (languageProvider.getPlugin().getName().equals(corePlugin.getName()))
@@ -162,24 +109,24 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public List<String> getAllLanguageIsocodes(CorePlugin corePlugin) {
+    public @NotNull List<String> getLanguageIsocodes(@NotNull CorePlugin corePlugin) {
         ArrayList<String> temp = new ArrayList<>();
-        for (Language language : getAllLanguages(corePlugin)) temp.add(language.getName());
+        for (Language language : getLanguages(corePlugin)) temp.add(language.getName());
         return temp;
     }
 
     @Override
-    public Language getDefaultLanguage(CorePlugin corePlugin) {
+    public @NotNull Language getDefaultLanguage(@NotNull CorePlugin corePlugin) {
         return getLanguage(corePlugin, defaultLanguageIsocode);
     }
 
     @Override
-    public String getDefaultLanguageIsocode() {
+    public @NotNull String getDefaultLanguageIsocode() {
         return defaultLanguageIsocode;
     }
 
     @Override
-    public void setDefaultLanguageIsocode(String isocode) {
+    public void setDefaultLanguageIsocode(@NotNull String isocode) {
         defaultLanguageIsocode = isocode;
     }
 }

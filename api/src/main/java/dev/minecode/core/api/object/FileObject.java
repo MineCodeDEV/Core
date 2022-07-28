@@ -1,5 +1,6 @@
 package dev.minecode.core.api.object;
 
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
@@ -15,10 +16,10 @@ public interface FileObject {
 
     boolean save();
 
-    File getFile();
+    @NotNull File getFile();
 
-    YamlConfigurationLoader getLoader();
+    @NotNull YamlConfigurationLoader getLoader();
 
-    ConfigurationNode getConf();
+    @NotNull ConfigurationNode getRoot();
 
 }

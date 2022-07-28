@@ -5,6 +5,7 @@ import dev.minecode.core.api.manager.FileManager;
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.common.api.object.FileObjectProvider;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.util.Arrays;
@@ -22,31 +23,31 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void makeInstances() {
-        config = getFileObject(CoreAPI.getInstance().getThisCorePlugin(), "config.yml");
+        config = getFileObject(CoreAPI.getInstance().getCorePlugin(), "config.yml");
 
-        if (!config.getConf().node("database", "enable").getBoolean())
-            players = getFileObject(CoreAPI.getInstance().getThisCorePlugin(), "players.yml");
+        if (!config.getRoot().node("database", "enable").getBoolean())
+            players = getFileObject(CoreAPI.getInstance().getCorePlugin(), "players.yml");
     }
 
     @Override
     public boolean saveData() {
-        if (!CoreAPI.getInstance().isUsingSQL())
+        if (!CoreAPI.getInstance().getDatabaseManager().isUsingSQL())
             return players.save();
         return false;
     }
 
     @Override
-    public FileObject getPlayers() {
+    public @NotNull FileObject getPlayers() {
         return players;
     }
 
     @Override
-    public FileObject getConfig() {
+    public @NotNull FileObject getConfig() {
         return config;
     }
 
     @Override
-    public FileObject getFileObject(CorePlugin corePlugin, String fileName, String... folders) {
+    public @NotNull FileObject getFileObject(@NotNull CorePlugin corePlugin, @NotNull String fileName, @NotNull String... folders) {
         if (fileObjects.containsKey(corePlugin.getName() + fileName + Arrays.toString(folders)))
             return fileObjects.get(corePlugin.getName() + fileName + Arrays.toString(folders));
 
@@ -56,7 +57,7 @@ public class FileManagerProvider implements FileManager {
     }
 
     @Override
-    public FileObject getFileObject(CorePlugin corePlugin, String fileName) {
+    public @NotNull FileObject getFileObject(@NotNull CorePlugin corePlugin, @NotNull String fileName) {
         if (fileObjects.containsKey(corePlugin.getName() + fileName))
             return fileObjects.get(corePlugin.getName() + fileName);
 
@@ -66,8 +67,8 @@ public class FileManagerProvider implements FileManager {
     }
 
     @Override
-    public FileObject getFileObject(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers, String... folders) {
-        if (fileObjects.containsKey(corePlugin.getName() + fileName + typeSerializers.toString() + Arrays.toString(folders)))
+    public @NotNull FileObject getFileObject(@NotNull CorePlugin corePlugin, @NotNull String fileName, @NotNull HashMap<Class, TypeSerializer> typeSerializers, String... folders) {
+        if (fileObjects.containsKey(corePlugin.getName() + fileName + typeSerializers + Arrays.toString(folders)))
             return fileObjects.get(corePlugin.getName() + fileName + typeSerializers + Arrays.toString(folders));
 
         FileObjectProvider fileObjectProvider = new FileObjectProvider(corePlugin, fileName, typeSerializers, folders);
@@ -76,8 +77,8 @@ public class FileManagerProvider implements FileManager {
     }
 
     @Override
-    public FileObject getFileObject(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers) {
-        if (fileObjects.containsKey(corePlugin.getName() + fileName + typeSerializers.toString()))
+    public @NotNull FileObject getFileObject(@NotNull CorePlugin corePlugin, @NotNull String fileName, @NotNull HashMap<Class, TypeSerializer> typeSerializers) {
+        if (fileObjects.containsKey(corePlugin.getName() + fileName + typeSerializers))
             return fileObjects.get(corePlugin.getName() + fileName + typeSerializers);
 
         FileObjectProvider fileObjectProvider = new FileObjectProvider(corePlugin, fileName, typeSerializers);

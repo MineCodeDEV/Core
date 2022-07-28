@@ -2,9 +2,11 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.manager.PluginManager;
 import dev.minecode.core.api.object.CorePlugin;
-import dev.minecode.core.api.object.CorePluginVersion;
+import dev.minecode.core.api.object.CorePluginSoftware;
 import dev.minecode.core.common.api.object.CorePluginProvider;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class PluginManagerProvider implements PluginManager {
     }
 
     @Override
-    public CorePlugin getPlugin(String name) {
+    public CorePlugin getPlugin(@NotNull String name) {
         for (CorePlugin corePlugin : plugins)
             if (corePlugin.getName().equals(name))
                 return corePlugin;
@@ -29,11 +31,11 @@ public class PluginManagerProvider implements PluginManager {
     }
 
     @Override
-    public CorePlugin registerPlugin(Class mainClass, String name, String version, CorePluginVersion pluginVersion, boolean loadMessageFiles) {
+    public @NotNull CorePlugin registerPlugin(@NotNull Class mainClass, @NotNull String name, @NotNull String version, @NotNull File dataFolder, @NotNull CorePluginSoftware pluginVersion, boolean loadMessageFiles) {
         CorePlugin corePlugin = getPlugin(name);
         if (corePlugin != null) return corePlugin;
 
-        corePlugin = new CorePluginProvider(mainClass, name, version, pluginVersion, loadMessageFiles);
+        corePlugin = new CorePluginProvider(mainClass, name, version, pluginVersion, dataFolder, loadMessageFiles);
         plugins.add(corePlugin);
 
         if (loadMessageFiles) LanguageManagerProvider.loadMessageFiles(corePlugin);
@@ -44,12 +46,12 @@ public class PluginManagerProvider implements PluginManager {
     }
 
     @Override
-    public boolean unregisterPlugin(CorePlugin corePlugin) {
+    public boolean unregisterPlugin(@NotNull CorePlugin corePlugin) {
         return plugins.remove(corePlugin);
     }
 
     @Override
-    public List<CorePlugin> getPlugins() {
+    public @NotNull List<CorePlugin> getPlugins() {
         return plugins;
     }
 }

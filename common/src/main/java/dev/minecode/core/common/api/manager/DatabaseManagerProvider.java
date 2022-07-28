@@ -2,32 +2,39 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.DatabaseManager;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import java.sql.*;
 
 public class DatabaseManagerProvider implements DatabaseManager {
 
+    private final ConfigurationNode root;
+
     private Connection connection;
     private String host, database, username, password;
     private int port;
     private Statement statement;
 
+    private final boolean usingSQL;
+
     public DatabaseManagerProvider() {
+        root = CoreAPI.getInstance().getFileManager().getConfig().getRoot();
+        usingSQL = root.node("database", "enable").getBoolean();
+
         setData();
-        if (CoreAPI.getInstance().isUsingSQL()) {
+        if (usingSQL) {
             connect();
             checkTables();
         }
     }
 
     private void setData() {
-        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getConf();
-        host = conf.node("database", "host").getString();
-        port = conf.node("database", "port").getInt();
-        database = conf.node("database", "database").getString();
-        username = conf.node("database", "username").getString();
-        password = conf.node("database", "password").getString();
+        host = root.node("database", "host").getString();
+        port = root.node("database", "port").getInt();
+        database = root.node("database", "database").getString();
+        username = root.node("database", "username").getString();
+        password = root.node("database", "password").getString();
     }
 
     @Override
@@ -64,12 +71,11 @@ public class DatabaseManagerProvider implements DatabaseManager {
     }
 
     @Override
-    public Connection getConnection() {
+    public @Nullable Connection getConnection() {
         try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
+            if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL())
                 if (connection == null || connection.isClosed() || !connection.isValid(2))
                     connect();
-            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -77,13 +83,17 @@ public class DatabaseManagerProvider implements DatabaseManager {
     }
 
     @Override
-    public Statement getStatement() {
-        getConnection();
+    public @Nullable Statement getStatement() {
         try {
-            statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            statement = getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return statement;
+    }
+
+    @Override
+    public boolean isUsingSQL() {
+        return usingSQL;
     }
 }

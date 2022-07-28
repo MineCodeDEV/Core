@@ -1,14 +1,16 @@
 package dev.minecode.core.api.object;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface Language {
 
-    CorePlugin getPlugin();
+    @NotNull CorePlugin getPlugin();
 
-    String getIsocode();
+    @NotNull String getIsocode();
 
-    String getName();
+    @NotNull String getName();
 
-    String getDisplayname();
+    @NotNull String getDisplayname();
 
-    FileObject getFileObject();
+    @NotNull FileObject getFileObject();
 }

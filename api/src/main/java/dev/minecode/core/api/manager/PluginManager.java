@@ -1,18 +1,21 @@
 package dev.minecode.core.api.manager;
 
 import dev.minecode.core.api.object.CorePlugin;
-import dev.minecode.core.api.object.CorePluginVersion;
+import dev.minecode.core.api.object.CorePluginSoftware;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.List;
 
 public interface PluginManager {
 
-    CorePlugin getPlugin(String name);
+    @Nullable CorePlugin getPlugin(@NotNull String name);
 
-    CorePlugin registerPlugin(Class mainClass, String name, String version, CorePluginVersion pluginVersion, boolean loadMessageFiles);
+    @NotNull CorePlugin registerPlugin(@NotNull Class mainClass, @NotNull String name, @NotNull String version, @NotNull File dataFolder, @NotNull CorePluginSoftware pluginVersion, boolean loadMessageFiles);
 
-    boolean unregisterPlugin(CorePlugin corePlugin);
+    boolean unregisterPlugin(@NotNull CorePlugin corePlugin);
 
-    List<CorePlugin> getPlugins();
+    @NotNull List<CorePlugin> getPlugins();
 
 }

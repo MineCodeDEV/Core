@@ -1,5 +1,8 @@
 package dev.minecode.core.api.object;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.UUID;
 
 public interface CorePlayer {
@@ -8,22 +11,19 @@ public interface CorePlayer {
 
     boolean save();
 
-    UUID getUuid();
+    @NotNull UUID getUuid();
 
-    boolean setUuid(UUID uuid);
+    @NotNull String getName();
 
-    String getName();
+    void setName(@NotNull String name);
 
-    boolean setName(String name);
+    @Nullable String getLanguageIsoCode();
 
-    Language getLanguage(CorePlugin corePlugin);
+    @Nullable Language getLanguage(@NotNull CorePlugin corePlugin);
 
-    String getLanguageIsoCode();
-
-    void setLanguage(String isocode);
+    void setLanguage(@Nullable String isocode);
 
     boolean isLanguageEmpty();
 
-    boolean isExists();
 
 }

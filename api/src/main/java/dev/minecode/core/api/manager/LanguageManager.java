@@ -3,49 +3,42 @@ package dev.minecode.core.api.manager;
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public interface LanguageManager {
 
-    Object get(Language language, String... path);
+    // universal
+    @Nullable <T> T get(@NotNull Class<T> type, @NotNull Language language, @NotNull String... path);
 
-    Object get(Language language, LanguageAbstract path);
+    @Nullable <T> T get(@NotNull Class<T> type, @NotNull Language language, @NotNull LanguageAbstract path);
 
-    String getString(Language language, String... path);
+    @Nullable <T> List<T> getList(@NotNull Class<T> type, @NotNull Language language, @NotNull String... path);
 
-    String getString(Language language, LanguageAbstract path);
+    @Nullable <T> List<T> getList(@NotNull Class<T> type, @NotNull Language language, @NotNull LanguageAbstract path);
 
-    int getInt(Language language, String... path);
+    // String
+    @Nullable String getString(@NotNull Language language, @NotNull String... path);
 
-    int getInt(Language language, LanguageAbstract path);
+    @Nullable String getString(@NotNull Language language, @NotNull LanguageAbstract path);
 
-    boolean getBoolean(Language language, String... path);
+    @Nullable List<String> getStringList(@NotNull Language language, @NotNull String... path);
 
-    boolean getBoolean(Language language, LanguageAbstract path);
+    @Nullable List<String> getStringList(@NotNull Language language, @NotNull LanguageAbstract path);
 
-    long getLong(Language language, String... path);
 
-    long getLong(Language language, LanguageAbstract path);
+    @Nullable Language getLanguage(@NotNull CorePlugin corePlugin, @NotNull String isocode);
 
-    List<Object> getList(Language language, String... path);
+    @NotNull List<Language> getLanguages(@NotNull CorePlugin corePlugin);
 
-    List<Object> getList(Language language, LanguageAbstract path);
+    @NotNull List<String> getLanguageIsocodes(@NotNull CorePlugin corePlugin);
 
-    List<String> getStringList(Language language, String... path);
+    @NotNull Language getDefaultLanguage(@NotNull CorePlugin corePlugin);
 
-    List<String> getStringList(Language language, LanguageAbstract path);
+    @NotNull String getDefaultLanguageIsocode();
 
-    Language getLanguage(CorePlugin corePlugin, String isocode);
-
-    List<Language> getAllLanguages(CorePlugin corePlugin);
-
-    List<String> getAllLanguageIsocodes(CorePlugin corePlugin);
-
-    Language getDefaultLanguage(CorePlugin corePlugin);
-
-    String getDefaultLanguageIsocode();
-
-    void setDefaultLanguageIsocode(String isocode);
+    void setDefaultLanguageIsocode(@NotNull String isocode);
 
 }

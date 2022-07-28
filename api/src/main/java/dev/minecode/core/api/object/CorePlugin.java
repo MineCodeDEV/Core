@@ -1,14 +1,20 @@
 package dev.minecode.core.api.object;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+
 public interface CorePlugin {
 
-    Class getMainClass();
+    @NotNull Class getMainClass();
 
-    String getName();
+    @NotNull String getName();
 
-    String getVersion();
+    @NotNull String getVersion();
 
-    CorePluginVersion getPluginVersion();
+    @NotNull CorePluginSoftware getPluginSoftware();
+
+    @NotNull File getDataFolder();
 
     boolean isLoadMessageFiles();
 

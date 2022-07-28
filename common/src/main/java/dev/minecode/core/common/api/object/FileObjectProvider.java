@@ -2,6 +2,7 @@ package dev.minecode.core.common.api.object;
 
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.TypeSerializer;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class FileObjectProvider implements FileObject {
 
     // directories
-    private static final String pluginsDirectoryPath = "plugins/";
+    private final String pluginsDirectoryPath = "plugins/";
 
     // files
     private final String fileStreamPath;
@@ -31,7 +32,7 @@ public class FileObjectProvider implements FileObject {
 
     // Configurate
     private YamlConfigurationLoader loader;
-    private ConfigurationNode conf;
+    private ConfigurationNode root;
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, String... folders) {
         StringBuilder foldersStringBuilder = new StringBuilder();
@@ -39,16 +40,16 @@ public class FileObjectProvider implements FileObject {
             foldersStringBuilder.append(temp).append("/");
 
         this.corePlugin = corePlugin;
-        this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName;
-        this.file = new File(pluginsDirectoryPath + "/" + corePlugin.getName() + "/" + foldersStringBuilder, fileName);
+        this.fileStreamPath = foldersStringBuilder + fileName;
+        this.file = new File(corePlugin.getDataFolder().getPath() + "/" + foldersStringBuilder, fileName);
 
         load();
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName) {
         this.corePlugin = corePlugin;
-        this.fileStreamPath = corePlugin.getName() + "/" + fileName;
-        this.file = new File(pluginsDirectoryPath + "/" + corePlugin.getName(), fileName);
+        this.fileStreamPath = fileName;
+        this.file = new File(corePlugin.getDataFolder().getPath(), fileName);
 
         load();
     }
@@ -59,36 +60,30 @@ public class FileObjectProvider implements FileObject {
             foldersStringBuilder.append(temp).append("/");
 
         this.corePlugin = corePlugin;
-        this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName;
-        this.file = new File(pluginsDirectoryPath + "/" + corePlugin.getName() + "/" + foldersStringBuilder, fileName);
+        this.fileStreamPath = foldersStringBuilder + fileName;
+        this.file = new File(corePlugin.getDataFolder().getPath() + "/" + foldersStringBuilder, fileName);
 
         load(typeSerializers);
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers) {
         this.corePlugin = corePlugin;
-        this.fileStreamPath = corePlugin.getName() + "/" + fileName;
-        this.file = new File(pluginsDirectoryPath + "/" + corePlugin.getName(), fileName);
+        this.fileStreamPath = fileName;
+        this.file = new File(corePlugin.getDataFolder().getPath(), fileName);
 
         load(typeSerializers);
     }
 
-    public boolean load() {
-        boolean success = true;
+    public void load() {
         if (!file.exists())
-            success = createFile();
-
-        if (success) return reload();
-        return false;
+            createFile();
+        reload();
     }
 
-    public boolean load(HashMap<Class, TypeSerializer> typeSerializers) {
-        boolean success = true;
+    public void load(HashMap<Class, TypeSerializer> typeSerializers) {
         if (!file.exists())
-            success = createFile();
-
-        if (success) return reload(typeSerializers);
-        return false;
+            createFile();
+        reload(typeSerializers);
     }
 
     public boolean createFile() {
@@ -119,7 +114,7 @@ public class FileObjectProvider implements FileObject {
     public boolean reload() {
         this.loader = YamlConfigurationLoader.builder().nodeStyle(NodeStyle.BLOCK).file(file).build();
         try {
-            conf = loader.load();
+            root = loader.load();
             return true;
         } catch (ConfigurateException e) {
             e.printStackTrace();
@@ -134,7 +129,7 @@ public class FileObjectProvider implements FileObject {
                 builder.register(serializers.getKey(), serializers.getValue());
         })).file(file).build();
         try {
-            conf = loader.load();
+            root = loader.load();
             return true;
         } catch (ConfigurateException e) {
             e.printStackTrace();
@@ -145,7 +140,7 @@ public class FileObjectProvider implements FileObject {
     @Override
     public boolean save() {
         try {
-            loader.save(conf);
+            loader.save(root);
             return true;
         } catch (ConfigurateException e) {
             e.printStackTrace();
@@ -154,18 +149,18 @@ public class FileObjectProvider implements FileObject {
     }
 
     @Override
-    public File getFile() {
+    public @NotNull File getFile() {
         return file;
     }
 
     @Override
-    public YamlConfigurationLoader getLoader() {
+    public @NotNull YamlConfigurationLoader getLoader() {
         return loader;
     }
 
     @Override
-    public ConfigurationNode getConf() {
-        return conf;
+    public @NotNull ConfigurationNode getRoot() {
+        return root;
     }
 
     private InputStream getResourceAsStream(String fileName) {

@@ -3,26 +3,27 @@ package dev.minecode.core.api.manager;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.Language;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.jetbrains.annotations.NotNull;
 
 public interface ReplaceManager {
 
-    ReplaceManager replaceAll(String toReplace, String replaceWith);
+    @NotNull ReplaceManager replaceAll(@NotNull String toReplace, @NotNull String replaceWith);
 
-    ReplaceManager args(String command, String[] args, String replacement);
+    @NotNull ReplaceManager args(@NotNull String command, @NotNull String[] args, @NotNull String replacement);
 
-    ReplaceManager chatcolorColor();
+    @NotNull ReplaceManager chatcolorColor();
 
-    ReplaceManager chatcolorFormat();
+    @NotNull ReplaceManager chatcolorFormat();
 
-    ReplaceManager chatcolorMagic();
+    @NotNull ReplaceManager chatcolorMagic();
 
-    ReplaceManager chatcolorAll();
+    @NotNull ReplaceManager chatcolorAll();
 
-    ReplaceManager corePlayer(CorePlayer corePlayer, String replacement);
+    @NotNull ReplaceManager corePlayer(@NotNull CorePlayer corePlayer, @NotNull String replacement);
 
-    ReplaceManager language(Language language, String replacement);
+    @NotNull ReplaceManager language(@NotNull Language language, @NotNull String replacement);
 
-    String getMessage();
+    @NotNull String getMessage();
 
-    BaseComponent[] getBaseMessage();
+    @NotNull BaseComponent[] getBaseMessage();
 }

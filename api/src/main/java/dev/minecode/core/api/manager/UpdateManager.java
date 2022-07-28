@@ -1,18 +1,21 @@
 package dev.minecode.core.api.manager;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public interface UpdateManager {
 
-    boolean updateAvailable();
+    boolean checkUpdateAvailable();
 
-    String getMatchingRelease();
+    @Nullable String getMatchingRelease();
 
-    String getReleaseURL(String version);
+    @Nullable String getReleaseURL(@NotNull String version);
 
-    String getLatestFullRelease();
+    @Nullable String getLatestFullRelease();
 
-    String getLatestPreRelease();
+    @Nullable String getLatestPreRelease();
 
-    String getLatestRelease();
+    @Nullable String getLatestRelease();
 
     boolean isUpdateNotification();
 

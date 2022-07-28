@@ -1,6 +1,6 @@
 package dev.minecode.core.api.object;
 
-public enum CorePluginVersion {
+public enum CorePluginSoftware {
 
     SPIGOT,
     BUNGEECORD,

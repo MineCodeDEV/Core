@@ -1,13 +1,14 @@
 package dev.minecode.core.api.manager;
 
 import dev.minecode.core.api.object.CorePlayer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 public interface PlayerManager {
 
-    CorePlayer getPlayer(UUID uuid);
+    @Nullable CorePlayer getPlayer(UUID uuid);
 
-    CorePlayer getPlayer(String name);
+    @Nullable CorePlayer getPlayer(String name);
 
 }

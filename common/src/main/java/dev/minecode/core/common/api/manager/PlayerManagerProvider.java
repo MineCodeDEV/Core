@@ -2,30 +2,25 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.manager.PlayerManager;
 import dev.minecode.core.api.object.CorePlayer;
+import dev.minecode.core.common.api.object.CorePlayerProvider;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public abstract class PlayerManagerProvider implements PlayerManager {
-
+public class PlayerManagerProvider implements PlayerManager {
     @Override
-    public CorePlayer getPlayer(UUID uuid) {
-        CorePlayer corePlayer = newPlayer(uuid);
-        if (corePlayer.isExists()) {
-            return corePlayer;
-        }
+    public @Nullable CorePlayer getPlayer(UUID uuid) {
+        CorePlayerProvider corePlayerProvider = new CorePlayerProvider(uuid);
+        if (corePlayerProvider.isExists())
+            return corePlayerProvider;
         return null;
     }
 
     @Override
-    public CorePlayer getPlayer(String name) {
-        CorePlayer corePlayer = newPlayer(name);
-        if (corePlayer.isExists()) {
-            return corePlayer;
-        }
+    public @Nullable CorePlayer getPlayer(String name) {
+        CorePlayerProvider corePlayerProvider = new CorePlayerProvider(name);
+        if (corePlayerProvider.isExists())
+            return corePlayerProvider;
         return null;
     }
-
-    public abstract CorePlayer newPlayer(UUID uuid);
-
-    public abstract CorePlayer newPlayer(String name);
 }

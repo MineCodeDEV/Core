@@ -4,7 +4,7 @@ import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
-import dev.minecode.core.common.api.manager.LanguageManagerProvider;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurationNode;
 
 public class LanguageProvider implements Language {
@@ -16,11 +16,10 @@ public class LanguageProvider implements Language {
     private final FileObject fileObject;
 
     public LanguageProvider(CorePlugin corePlugin, String isocode) {
-        LanguageManagerProvider.getLanguages().add(this);
         this.corePlugin = corePlugin;
         this.isocode = isocode;
 
-        ConfigurationNode configNode = CoreAPI.getInstance().getFileManager().getConfig().getConf().node("language", "languages", this.isocode);
+        ConfigurationNode configNode = CoreAPI.getInstance().getFileManager().getConfig().getRoot().node("language", "languages", this.isocode);
         this.fileObject = CoreAPI.getInstance().getFileManager().getFileObject(corePlugin, isocode + ".yml", "message");
 
         this.name = configNode.node("name").getString();
@@ -28,27 +27,27 @@ public class LanguageProvider implements Language {
     }
 
     @Override
-    public CorePlugin getPlugin() {
+    public @NotNull CorePlugin getPlugin() {
         return corePlugin;
     }
 
     @Override
-    public String getIsocode() {
+    public @NotNull String getIsocode() {
         return isocode;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 
     @Override
-    public String getDisplayname() {
+    public @NotNull String getDisplayname() {
         return displayname;
     }
 
     @Override
-    public FileObject getFileObject() {
+    public @NotNull FileObject getFileObject() {
         return fileObject;
     }
 }

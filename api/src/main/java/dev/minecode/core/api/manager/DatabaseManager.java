@@ -1,5 +1,7 @@
 package dev.minecode.core.api.manager;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.sql.Connection;
 import java.sql.Statement;
 
@@ -9,8 +11,10 @@ public interface DatabaseManager {
 
     boolean disconnect();
 
-    Connection getConnection();
+    @Nullable Connection getConnection();
 
-    Statement getStatement();
+    @Nullable Statement getStatement();
+
+    boolean isUsingSQL();
 
 }

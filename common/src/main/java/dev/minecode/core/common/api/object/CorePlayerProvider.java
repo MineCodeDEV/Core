@@ -1,4 +1,4 @@
-package dev.minecode.core.bungeecord.api.object;
+package dev.minecode.core.common.api.object;
 
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlayer;
@@ -6,8 +6,8 @@ import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.common.CoreCommon;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
@@ -22,8 +22,8 @@ public class CorePlayerProvider implements CorePlayer {
     private static final UUID consoleUUID = new UUID(0, 0);
     private static final String consoleName = "CONSOLE";
 
-    private static final FileObject playersFileObject = CoreAPI.getInstance().getFileManager().getPlayers();
-    private static ConfigurationNode playersConf;
+    private static final FileObject dataFileObject = CoreAPI.getInstance().getFileManager().getPlayers();
+    private static ConfigurationNode dataRoot;
 
     private UUID uuid;
     private String name;
@@ -32,30 +32,26 @@ public class CorePlayerProvider implements CorePlayer {
     private Statement statement;
     private ResultSet resultSet;
 
-    public CorePlayerProvider(UUID uuid) {
+    public CorePlayerProvider(@NotNull UUID uuid) {
         makeInstances();
         this.uuid = uuid;
         load();
     }
 
-    public CorePlayerProvider(String name) {
+    public CorePlayerProvider(@NotNull String name) {
         makeInstances();
         this.uuid = getUuid(name);
         load();
     }
 
-    private static boolean create(UUID uuid, String name, String languageIsocode) {
+    private static boolean create(@NotNull UUID uuid, @NotNull String name) {
         try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
-                String tempLanguageIsocode = null;
-                if (languageIsocode != null)
-                    tempLanguageIsocode = "'" + languageIsocode + "'";
-                CoreAPI.getInstance().getDatabaseManager().getStatement().executeUpdate("INSERT INTO minecode_players (UUID, NAME, LANGUAGE) VALUES ('" + uuid.toString() + "', '" + name + "', " + tempLanguageIsocode + ")");
+            if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
+                CoreAPI.getInstance().getDatabaseManager().getStatement().executeUpdate("INSERT INTO minecode_players (UUID, NAME, LANGUAGE) VALUES ('" + uuid + "', '" + name + "', " + null + ")");
                 return true;
             }
 
-            playersConf.node(uuid.toString(), "name").set(name);
-            playersConf.node(uuid.toString(), "language").set(languageIsocode);
+            dataRoot.node(uuid.toString(), "name").set(name);
             return true;
         } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();
@@ -63,20 +59,16 @@ public class CorePlayerProvider implements CorePlayer {
         }
     }
 
-    public static UUID getUuid(String name) {
-        if (name != null && name.equals(consoleName)) return consoleUUID;
-
-        ProxiedPlayer proxiedPlayer;
-        if ((proxiedPlayer = ProxyServer.getInstance().getPlayer(name)) != null)
-            return proxiedPlayer.getUniqueId();
+    public static UUID getUuid(@NotNull String name) {
+        if (name.equals(consoleName)) return consoleUUID;
 
         try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
+            if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
                 ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT UUID FROM minecode_players WHERE UPPER(NAME) = UPPER('" + name + "')");
                 if (resultSet.next())
                     return UUID.fromString(resultSet.getString("UUID"));
             } else
-                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : playersConf.childrenMap().entrySet())
+                for (Map.Entry<Object, ? extends ConfigurationNode> uuidNode : dataRoot.childrenMap().entrySet())
                     if (uuidNode.getValue().node("name").getString().equalsIgnoreCase(name))
                         return UUID.fromString((String) uuidNode.getKey());
         } catch (SQLException throwables) {
@@ -86,19 +78,15 @@ public class CorePlayerProvider implements CorePlayer {
         return CoreCommon.getInstance().getUuidFetcher().getUUID(name);
     }
 
-    public static String getName(UUID uuid) {
+    public static String getName(@NotNull UUID uuid) {
         if (uuid == consoleUUID) return consoleName;
 
-        ProxiedPlayer proxiedPlayer;
-        if ((proxiedPlayer = ProxyServer.getInstance().getPlayer(uuid)) != null)
-            return proxiedPlayer.getName();
-
         try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
+            if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
                 ResultSet resultSet = CoreAPI.getInstance().getDatabaseManager().getStatement().executeQuery("SELECT NAME FROM minecode_players WHERE UUID = '" + uuid + "'");
                 if (resultSet.next())
                     return resultSet.getString("NAME");
-            } else return playersConf.node(uuid.toString(), "name").getString();
+            } else return dataRoot.node(uuid.toString(), "name").getString();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -107,17 +95,13 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     public void makeInstances() {
-        if (CoreAPI.getInstance().isUsingSQL())
+        if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL())
             statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
-        else
-            playersConf = playersFileObject.getConf();
+        else dataRoot = dataFileObject.getRoot();
     }
 
     public void load() {
-        if (uuid == null) {
-            exists = false;
-            return;
-        }
+        if (uuid == null) return;
 
         if (uuid == consoleUUID || (name != null && name.equalsIgnoreCase(consoleName))) {
             uuid = consoleUUID;
@@ -127,16 +111,14 @@ public class CorePlayerProvider implements CorePlayer {
         }
 
         try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
+            if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
                 resultSet = statement.executeQuery("SELECT UUID FROM minecode_players WHERE UUID = '" + uuid.toString() + "'");
                 exists = resultSet.next();
-            } else
-                exists = !playersConf.node(String.valueOf(uuid)).empty();
+            } else exists = !dataRoot.node(String.valueOf(uuid)).empty();
 
             if (!exists) {
-                name = getName(uuid);
-
-                if (uuid != null && name != null) exists = create(uuid, name, null);
+                if (name == null) name = getName(uuid);
+                if (uuid != null && name != null) exists = create(uuid, name);
             } else reload();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -154,7 +136,7 @@ public class CorePlayerProvider implements CorePlayer {
 
         if (exists) {
             try {
-                if (CoreAPI.getInstance().isUsingSQL()) {
+                if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
                     resultSet = statement.executeQuery("SELECT * FROM minecode_players WHERE UUID = '" + uuid + "'");
                     if (resultSet.next()) {
                         name = resultSet.getString("NAME");
@@ -162,13 +144,12 @@ public class CorePlayerProvider implements CorePlayer {
                         return true;
                     }
                 } else {
-                    name = playersConf.node(uuid.toString(), "name").getString();
-                    languageIsocode = playersConf.node(uuid.toString(), "language").getString();
+                    name = dataRoot.node(uuid.toString(), "name").getString();
+                    languageIsocode = dataRoot.node(uuid.toString(), "language").getString();
                     return true;
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                return false;
             }
         }
         return false;
@@ -180,52 +161,40 @@ public class CorePlayerProvider implements CorePlayer {
 
         if (exists) {
             try {
-                if (CoreAPI.getInstance().isUsingSQL()) {
+                if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
                     resultSet.updateString("UUID", String.valueOf(uuid));
                     resultSet.updateString("NAME", name);
                     resultSet.updateString("LANGUAGE", languageIsocode);
                     resultSet.updateRow();
                 } else {
-                    playersConf.node(uuid.toString(), "name").set(name);
-                    playersConf.node(uuid.toString(), "language").set(languageIsocode);
+                    dataRoot.node(uuid.toString(), "name").set(name);
+                    dataRoot.node(uuid.toString(), "language").set(languageIsocode);
                 }
                 return true;
             } catch (SQLException | SerializationException throwables) {
                 throwables.printStackTrace();
-                return false;
             }
         }
         return false;
     }
 
     @Override
-    public UUID getUuid() {
+    public @NotNull UUID getUuid() {
         return uuid;
     }
 
     @Override
-    public boolean setUuid(UUID uuid) {
-        if (CoreCommon.getInstance().getUuidFetcher().getName(uuid) == null) return false;
-
-        this.uuid = uuid;
-        return true;
-    }
-
-    @Override
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 
     @Override
-    public boolean setName(String name) {
-        if (CoreCommon.getInstance().getUuidFetcher().getUUID(name) == null) return false;
-
+    public void setName(@NotNull String name) {
         this.name = name;
-        return true;
     }
 
     @Override
-    public Language getLanguage(CorePlugin corePlugin) {
+    public @NotNull Language getLanguage(@NotNull CorePlugin corePlugin) {
         if (languageIsocode != null)
             return CoreAPI.getInstance().getLanguageManager().getLanguage(corePlugin, languageIsocode);
         return CoreAPI.getInstance().getLanguageManager().getDefaultLanguage(corePlugin);
@@ -237,7 +206,7 @@ public class CorePlayerProvider implements CorePlayer {
     }
 
     @Override
-    public void setLanguage(String isocode) {
+    public void setLanguage(@Nullable String isocode) {
         this.languageIsocode = isocode;
     }
 
@@ -246,7 +215,6 @@ public class CorePlayerProvider implements CorePlayer {
         return languageIsocode == null;
     }
 
-    @Override
     public boolean isExists() {
         return exists;
     }

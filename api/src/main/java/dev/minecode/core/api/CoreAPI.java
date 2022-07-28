@@ -5,43 +5,45 @@ import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class CoreAPI {
 
     // Instance
     private static CoreAPI instance;
 
+    @NotNull
     public static CoreAPI getInstance() {
         return instance;
     }
 
-    public static void setInstance(CoreAPI coreAPI) {
+    public static void setInstance(@NotNull CoreAPI coreAPI) {
         CoreAPI.instance = coreAPI;
     }
 
     // Manager
-    public abstract DatabaseManager getDatabaseManager();
+    public abstract @NotNull DatabaseManager getDatabaseManager();
 
-    public abstract FileManager getFileManager();
+    public abstract @NotNull FileManager getFileManager();
 
-    public abstract LanguageManager getLanguageManager();
+    public abstract @NotNull LanguageManager getLanguageManager();
 
-    public abstract PlayerManager getPlayerManager();
+    public abstract @NotNull PlayerManager getPlayerManager();
 
-    public abstract PluginManager getPluginManager();
+    public abstract void setPlayerManager(@NotNull PlayerManager playerManager);
 
-    public abstract ReplaceManager getReplaceManager(String message);
+    public abstract @NotNull PluginManager getPluginManager();
 
-    public abstract ReplaceManager getReplaceManager(BaseComponent[] message);
+    public abstract @NotNull ReplaceManager getReplaceManager(@NotNull String message);
 
-    public abstract ReplaceManager getReplaceManager(Language language, String... path);
+    public abstract @NotNull ReplaceManager getReplaceManager(@NotNull BaseComponent[] message);
 
-    public abstract ReplaceManager getReplaceManager(Language language, LanguageAbstract path);
+    public abstract @NotNull ReplaceManager getReplaceManager(@NotNull Language language, @NotNull String... path);
 
-    public abstract UpdateManager getUpdateManager(CorePlugin corePlugin);
+    public abstract @NotNull ReplaceManager getReplaceManager(@NotNull Language language, @NotNull LanguageAbstract path);
+
+    public abstract @NotNull UpdateManager getUpdateManager(@NotNull CorePlugin corePlugin);
 
     // Getter & Setter
-    public abstract CorePlugin getThisCorePlugin();
-
-    public abstract boolean isUsingSQL();
+    public abstract @NotNull CorePlugin getCorePlugin();
 }

@@ -9,6 +9,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
+import org.jetbrains.annotations.NotNull;
 
 public class ReplaceManagerProvider implements ReplaceManager {
 
@@ -31,14 +32,14 @@ public class ReplaceManagerProvider implements ReplaceManager {
     }
 
     @Override
-    public ReplaceManager replaceAll(String toReplace, String replaceWith) {
+    public @NotNull ReplaceManager replaceAll(@NotNull String toReplace, @NotNull String replaceWith) {
         if (message != null)
             this.message = this.message.replaceAll(toReplace, replaceWith);
         return this;
     }
 
     @Override
-    public ReplaceManager args(String command, String[] args, String replacement) {
+    public @NotNull ReplaceManager args(@NotNull String command, String[] args, @NotNull String replacement) {
         replaceAll("%" + replacement + "-" + 0 + "%", command);
         for (int i = 0; i < args.length; i++) {
             replaceAll("%" + replacement + "-" + (i + 1) + "%", args[i]);
@@ -47,7 +48,7 @@ public class ReplaceManagerProvider implements ReplaceManager {
     }
 
     @Override
-    public ReplaceManager chatcolorColor() {
+    public @NotNull ReplaceManager chatcolorColor() {
         return replaceAll("&0", ChatColor.COLOR_CHAR + "0")
                 .replaceAll("&1", ChatColor.COLOR_CHAR + "1")
                 .replaceAll("&2", ChatColor.COLOR_CHAR + "2")
@@ -73,7 +74,7 @@ public class ReplaceManagerProvider implements ReplaceManager {
     }
 
     @Override
-    public ReplaceManager chatcolorFormat() {
+    public @NotNull ReplaceManager chatcolorFormat() {
         return replaceAll("&l", ChatColor.COLOR_CHAR + "l")
                 .replaceAll("&L", ChatColor.COLOR_CHAR + "l")
                 .replaceAll("&m", ChatColor.COLOR_CHAR + "m")
@@ -87,32 +88,32 @@ public class ReplaceManagerProvider implements ReplaceManager {
     }
 
     @Override
-    public ReplaceManager chatcolorMagic() {
+    public @NotNull ReplaceManager chatcolorMagic() {
         return replaceAll("&k", ChatColor.COLOR_CHAR + "k")
                 .replaceAll("&K", ChatColor.COLOR_CHAR + "k");
     }
 
     @Override
-    public ReplaceManager chatcolorAll() {
+    public @NotNull ReplaceManager chatcolorAll() {
         message = ChatColor.translateAlternateColorCodes('&', message);
         return this;
     }
 
     @Override
-    public ReplaceManager corePlayer(CorePlayer corePlayer, String replacement) {
+    public @NotNull ReplaceManager corePlayer(@NotNull CorePlayer corePlayer, @NotNull String replacement) {
         return replaceAll("%" + replacement + "UUID%", String.valueOf(corePlayer.getUuid()))
                 .replaceAll("%" + replacement + "Name%", corePlayer.getName());
     }
 
     @Override
-    public ReplaceManager language(Language language, String replacement) {
+    public @NotNull ReplaceManager language(@NotNull Language language, @NotNull String replacement) {
         return replaceAll("%" + replacement + "Isocode%", language.getIsocode())
                 .replaceAll("%" + replacement + "Name%", language.getName())
                 .replaceAll("%" + replacement + "Displayname%", language.getDisplayname());
     }
 
     @Override
-    public String getMessage() {
+    public @NotNull String getMessage() {
         if (message.startsWith("text:{"))
             return TextComponent.toLegacyText(ComponentSerializer.parse(message));
         return message;
