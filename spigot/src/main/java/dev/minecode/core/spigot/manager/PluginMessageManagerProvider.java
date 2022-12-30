@@ -7,32 +7,42 @@ import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.NetworkManager;
 import dev.minecode.core.api.manager.PluginMessageManager;
 import dev.minecode.core.api.object.CloudPlattform;
+import dev.minecode.core.api.object.QueuedPluginMessage;
+import dev.minecode.core.common.api.object.QueuedPluginMessageProvider;
+import dev.minecode.core.spigot.CoreSpigot;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PluginMessageManagerProvider implements PluginMessageManager {
 
     private final NetworkManager networkManager;
     private final Gson gson;
 
+    private final List<QueuedPluginMessage> queuedPluginMessages;
+
     public PluginMessageManagerProvider() {
         gson = new Gson();
         networkManager = CoreAPI.getInstance().getNetworkManager();
+        queuedPluginMessages = new ArrayList<>();
     }
 
     @Override
     public boolean sendPluginMessage(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message, boolean queue) {
         if (!networkManager.isEnabled()) return false;
 
-        if (networkManager.getCloudPlattform() == CloudPlattform.NONE)
-            if (networkManager.isMultiproxy()) return sendPluginMessageOverSQL(targetServer, channel, message, queue);
-            else return sendPluginMessageOverChannel(targetServer, channel, message, queue);
+        if (networkManager.getCloudPlattform() == CloudPlattform.NONE) {
+            if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL())
+                return sendPluginMessageOverSQL(targetServer, channel, message, queue);
+            if (!networkManager.isMultiproxy())
+                return sendPluginMessageOverChannel(targetServer, channel, message, queue);
+        }
 
         if (networkManager.getCloudPlattform() == CloudPlattform.CLOUDNET)
             return sendPluginMessageOverCloudNet(targetServer, channel, message, queue);
@@ -46,17 +56,26 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
         return false;
     }
 
+    @Override
+    public void executeQueue() {
+        for (int i = 0; i < queuedPluginMessages.size(); i++)
+            queuedPluginMessages.get(i).sendPluginMessage();
+    }
+
     private boolean sendPluginMessageOverChannel(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message, boolean queue) {
-        // TODO: queue einbauen, falls kein Spieler online ist
+        if (Bukkit.getOnlinePlayers().size() == 0) {
+            if (!queue) return false;
+            addPluginMessageToQueue(new QueuedPluginMessageProvider(targetServer, channel, message));
+        }
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
         String messageJson = gson.toJson(message);
         if (targetServer.equals("Proxy")) {
             out.writeUTF(channel);
-            out.writeUTF("server"); //TODO: richtigen Servernamen holen
+            out.writeUTF(CoreAPI.getInstance().getNetworkManager().getServername());
             out.writeUTF(messageJson);
-            Bukkit.getServer().sendPluginMessage(((JavaPlugin) CoreAPI.getInstance().getPluginManager().getPlugins().get(0)), "minecode:pluginmessage", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(CoreSpigot.getInstance().getMainClass(), "minecode:pluginmessage", out.toByteArray());
             return true;
         }
 
@@ -76,7 +95,7 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
         out.writeShort(msgbytes.toByteArray().length);
         out.write(msgbytes.toByteArray());
 
-        Bukkit.getServer().sendPluginMessage(((JavaPlugin) CoreAPI.getInstance().getPluginManager().getPlugins().get(0)), "BungeeCord", out.toByteArray());
+        Bukkit.getServer().sendPluginMessage(CoreSpigot.getInstance().getMainClass(), "BungeeCord", out.toByteArray());
         return true;
     }
 
@@ -96,4 +115,12 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
         return false;
     }
 
+    public boolean addPluginMessageToQueue(QueuedPluginMessage queuedPluginMessage) {
+        return queuedPluginMessages.add(queuedPluginMessage);
+    }
+
+    @Override
+    public List<QueuedPluginMessage> getQueuedPluginMessages() {
+        return new ArrayList<>(queuedPluginMessages);
+    }
 }

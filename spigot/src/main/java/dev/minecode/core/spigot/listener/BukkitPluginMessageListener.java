@@ -16,7 +16,6 @@ import java.util.HashMap;
 
 public class BukkitPluginMessageListener implements PluginMessageListener {
 
-    public static boolean registered;
     private final Gson gson;
     private final Type type;
 
@@ -34,13 +33,14 @@ public class BukkitPluginMessageListener implements PluginMessageListener {
             return;
         }
 
-        if (bukkitChannel.equals("minecode:intern")) {
+        if (bukkitChannel.equals("BungeeCord")) {
             ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
             String channel = in.readUTF();
 
             if (channel.equals("GetServer")) {
                 CoreAPI.getInstance().getNetworkManager().setServername(in.readUTF());
-                return;
+                if (!CoreAPI.getInstance().getPluginMessageManager().getQueuedPluginMessages().isEmpty())
+                    CoreAPI.getInstance().getPluginMessageManager().executeQueue();
             }
         }
     }

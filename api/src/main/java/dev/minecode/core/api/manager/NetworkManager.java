@@ -13,6 +13,8 @@ public interface NetworkManager {
 
     void setServername(String servername);
 
+    boolean isServernameSet();
+
     @NotNull CloudPlattform getCloudPlattform();
 
 }

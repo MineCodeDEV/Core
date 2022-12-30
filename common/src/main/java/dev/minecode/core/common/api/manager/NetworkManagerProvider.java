@@ -12,6 +12,8 @@ public class NetworkManagerProvider implements NetworkManager {
     private final CloudPlattform cloudPlattform;
     private String servername;
 
+    private boolean servernameSet;
+
     public NetworkManagerProvider() {
         ConfigurationNode root = CoreAPI.getInstance().getFileManager().getNetwork().getRoot();
 
@@ -38,7 +40,13 @@ public class NetworkManagerProvider implements NetworkManager {
 
     @Override
     public void setServername(String servername) {
+        this.servernameSet = true;
         this.servername = servername;
+    }
+
+    @Override
+    public boolean isServernameSet() {
+        return servernameSet;
     }
 
     @Override
