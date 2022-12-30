@@ -3,9 +3,9 @@ package dev.minecode.core.common.api;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.*;
 import dev.minecode.core.api.object.CorePlugin;
-import dev.minecode.core.api.object.CorePluginSoftware;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
+import dev.minecode.core.api.object.PluginPlattform;
 import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.common.api.manager.*;
 import dev.minecode.core.common.api.object.CorePluginProvider;
@@ -20,8 +20,10 @@ public class CoreAPIProvider extends CoreAPI {
     private DatabaseManagerProvider databaseManagerProvider;
     private FileManagerProvider fileManagerProvider;
     private LanguageManagerProvider languageManagerProvider;
-    private PlayerManager playerManager;
+    private NetworkManagerProvider networkManagerProvider;
+    private PlayerManagerProvider playerManagerProvider;
     private PluginManagerProvider pluginManagerProvider;
+    private PluginMessageManager pluginMessageManager;
     private HashMap<CorePlugin, UpdateManagerProvider> updateManagerProviders;
 
     private CorePlugin corePlugin;
@@ -33,9 +35,11 @@ public class CoreAPIProvider extends CoreAPI {
     private void makeInstances() {
         CoreAPI.setInstance(this);
 
-        corePlugin = new CorePluginProvider(CoreCommon.class, "Core", "0.1.0-Pre.83", CorePluginSoftware.MINECODE_CORE, new File("plugins/Core/"), false);
+        corePlugin = new CorePluginProvider(CoreCommon.class, "Core", "0.1.0-Pre.83", PluginPlattform.MINECODE_CORE, new File("plugins/Core/"), false);
 
         fileManagerProvider = new FileManagerProvider(); // requires thisCorePlugin
+        networkManagerProvider = new NetworkManagerProvider(); // requires fileManagerProvider
+        playerManagerProvider = new PlayerManagerProvider();
         pluginManagerProvider = new PluginManagerProvider(); // requires fileManagerProvider
         databaseManagerProvider = new DatabaseManagerProvider(); // requires fileManagerProvider
         languageManagerProvider = new LanguageManagerProvider(); // requires fileManagerProvider & pluginManagerProvider
@@ -59,18 +63,28 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public @NotNull PlayerManager getPlayerManager() {
-        return playerManager;
+    public @NotNull NetworkManager getNetworkManager() {
+        return networkManagerProvider;
     }
 
     @Override
-    public void setPlayerManager(@NotNull PlayerManager playerManager) {
-        this.playerManager = playerManager;
+    public @NotNull PlayerManager getPlayerManager() {
+        return playerManagerProvider;
     }
 
     @Override
     public @NotNull PluginManagerProvider getPluginManager() {
         return pluginManagerProvider;
+    }
+
+    @Override
+    public @NotNull PluginMessageManager getPluginMessageManager() {
+        return pluginMessageManager;
+    }
+
+    @Override
+    public void setPluginMessageManager(PluginMessageManager pluginMessageManager) {
+        this.pluginMessageManager = pluginMessageManager;
     }
 
     @Override

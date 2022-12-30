@@ -1,7 +1,7 @@
 package dev.minecode.core.common.api.object;
 
 import dev.minecode.core.api.object.CorePlugin;
-import dev.minecode.core.api.object.CorePluginSoftware;
+import dev.minecode.core.api.object.PluginPlattform;
 import dev.minecode.core.common.api.manager.LanguageManagerProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,13 +9,14 @@ import java.io.File;
 
 public class CorePluginProvider implements CorePlugin {
 
-    Class mainClass;
-    String name, version;
-    CorePluginSoftware pluginVersion;
-    File dataFolder;
-    boolean loadMessageFiles;
+    private final Class mainClass;
+    private final String name;
+    private final String version;
+    private final PluginPlattform pluginVersion;
+    private final File dataFolder;
+    private boolean loadMessageFiles;
 
-    public CorePluginProvider(Class mainClass, String name, String version, CorePluginSoftware pluginVersion, File dataFolder, boolean loadMessageFiles) {
+    public CorePluginProvider(Class mainClass, String name, String version, PluginPlattform pluginVersion, File dataFolder, boolean loadMessageFiles) {
         this.mainClass = mainClass;
         this.name = name;
         this.version = version;
@@ -40,7 +41,7 @@ public class CorePluginProvider implements CorePlugin {
     }
 
     @Override
-    public @NotNull CorePluginSoftware getPluginSoftware() {
+    public @NotNull PluginPlattform getPlattform() {
         return pluginVersion;
     }
 

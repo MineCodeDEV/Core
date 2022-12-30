@@ -6,6 +6,7 @@ import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.FileObject;
 import dev.minecode.core.common.api.object.FileObjectProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.util.Arrays;
@@ -15,17 +16,16 @@ public class FileManagerProvider implements FileManager {
 
     private static final HashMap<String, FileObject> fileObjects = new HashMap<>();
 
-    private FileObject config;
+    private final FileObject database, language, network, update;
     private FileObject players;
 
     public FileManagerProvider() {
-        makeInstances();
-    }
+        database = getFileObject(CoreAPI.getInstance().getCorePlugin(), "database.yml");
+        language = getFileObject(CoreAPI.getInstance().getCorePlugin(), "language.yml");
+        network = getFileObject(CoreAPI.getInstance().getCorePlugin(), "network.yml");
+        update = getFileObject(CoreAPI.getInstance().getCorePlugin(), "update.yml");
 
-    private void makeInstances() {
-        config = getFileObject(CoreAPI.getInstance().getCorePlugin(), "config.yml");
-
-        if (!config.getRoot().node("database", "enable").getBoolean())
+        if (!database.getRoot().node("database", "enable").getBoolean())
             players = getFileObject(CoreAPI.getInstance().getCorePlugin(), "players.yml");
     }
 
@@ -37,13 +37,28 @@ public class FileManagerProvider implements FileManager {
     }
 
     @Override
-    public @NotNull FileObject getPlayers() {
-        return players;
+    public @NotNull FileObject getDatabase() {
+        return database;
     }
 
     @Override
-    public @NotNull FileObject getConfig() {
-        return config;
+    public @NotNull FileObject getLanguage() {
+        return language;
+    }
+
+    @Override
+    public @NotNull FileObject getNetwork() {
+        return network;
+    }
+
+    @Override
+    public @NotNull FileObject getUpdate() {
+        return update;
+    }
+
+    @Override
+    public @Nullable FileObject getPlayers() {
+        return players;
     }
 
     @Override
@@ -67,7 +82,7 @@ public class FileManagerProvider implements FileManager {
     }
 
     @Override
-    public @NotNull FileObject getFileObject(@NotNull CorePlugin corePlugin, @NotNull String fileName, @NotNull HashMap<Class, TypeSerializer> typeSerializers, String... folders) {
+    public @NotNull FileObject getFileObject(@NotNull CorePlugin corePlugin, @NotNull String fileName, @NotNull HashMap<Class, TypeSerializer> typeSerializers, @NotNull String... folders) {
         if (fileObjects.containsKey(corePlugin.getName() + fileName + typeSerializers + Arrays.toString(folders)))
             return fileObjects.get(corePlugin.getName() + fileName + typeSerializers + Arrays.toString(folders));
 

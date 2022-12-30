@@ -23,15 +23,14 @@ public class LanguageManagerProvider implements LanguageManager {
     private String defaultLanguageIsocode;
 
     public LanguageManagerProvider() {
-        ConfigurationNode conf = CoreAPI.getInstance().getFileManager().getConfig().getRoot();
-        defaultLanguageIsocode = conf.node("language", "default").getString("en_us");
+        defaultLanguageIsocode = CoreAPI.getInstance().getFileManager().getLanguage().getRoot().node("language", "default").getString("en_us");
     }
 
     public static void loadMessageFiles(CorePlugin corePlugin) {
         File messsageDirectory = new File("plugins/" + corePlugin.getName() + "/message/");
         messsageDirectory.mkdirs();
 
-        for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getConfig().getRoot().node("language", "languages").childrenMap().entrySet())
+        for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getLanguage().getRoot().node("language", "languages").childrenMap().entrySet())
             languages.add(new LanguageProvider(corePlugin, (String) node.getValue().key()));
     }
 
@@ -40,7 +39,7 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public @Nullable <T> T get(Class<T> type, @NotNull Language language, @NotNull String... path) {
+    public @Nullable <T> T get(@NotNull Class<T> type, @NotNull Language language, @NotNull String... path) {
         try {
             ConfigurationNode node = getNode(language, path);
             if (!node.empty())
@@ -52,7 +51,7 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public @Nullable <T> T get(Class<T> type, @NotNull Language language, @NotNull LanguageAbstract path) {
+    public @Nullable <T> T get(@NotNull Class<T> type, @NotNull Language language, @NotNull LanguageAbstract path) {
         return get(type, language, path.getPath());
     }
 

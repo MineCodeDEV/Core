@@ -7,28 +7,9 @@
 # | $$ \/  | $$| $$| $$  | $$|  $$$$$$$|  $$$$$$/|  $$$$$$/|  $$$$$$$|  $$$$$$$
 # |__/     |__/|__/|__/  |__/ \_______/ \______/  \______/  \_______/ \_______/
 
-database:
-  enable: false
-  host: localhost
-  port: 3306
-  database: minecode
-  username: minecode
-  password: password
-
-update:
-  notification: true
-  prereleases: false
-
-language:
-  default: en_us
-  languages:
-    'en_us':
-      name: "English (US)"
-      displayname: "&1En&fgli&4sh &8(&1U&fS&4A&8)"
-    'de_de':
-      name: "Deutsch"
-      displayname: "&0De&4ut&6sch"
-#   # https://minecraft.fandom.com/wiki/Language
-#   'example': Locale Code
-#     name: "ExampleName"
-#     displayname: "&7ExampleDisplayName"
+enable: false
+host: localhost
+port: 3306
+database: minecode
+username: minecode
+password: password

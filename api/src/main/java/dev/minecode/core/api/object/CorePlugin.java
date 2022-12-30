@@ -12,7 +12,7 @@ public interface CorePlugin {
 
     @NotNull String getVersion();
 
-    @NotNull CorePluginSoftware getPluginSoftware();
+    @NotNull PluginPlattform getPlattform();
 
     @NotNull File getDataFolder();
 

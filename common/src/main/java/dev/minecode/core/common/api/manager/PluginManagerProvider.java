@@ -2,7 +2,7 @@ package dev.minecode.core.common.api.manager;
 
 import dev.minecode.core.api.manager.PluginManager;
 import dev.minecode.core.api.object.CorePlugin;
-import dev.minecode.core.api.object.CorePluginSoftware;
+import dev.minecode.core.api.object.PluginPlattform;
 import dev.minecode.core.common.api.object.CorePluginProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ public class PluginManagerProvider implements PluginManager {
     }
 
     @Override
-    public @NotNull CorePlugin registerPlugin(@NotNull Class mainClass, @NotNull String name, @NotNull String version, @NotNull File dataFolder, @NotNull CorePluginSoftware pluginVersion, boolean loadMessageFiles) {
+    public @NotNull CorePlugin registerPlugin(@NotNull Class mainClass, @NotNull String name, @NotNull String version, @NotNull File dataFolder, @NotNull PluginPlattform pluginVersion, boolean loadMessageFiles) {
         CorePlugin corePlugin = getPlugin(name);
         if (corePlugin != null) return corePlugin;
 
@@ -40,7 +40,8 @@ public class PluginManagerProvider implements PluginManager {
 
         if (loadMessageFiles) LanguageManagerProvider.loadMessageFiles(corePlugin);
 
-        new UpdateManagerProvider(corePlugin);
+        // TODO: Send update message
+        // new UpdateManagerProvider(corePlugin);
 
         return corePlugin;
     }

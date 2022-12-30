@@ -1,0 +1,29 @@
+#  /$$      /$$ /$$                      /$$$$$$                  /$$
+# | $$$    /$$$|__/                     /$$__  $$                | $$
+# | $$$$  /$$$$ /$$ /$$$$$$$   /$$$$$$ | $$  \__/  /$$$$$$   /$$$$$$$  /$$$$$$
+# | $$ $$/$$ $$| $$| $$__  $$ /$$__  $$| $$       /$$__  $$ /$$__  $$ /$$__  $$
+# | $$  $$$| $$| $$| $$  \ $$| $$$$$$$$| $$      | $$  \ $$| $$  | $$| $$$$$$$$
+# | $$\  $ | $$| $$| $$  | $$| $$_____/| $$    $$| $$  | $$| $$  | $$| $$_____/
+# | $$ \/  | $$| $$| $$  | $$|  $$$$$$$|  $$$$$$/|  $$$$$$/|  $$$$$$$|  $$$$$$$
+# |__/     |__/|__/|__/  |__/ \_______/ \______/  \______/  \_______/ \_______/
+
+# MineCode has techniques that make it very easy to communicate with the other servers or proxies.
+# The database must be activated for several servers or proxies!
+
+# Since you are setting the proxy version here, this function must be activated!
+enabled: true
+
+# If you use a cloud, MineCode can use it to communicate with other servers and proxies.
+# Enter the name of the cloud used here if it is supported.
+# Leave this field blank if you are not using a supported cloud
+# Supportet are: CLOUDNET, SIMPLECLOUD, TIMOCLOUD
+plattform: ""
+
+# If you use multiple proxies, they must be connected.
+# This requires MineCode to use other techniques to communicate between them.
+# true: if you use multiple proxies or a cloud
+# false: if you only use a proxy
+multiproxy: false
+
+# Name of this proxy. Leave this blank if you use a supported cloud or just one proxy
+servername: ""

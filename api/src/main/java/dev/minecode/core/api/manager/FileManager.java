@@ -12,9 +12,15 @@ public interface FileManager {
 
     boolean saveData();
 
-    @Nullable FileObject getPlayers();
+    @NotNull FileObject getDatabase();
 
-    @NotNull FileObject getConfig();
+    @NotNull FileObject getLanguage();
+
+    @NotNull FileObject getNetwork();
+
+    @NotNull FileObject getUpdate();
+
+    @Nullable FileObject getPlayers();
 
     @NotNull FileObject getFileObject(@NotNull CorePlugin corePlugin, @NotNull String fileName, @NotNull String... folders);
 

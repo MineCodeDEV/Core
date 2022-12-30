@@ -20,9 +20,6 @@ import java.util.Map;
 
 public class FileObjectProvider implements FileObject {
 
-    // directories
-    private final String pluginsDirectoryPath = "plugins/";
-
     // files
     private final String fileStreamPath;
     private final File file;

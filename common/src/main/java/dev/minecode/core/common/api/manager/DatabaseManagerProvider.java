@@ -10,16 +10,14 @@ import java.sql.*;
 public class DatabaseManagerProvider implements DatabaseManager {
 
     private final ConfigurationNode root;
-
+    private final boolean usingSQL;
     private Connection connection;
     private String host, database, username, password;
     private int port;
     private Statement statement;
 
-    private final boolean usingSQL;
-
     public DatabaseManagerProvider() {
-        root = CoreAPI.getInstance().getFileManager().getConfig().getRoot();
+        root = CoreAPI.getInstance().getFileManager().getDatabase().getRoot();
         usingSQL = root.node("database", "enable").getBoolean();
 
         setData();

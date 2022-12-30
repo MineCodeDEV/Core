@@ -35,8 +35,9 @@ public class UpdateManagerProvider implements UpdateManager {
             e.printStackTrace();
         }
 
-        updateNotification = CoreAPI.getInstance().getFileManager().getConfig().getRoot().node("update", "notification").getBoolean();
-        updatePreReleases = CoreAPI.getInstance().getFileManager().getConfig().getRoot().node("update", "prereleases").getBoolean();
+        ConfigurationNode root = CoreAPI.getInstance().getFileManager().getUpdate().getRoot();
+        updateNotification = root.node("update", "notification").getBoolean();
+        updatePreReleases = root.node("update", "prereleases").getBoolean();
     }
 
     @Override

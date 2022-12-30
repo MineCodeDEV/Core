@@ -1,0 +1,23 @@
+#  /$$      /$$ /$$                      /$$$$$$                  /$$
+# | $$$    /$$$|__/                     /$$__  $$                | $$
+# | $$$$  /$$$$ /$$ /$$$$$$$   /$$$$$$ | $$  \__/  /$$$$$$   /$$$$$$$  /$$$$$$
+# | $$ $$/$$ $$| $$| $$__  $$ /$$__  $$| $$       /$$__  $$ /$$__  $$ /$$__  $$
+# | $$  $$$| $$| $$| $$  \ $$| $$$$$$$$| $$      | $$  \ $$| $$  | $$| $$$$$$$$
+# | $$\  $ | $$| $$| $$  | $$| $$_____/| $$    $$| $$  | $$| $$  | $$| $$_____/
+# | $$ \/  | $$| $$| $$  | $$|  $$$$$$$|  $$$$$$/|  $$$$$$/|  $$$$$$$|  $$$$$$$
+# |__/     |__/|__/|__/  |__/ \_______/ \______/  \______/  \_______/ \_______/
+
+# isocode of the default language
+default: en_us
+
+languages:
+  'en_us':
+    name: "English (US)"
+    displayname: "&1En&fgli&4sh &8(&1U&fS&4A&8)"
+  'de_de':
+    name: "Deutsch"
+    displayname: "&0De&4ut&6sch"
+#   # https://minecraft.fandom.com/wiki/Language
+#   'example': Locale Code In-game
+#     name: "ExampleName"
+#     displayname: "&7ExampleDisplayName"

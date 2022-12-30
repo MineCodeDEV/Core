@@ -28,11 +28,15 @@ public abstract class CoreAPI {
 
     public abstract @NotNull LanguageManager getLanguageManager();
 
+    public abstract @NotNull NetworkManager getNetworkManager();
+
     public abstract @NotNull PlayerManager getPlayerManager();
 
-    public abstract void setPlayerManager(@NotNull PlayerManager playerManager);
-
     public abstract @NotNull PluginManager getPluginManager();
+
+    public abstract @NotNull PluginMessageManager getPluginMessageManager();
+
+    public abstract void setPluginMessageManager(PluginMessageManager pluginMessageManager);
 
     public abstract @NotNull ReplaceManager getReplaceManager(@NotNull String message);
 
