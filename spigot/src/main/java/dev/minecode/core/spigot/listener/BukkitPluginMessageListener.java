@@ -30,52 +30,38 @@ public class BukkitPluginMessageListener implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(@NotNull String bukkitChannel, @NotNull Player player, @NotNull byte[] message) {
-        Bukkit.getLogger().info("PM received");
-
-
-        Bukkit.getLogger().info("1");
         if (bukkitChannel.equals("BungeeCord")) {
-            DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
-            String subChannel = null;
-            try {
-                subChannel = in.readUTF();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            ByteArrayDataInput in = ByteStreams.newDataInput(message);
+            String subChannel = in.readUTF();
+
 //      Wenn PluginMessage von anderem Server über BungeeCord zu diesem Server weitergeleitet wird:
-            Bukkit.getLogger().info("2");
             if (subChannel.equals("minecode:pluginmessage")) {
+
+                short len = in.readShort();
+                byte[] msgbytes = new byte[len];
+                in.readFully(msgbytes);
+
+                DataInputStream msgin = new DataInputStream(new ByteArrayInputStream(msgbytes));
+
                 String channel = null;
+                String servername = null;
+                String messageJson = null;
                 try {
-                    channel = in.readUTF();
+                    channel = msgin.readUTF();
+                    servername = msgin.readUTF();
+                    messageJson = msgin.readUTF();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-//                Bukkit.getLogger().info("channel: " + channel);
-                String finalChannel = channel;
-                Bukkit.getOnlinePlayers().forEach(player1 -> player1.sendMessage("channel: " + finalChannel));
-                String sender = null;
-                try {
-                    sender = in.readUTF();
-                } catch (IOException e) {
-                    Bukkit.getLogger().info("hier wäre jz n dicker Fehler");
-                }
-                Bukkit.getLogger().info("sender: " + sender);
-//                HashMap<String, String> message = gson.fromJson(in.readUTF(), type);
-//                Bukkit.getPluginManager().callEvent(new MineCodePluginMessageReceiveEvent(channel,
-//                        sender,
-//                        message));
-//                Bukkit.getLogger().info("3");
+
+                HashMap<String, String> hashmapMessage = gson.fromJson(messageJson, type);
+                Bukkit.getPluginManager().callEvent(new MineCodePluginMessageReceiveEvent(channel, servername, hashmapMessage));
+
                 return;
             }
 
             if (subChannel.equals("GetServer")) {
-                Bukkit.getLogger().info("4");
-                try {
-                    CoreAPI.getInstance().getNetworkManager().setServername(in.readUTF());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                CoreAPI.getInstance().getNetworkManager().setServername(in.readUTF());
                 if (!CoreAPI.getInstance().getPluginMessageManager().getQueuedPluginMessages().isEmpty())
                     CoreAPI.getInstance().getPluginMessageManager().executeQueue();
             }
@@ -84,11 +70,8 @@ public class BukkitPluginMessageListener implements PluginMessageListener {
 
 //        Wenn PluginMessage von BungeeCord zu diesem Server gesendet wird
         if (bukkitChannel.equals("minecode:pluginmessage")) {
-            Bukkit.getLogger().info("5");
             ByteArrayDataInput in = ByteStreams.newDataInput(message);
             Bukkit.getPluginManager().callEvent(new MineCodePluginMessageReceiveEvent(in.readUTF(), in.readUTF(), gson.fromJson(in.readUTF(), type)));
-            return;
         }
-        Bukkit.getLogger().info("6");
     }
 }
