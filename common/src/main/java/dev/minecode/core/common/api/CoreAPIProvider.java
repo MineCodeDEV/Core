@@ -11,6 +11,7 @@ import dev.minecode.core.common.api.manager.*;
 import dev.minecode.core.common.api.object.CorePluginProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class CoreAPIProvider extends CoreAPI {
         fileManagerProvider = new FileManagerProvider(); // requires thisCorePlugin
         networkManagerProvider = new NetworkManagerProvider(); // requires fileManagerProvider
         playerManagerProvider = new PlayerManagerProvider();
-        pluginManagerProvider = new PluginManagerProvider(); // requires fileManagerProvider
+        pluginManagerProvider = new PluginManagerProvider();
         databaseManagerProvider = new DatabaseManagerProvider(); // requires fileManagerProvider
         languageManagerProvider = new LanguageManagerProvider(); // requires fileManagerProvider & pluginManagerProvider
         updateManagerProviders = new HashMap<>();
@@ -78,12 +79,12 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public @NotNull PluginMessageManager getPluginMessageManager() {
+    public @Nullable PluginMessageManager getPluginMessageManager() {
         return pluginMessageManager;
     }
 
     @Override
-    public void setPluginMessageManager(PluginMessageManager pluginMessageManager) {
+    public void setPluginMessageManager(@NotNull PluginMessageManager pluginMessageManager) {
         this.pluginMessageManager = pluginMessageManager;
     }
 
