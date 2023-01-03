@@ -23,14 +23,14 @@ public class LanguageManagerProvider implements LanguageManager {
     private String defaultLanguageIsocode;
 
     public LanguageManagerProvider() {
-        defaultLanguageIsocode = CoreAPI.getInstance().getFileManager().getLanguage().getRoot().node("language", "default").getString("en_us");
+        defaultLanguageIsocode = CoreAPI.getInstance().getFileManager().getLanguage().getRoot().node("default").getString("en_us");
     }
 
     public static void loadMessageFiles(CorePlugin corePlugin) {
         File messsageDirectory = new File("plugins/" + corePlugin.getName() + "/message/");
         messsageDirectory.mkdirs();
 
-        for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getLanguage().getRoot().node("language", "languages").childrenMap().entrySet())
+        for (Map.Entry<Object, ? extends ConfigurationNode> node : CoreAPI.getInstance().getFileManager().getLanguage().getRoot().node("languages").childrenMap().entrySet())
             languages.add(new LanguageProvider(corePlugin, (String) node.getValue().key()));
     }
 
@@ -115,7 +115,7 @@ public class LanguageManagerProvider implements LanguageManager {
     }
 
     @Override
-    public @NotNull Language getDefaultLanguage(@NotNull CorePlugin corePlugin) {
+    public @Nullable Language getDefaultLanguage(@NotNull CorePlugin corePlugin) {
         return getLanguage(corePlugin, defaultLanguageIsocode);
     }
 
