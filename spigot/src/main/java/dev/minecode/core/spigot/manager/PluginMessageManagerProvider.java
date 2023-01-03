@@ -66,6 +66,7 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
         if (Bukkit.getOnlinePlayers().size() == 0) {
             if (!queue) return false;
             addPluginMessageToQueue(new QueuedPluginMessageProvider(targetServer, channel, message));
+            return true;
         }
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -81,12 +82,14 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
 
         out.writeUTF("Forward");
         out.writeUTF(targetServer);
-        out.writeUTF(channel);
+        out.writeUTF("minecode:pluginmessage");
 
         ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
         DataOutputStream msgout = new DataOutputStream(msgbytes);
 
         try {
+            msgout.writeUTF(channel);
+            msgout.writeUTF(CoreAPI.getInstance().getNetworkManager().getServername());
             msgout.writeUTF(messageJson);
         } catch (IOException e) {
             throw new RuntimeException(e);
