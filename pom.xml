@@ -14,6 +14,7 @@
         <module>spigot</module>
         <module>bungeecord</module>
         <module>testSpigot</module>
+        <module>testBungeeCord</module>
     </modules>
 
     <name>Core</name>

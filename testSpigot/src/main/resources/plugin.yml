@@ -1,10 +1,10 @@
 name: Test
-main: dev.minecode.core.testSpigot.Main
+main: dev.minecode.core.testSpigot.TestSpigot
 version: 0.1.0-Pre.1
 api-version: 1.19
 commands:
-  test:
+  testspigot:
     description: A test-command
     aliases:
-      - t
-    usage: /test
+      - ts
+    usage: /testspigot

@@ -1,0 +1,7 @@
+name: TestBungeeCord
+description: A plugin to manage the BungeeCord
+
+main: dev.minecode.core.testBungeeCord.TestBungeeCord
+version: 0.1.0-Pre.1
+
+author: MineCodeDEV

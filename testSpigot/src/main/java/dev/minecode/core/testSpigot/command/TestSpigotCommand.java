@@ -7,14 +7,17 @@ import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
 
-public class TestCommand implements CommandExecutor {
+public class TestSpigotCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
+        if (args.length != 1) {
+            commandSender.sendMessage("Arg-Length muss genau 1 sein");
+            return false;
+        }
         HashMap<String, String> message = new HashMap<>();
-        message.put("key1", "value1");
-        message.put("key2", "value2");
-        message.put("k3", "val3");
-        CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(args[0], "MyTestchannel", message, true);
+        message.put("key 1", "value 1");
+        message.put("k1", "v1");
+        CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(args[0], "minecode:pluginmessage", message, false);
 
         return false;
     }
