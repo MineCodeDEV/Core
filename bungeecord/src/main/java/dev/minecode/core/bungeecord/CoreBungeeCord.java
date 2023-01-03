@@ -6,7 +6,6 @@ import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.PluginPlattform;
 import dev.minecode.core.bungeecord.api.manager.PluginMessageManagerProvider;
 import dev.minecode.core.bungeecord.listener.BungeeCordListener;
-import dev.minecode.core.bungeecord.manager.ServerManager;
 import dev.minecode.core.common.CoreCommon;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -14,7 +13,6 @@ import net.md_5.bungee.api.plugin.Plugin;
 public class CoreBungeeCord {
     private static CoreBungeeCord instance;
 
-    private ServerManager serverManager;
     private boolean disabled;
 
     public CoreBungeeCord() {
@@ -29,13 +27,11 @@ public class CoreBungeeCord {
 
     private void makeInstances() {
         instance = this;
-        serverManager = new ServerManager();
         CoreCommon.getInstance();
         CoreAPI.getInstance().setPluginMessageManager(new PluginMessageManagerProvider());
         NetworkManager networkManager = CoreAPI.getInstance().getNetworkManager();
-        if (networkManager.getServername().equals("Service"))
+        if (!networkManager.isServernameSet() || !networkManager.isMultiproxy())
             networkManager.setServername("Proxy");
-        serverManager.sendServerNames();
     }
 
     private void registerChannel() {
@@ -61,9 +57,5 @@ public class CoreBungeeCord {
         }
 
         return CoreAPI.getInstance().getPluginManager().registerPlugin(mainClass.getClass(), mainClass.getDescription().getName(), mainClass.getDescription().getVersion(), mainClass.getDataFolder(), PluginPlattform.BUNGEECORD, loadMessageFiles);
-    }
-
-    public ServerManager getServerManager() {
-        return serverManager;
     }
 }

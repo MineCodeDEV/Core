@@ -20,6 +20,6 @@ public class TestBungeeCommand extends Command {
         HashMap<String, String> message = new HashMap<>();
         message.put("key 1", "value 1");
         message.put("k1", "v1");
-        CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(args[0], "EinSehrCoolerChannel", message, true);
+        CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(args[0], "EinSehrCoolerChannel", message);
     }
 }

@@ -19,7 +19,7 @@ public class QueuedPluginMessageProvider implements QueuedPluginMessage {
 
     @Override
     public void sendPluginMessage() {
-        CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(targetServer, channel, message, true);
+        CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(targetServer, channel, message);
     }
 
     @Override

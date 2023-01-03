@@ -34,24 +34,24 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
     }
 
     @Override
-    public boolean sendPluginMessage(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message, boolean queue) {
+    public boolean sendPluginMessage(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
         if (!networkManager.isEnabled()) return false;
 
         if (networkManager.getCloudPlattform() == CloudPlattform.NONE) {
             if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL())
-                return sendPluginMessageOverSQL(targetServer, channel, message, queue);
+                return sendPluginMessageOverSQL(targetServer, channel, message);
             if (!networkManager.isMultiproxy())
-                return sendPluginMessageOverChannel(targetServer, channel, message, queue);
+                return sendPluginMessageOverChannel(targetServer, channel, message);
         }
 
         if (networkManager.getCloudPlattform() == CloudPlattform.CLOUDNET)
-            return sendPluginMessageOverCloudNet(targetServer, channel, message, queue);
+            return sendPluginMessageOverCloudNet(targetServer, channel, message);
 
         if (networkManager.getCloudPlattform() == CloudPlattform.SIMPLECLOUD)
-            return sendPluginMessageOverSimpleCloud(targetServer, channel, message, queue);
+            return sendPluginMessageOverSimpleCloud(targetServer, channel, message);
 
         if (networkManager.getCloudPlattform() == CloudPlattform.TIMOCLOUD)
-            return sendPluginMessageOverTimoCloud(targetServer, channel, message, queue);
+            return sendPluginMessageOverTimoCloud(targetServer, channel, message);
 
         return false;
     }
@@ -62,11 +62,10 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
             queuedPluginMessages.get(i).sendPluginMessage();
     }
 
-    private boolean sendPluginMessageOverChannel(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message, boolean queue) {
+    private boolean sendPluginMessageOverChannel(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
         if (Bukkit.getOnlinePlayers().size() == 0) {
-            if (!queue) return false;
             addPluginMessageToQueue(new QueuedPluginMessageProvider(targetServer, channel, message));
-            return true;
+            return false;
         }
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -102,19 +101,19 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
         return true;
     }
 
-    private boolean sendPluginMessageOverSQL(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message, boolean queue) {
+    private boolean sendPluginMessageOverSQL(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
         return false;
     }
 
-    private boolean sendPluginMessageOverCloudNet(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message, boolean queue) {
+    private boolean sendPluginMessageOverCloudNet(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
         return false;
     }
 
-    private boolean sendPluginMessageOverSimpleCloud(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message, boolean queue) {
+    private boolean sendPluginMessageOverSimpleCloud(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
         return false;
     }
 
-    private boolean sendPluginMessageOverTimoCloud(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message, boolean queue) {
+    private boolean sendPluginMessageOverTimoCloud(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
         return false;
     }
 

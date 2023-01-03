@@ -17,7 +17,7 @@ public class TestSpigotCommand implements CommandExecutor {
         HashMap<String, String> message = new HashMap<>();
         message.put("key 1", "value 1");
         message.put("k1", "v1");
-        CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(args[0], "minecode:pluginmessage", message, false);
+        CoreAPI.getInstance().getPluginMessageManager().sendPluginMessage(args[0], "minecode:pluginmessage", message);
 
         return false;
     }

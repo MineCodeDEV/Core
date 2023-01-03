@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PluginMessageManager {
 
-    boolean sendPluginMessage(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message, boolean queue);
+    boolean sendPluginMessage(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message);
 
     void executeQueue();
 
