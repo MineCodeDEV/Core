@@ -13,6 +13,7 @@
         <module>api</module>
         <module>spigot</module>
         <module>bungeecord</module>
+        <module>testSpigot</module>
     </modules>
 
     <name>Core</name>
