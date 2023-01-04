@@ -37,15 +37,14 @@ public class FileObjectProvider implements FileObject {
             foldersStringBuilder.append(temp).append("/");
 
         this.corePlugin = corePlugin;
-        this.fileStreamPath = foldersStringBuilder + fileName;
+        this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName;
         this.file = new File(corePlugin.getDataFolder().getPath() + "/" + foldersStringBuilder, fileName);
-
         load();
     }
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName) {
         this.corePlugin = corePlugin;
-        this.fileStreamPath = fileName;
+        this.fileStreamPath = corePlugin.getName() + "/" + fileName;
         this.file = new File(corePlugin.getDataFolder().getPath(), fileName);
 
         load();
@@ -57,7 +56,7 @@ public class FileObjectProvider implements FileObject {
             foldersStringBuilder.append(temp).append("/");
 
         this.corePlugin = corePlugin;
-        this.fileStreamPath = foldersStringBuilder + fileName;
+        this.fileStreamPath = corePlugin.getName() + "/" + foldersStringBuilder + fileName;
         this.file = new File(corePlugin.getDataFolder().getPath() + "/" + foldersStringBuilder, fileName);
 
         load(typeSerializers);
@@ -65,7 +64,7 @@ public class FileObjectProvider implements FileObject {
 
     public FileObjectProvider(CorePlugin corePlugin, String fileName, HashMap<Class, TypeSerializer> typeSerializers) {
         this.corePlugin = corePlugin;
-        this.fileStreamPath = fileName;
+        this.fileStreamPath = corePlugin.getName() + "/" + fileName;
         this.file = new File(corePlugin.getDataFolder().getPath(), fileName);
 
         load(typeSerializers);
