@@ -1,4 +1,4 @@
-package dev.minecode.core.spigot.manager;
+package dev.minecode.core.spigot.api.manager;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -38,8 +38,9 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
         if (!networkManager.isEnabled()) return false;
 
         if (networkManager.getCloudPlattform() == CloudPlattform.NONE) {
-            if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL())
+            if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
                 return sendPluginMessageOverSQL(targetServer, channel, message);
+            }
             if (!networkManager.isMultiproxy())
                 return sendPluginMessageOverChannel(targetServer, channel, message);
         }
@@ -102,6 +103,8 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
     }
 
     private boolean sendPluginMessageOverSQL(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
+        if (!CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) return false;
+        CoreAPI.getInstance().getSQLPluginMessageManager().sendPluginMessage(targetServer, channel, message);
         return false;
     }
 

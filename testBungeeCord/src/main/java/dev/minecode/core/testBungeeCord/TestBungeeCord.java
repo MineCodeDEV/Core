@@ -16,13 +16,9 @@ public class TestBungeeCord extends Plugin {
     }
 
     public void onEnable() {
-        makeInstances();
-        getProxy().getPluginManager().registerCommand(this, new TestBungeeCommand("testbungee", null, "tb"));
-        new MCPMReceiveListener();
-    }
-
-    private void makeInstances() {
         instance = this;
         testBungeeCordPlugin = CoreBungeeCord.getInstance().registerPlugin(this, true);
+        getProxy().getPluginManager().registerCommand(this, new TestBungeeCommand("testbungee", null, "tb"));
+        new MCPMReceiveListener();
     }
 }

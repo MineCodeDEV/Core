@@ -67,6 +67,8 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
     }
 
     private boolean sendPluginMessageOverSQL(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
+        if (!CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) return false;
+        CoreAPI.getInstance().getSQLPluginMessageManager().sendPluginMessage(targetServer, channel, message);
         return false;
     }
 

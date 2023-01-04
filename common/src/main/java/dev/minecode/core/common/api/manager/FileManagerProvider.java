@@ -25,7 +25,7 @@ public class FileManagerProvider implements FileManager {
         network = getFileObject(CoreAPI.getInstance().getCorePlugin(), "network.yml");
         update = getFileObject(CoreAPI.getInstance().getCorePlugin(), "update.yml");
 
-        if (!database.getRoot().node("database", "enable").getBoolean())
+        if (!database.getRoot().node("enable").getBoolean())
             players = getFileObject(CoreAPI.getInstance().getCorePlugin(), "players.yml");
     }
 

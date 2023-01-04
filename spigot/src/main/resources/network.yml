@@ -16,7 +16,7 @@ enabled: false
 # If you use a cloud, MineCode can use it to communicate with other servers and proxies.
 # Enter the name of the cloud used here if it is supported.
 # Leave this field blank if you are not using a supported cloud
-# Supportet are: CLOUDNET, SIMPLECLOUD, TIMOCLOUD
+# Supported are: CLOUDNET, SIMPLECLOUD, TIMOCLOUD
 plattform:
 
 # If you use multiple proxies, they must be connected.
@@ -26,4 +26,8 @@ plattform:
 multiproxy: false
 
 # Name of this server. Leave this blank if you are using a supported cloud
-servername:
+servername: ""
+
+# Set here the interval (in ticks) in which the database should be searched for PluginMessages from servers.
+# The default value is 20 ticks (1 second)
+interval: 20

@@ -25,6 +25,8 @@ public class CoreAPIProvider extends CoreAPI {
     private PlayerManagerProvider playerManagerProvider;
     private PluginManagerProvider pluginManagerProvider;
     private PluginMessageManager pluginMessageManager;
+
+    private SQLPluginMessageManager sqlPluginMessageManager;
     private HashMap<CorePlugin, UpdateManagerProvider> updateManagerProviders;
 
     private CorePlugin corePlugin;
@@ -86,6 +88,16 @@ public class CoreAPIProvider extends CoreAPI {
     @Override
     public void setPluginMessageManager(@NotNull PluginMessageManager pluginMessageManager) {
         this.pluginMessageManager = pluginMessageManager;
+    }
+
+    @Override
+    public @NotNull SQLPluginMessageManager getSQLPluginMessageManager() {
+        return sqlPluginMessageManager;
+    }
+
+    @Override
+    public void setSQLPluginMessageManager(SQLPluginMessageManager sqlPluginMessageManager) {
+        this.sqlPluginMessageManager = sqlPluginMessageManager;
     }
 
     @Override

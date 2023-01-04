@@ -27,3 +27,7 @@ multiproxy: false
 
 # Name of this proxy. Leave this blank if you use a supported cloud or just one proxy
 servername: ""
+
+# Set here the interval (in ticks) in which the database should be searched for PluginMessages from servers.
+# The default value is 20 ticks (1 second)
+interval: 20

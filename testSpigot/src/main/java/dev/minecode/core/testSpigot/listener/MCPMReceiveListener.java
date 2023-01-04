@@ -13,10 +13,10 @@ public class MCPMReceiveListener implements Listener {
 
     @EventHandler
     public void handleMineCodePluginMessage(dev.minecode.core.spigot.event.MineCodePluginMessageReceiveEvent event) {
-        System.out.println("channel: " + event.getChannel());
-        System.out.println("sender: " + event.getSender());
+        Bukkit.getLogger().info("channel: " + event.getChannel());
+        Bukkit.getLogger().info("sender: " + event.getSender());
         for (java.util.Map.Entry<String, String> entry : event.getMessage().entrySet())
-            System.out.println("key: " + entry.getKey() + " value: " + entry.getValue());
+            Bukkit.getLogger().info("key: " + entry.getKey() + " value: " + entry.getValue());
     }
 
 }

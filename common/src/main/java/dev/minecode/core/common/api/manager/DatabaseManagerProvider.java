@@ -18,7 +18,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
 
     public DatabaseManagerProvider() {
         root = CoreAPI.getInstance().getFileManager().getDatabase().getRoot();
-        usingSQL = root.node("database", "enable").getBoolean();
+        usingSQL = root.node("enable").getBoolean();
 
         setData();
         if (usingSQL) {
@@ -28,11 +28,11 @@ public class DatabaseManagerProvider implements DatabaseManager {
     }
 
     private void setData() {
-        host = root.node("database", "host").getString();
-        port = root.node("database", "port").getInt();
-        database = root.node("database", "database").getString();
-        username = root.node("database", "username").getString();
-        password = root.node("database", "password").getString();
+        host = root.node("host").getString();
+        port = root.node("port").getInt();
+        database = root.node("database").getString();
+        username = root.node("username").getString();
+        password = root.node("password").getString();
     }
 
     @Override
@@ -63,6 +63,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
     public void checkTables() {
         try {
             getStatement().executeUpdate("CREATE TABLE IF NOT EXISTS minecode_players (UUID VARCHAR (37), NAME VARCHAR (16), LANGUAGE VARCHAR (5), PRIMARY KEY (UUID))");
+            getStatement().executeUpdate("CREATE TABLE IF NOT EXISTS minecode_pluginmessages (ID VARCHAR (37), TIME TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, SENDERSERVER VARCHAR (100), TARGETSERVER VARCHAR (100), CHANNEL VARCHAR (50), MESSAGE TEXT, PRIMARY KEY (ID))");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -71,7 +72,7 @@ public class DatabaseManagerProvider implements DatabaseManager {
     @Override
     public @Nullable Connection getConnection() {
         try {
-            if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL())
+            if (isUsingSQL())
                 if (connection == null || connection.isClosed() || !connection.isValid(2))
                     connect();
         } catch (SQLException throwables) {

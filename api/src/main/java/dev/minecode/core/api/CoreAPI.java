@@ -6,6 +6,7 @@ import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class CoreAPI {
 
@@ -37,6 +38,13 @@ public abstract class CoreAPI {
     public abstract @NotNull PluginMessageManager getPluginMessageManager();
 
     public abstract void setPluginMessageManager(PluginMessageManager pluginMessageManager);
+
+    /**
+     * @Nullable if MySQL is disabled
+     */
+    public abstract @Nullable SQLPluginMessageManager getSQLPluginMessageManager();
+
+    public abstract void setSQLPluginMessageManager(SQLPluginMessageManager sqlPluginMessageManager);
 
     public abstract @NotNull ReplaceManager getReplaceManager(@NotNull String message);
 

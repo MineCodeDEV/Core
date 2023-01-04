@@ -19,6 +19,8 @@ public class NetworkManagerProvider implements NetworkManager {
 
         enabled = root.node("enabled").getBoolean();
         multiproxy = root.node("multiproxy").getBoolean();
+        if (!root.node("servername").empty())
+            servernameSet = true;
         servername = root.node("servername").getString("Service");
         cloudPlattform = CloudPlattform.valueOf(root.node("cloudname").getString("NONE"));
     }

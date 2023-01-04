@@ -4,10 +4,11 @@ import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.PluginPlattform;
 import dev.minecode.core.common.CoreCommon;
+import dev.minecode.core.spigot.api.manager.PluginMessageManagerProvider;
+import dev.minecode.core.spigot.api.manager.SQLPluginMessageManagerProvider;
 import dev.minecode.core.spigot.listener.BukkitPluginMessageListener;
 import dev.minecode.core.spigot.listener.PlayerListener;
 import dev.minecode.core.spigot.listener.PluginListener;
-import dev.minecode.core.spigot.manager.PluginMessageManagerProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,10 +32,17 @@ public class CoreSpigot {
         CoreCommon.getInstance();
 
         CoreAPI.getInstance().setPluginMessageManager(new PluginMessageManagerProvider());
+        if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
+            CoreAPI.getInstance().setSQLPluginMessageManager(new SQLPluginMessageManagerProvider());
+//            CoreAPI.getInstance().getSQLPluginMessageManager().startChecking();
+        }
     }
 
     public void onDisable() {
         if (disabled) return;
+
+        if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL() && CoreAPI.getInstance().getSQLPluginMessageManager() != null)
+            CoreAPI.getInstance().getSQLPluginMessageManager().cancelChecking();
 
         if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
@@ -43,7 +51,7 @@ public class CoreSpigot {
         disabled = true;
     }
 
-    public void registerPluginChannel(JavaPlugin mainClass) {
+    public void registerPluginMessageChannel() {
         if (CoreAPI.getInstance().getNetworkManager().isMultiproxy()) return;
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(mainClass, "BungeeCord");
@@ -61,7 +69,9 @@ public class CoreSpigot {
         if (this.mainClass == null) {
             setMainClass(mainClass);
         }
-        return CoreAPI.getInstance().getPluginManager().registerPlugin(mainClass.getClass(), mainClass.getDescription().getName(), mainClass.getDescription().getVersion(), mainClass.getDataFolder(), PluginPlattform.SPIGOT, loadMessageFiles);
+        CorePlugin corePlugin = CoreAPI.getInstance().getPluginManager().registerPlugin(mainClass.getClass(), mainClass.getDescription().getName(), mainClass.getDescription().getVersion(), mainClass.getDataFolder(), PluginPlattform.SPIGOT, loadMessageFiles);
+        CoreAPI.getInstance().getSQLPluginMessageManager().startChecking();
+        return corePlugin;
     }
 
     public void registerListeners() {
@@ -76,6 +86,6 @@ public class CoreSpigot {
     public void setMainClass(JavaPlugin mainClass) {
         this.mainClass = mainClass;
         registerListeners();
-        registerPluginChannel(mainClass);
+        registerPluginMessageChannel();
     }
 }
