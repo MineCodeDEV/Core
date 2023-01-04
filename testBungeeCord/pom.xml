@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.minecode.core</groupId>
         <artifactId>parent</artifactId>
-        <version>0.1.0-Pre.83</version>
+        <version>0.1.0-Pre.84</version>
     </parent>
 
     <artifactId>testBungeeCord</artifactId>
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>bungeecord</artifactId>
-            <version>0.1.0-Pre.83</version>
+            <version>0.1.0-Pre.84</version>
         </dependency>
     </dependencies>
 

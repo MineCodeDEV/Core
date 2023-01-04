@@ -38,7 +38,7 @@ public class CoreAPIProvider extends CoreAPI {
     private void makeInstances() {
         CoreAPI.setInstance(this);
 
-        corePlugin = new CorePluginProvider(CoreCommon.class, "Core", "0.1.0-Pre.83", PluginPlattform.MINECODE_CORE, new File("plugins/Core/"), false);
+        corePlugin = new CorePluginProvider(CoreCommon.class, "Core", "0.1.0-Pre.84", PluginPlattform.MINECODE_CORE, new File("plugins/Core/"), false);
 
         fileManagerProvider = new FileManagerProvider(); // requires thisCorePlugin
         networkManagerProvider = new NetworkManagerProvider(); // requires fileManagerProvider
