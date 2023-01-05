@@ -11,22 +11,18 @@ import dev.minecode.core.common.CoreCommon;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
-public class CoreBungeeCord {
+public class CoreBungeeCord extends Plugin {
     private static CoreBungeeCord instance;
 
-    private Plugin mainClass;
-
-    private boolean disabled;
-
-    public CoreBungeeCord() {
-        makeInstances();
-        registerPluginMessageChannel();
-//        CoreAPI.getInstance().getSQLPluginMessageManager().startChecking();
+    public static CoreBungeeCord getInstance() {
+        return instance;
     }
 
-    public static CoreBungeeCord getInstance() {
-        if (instance == null) new CoreBungeeCord();
-        return instance;
+    @Override
+    public void onEnable() {
+        makeInstances();
+        registerListeners();
+        registerPluginMessageChannel();
     }
 
     private void makeInstances() {
@@ -34,12 +30,18 @@ public class CoreBungeeCord {
         CoreCommon.getInstance();
         CoreAPI.getInstance().setPluginMessageManager(new PluginMessageManagerProvider());
         NetworkManager networkManager = CoreAPI.getInstance().getNetworkManager();
-        if (!networkManager.isServernameSet() || !networkManager.isMultiproxy()) {
+
+        if (!networkManager.isServernameSet() || !networkManager.isMultiproxy())
             networkManager.setServername("Proxy");
-        }
+
         if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
             CoreAPI.getInstance().setSQLPluginMessageManager(new SQLPluginMessageManagerProvider());
+            CoreAPI.getInstance().getSQLPluginMessageManager().startChecking();
         }
+    }
+
+    private void registerListeners() {
+        ProxyServer.getInstance().getPluginManager().registerListener(this, new BungeeCordListener());
     }
 
     private void registerPluginMessageChannel() {
@@ -47,36 +49,18 @@ public class CoreBungeeCord {
         ProxyServer.getInstance().registerChannel("minecode:pluginmessage");
     }
 
-    private void registerListeners() {
-        ProxyServer.getInstance().getPluginManager().registerListener(mainClass, new BungeeCordListener());
-    }
-
+    @Override
     public void onDisable() {
-        if (disabled) return;
+        if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL() && CoreAPI.getInstance().getSQLPluginMessageManager() != null)
+            CoreAPI.getInstance().getSQLPluginMessageManager().cancelChecking();
 
         if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL())
             CoreAPI.getInstance().getDatabaseManager().disconnect();
         else
             CoreAPI.getInstance().getFileManager().saveData();
-        disabled = true;
     }
 
     public CorePlugin registerPlugin(Plugin mainClass, boolean loadMessageFiles) {
-        if (this.mainClass == null) setMainClass(mainClass);
-
-        CorePlugin corePlugin = CoreAPI.getInstance().getPluginManager().registerPlugin(mainClass.getClass(), mainClass.getDescription().getName(), mainClass.getDescription().getVersion(), mainClass.getDataFolder(), PluginPlattform.BUNGEECORD, loadMessageFiles);
-        CoreAPI.getInstance().getSQLPluginMessageManager().startChecking();
-        return corePlugin;
+        return CoreAPI.getInstance().getPluginManager().registerPlugin(mainClass.getClass(), mainClass.getDescription().getName(), mainClass.getDescription().getVersion(), mainClass.getDataFolder(), PluginPlattform.BUNGEECORD, loadMessageFiles);
     }
-
-    public Plugin getMainClass() {
-        return mainClass;
-    }
-
-    public void setMainClass(Plugin mainClass) {
-        this.mainClass = mainClass;
-        registerListeners();
-        registerPluginMessageChannel();
-    }
-
 }

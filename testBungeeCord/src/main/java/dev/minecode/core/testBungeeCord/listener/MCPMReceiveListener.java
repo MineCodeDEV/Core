@@ -16,10 +16,10 @@ public class MCPMReceiveListener implements Listener {
 
     @EventHandler
     public void handleMineCodePluginMessage(MineCodePluginMessageReceiveEvent event) {
-        CoreBungeeCord.getInstance().getMainClass().getLogger().info("channel: " + event.getChannel());
-        CoreBungeeCord.getInstance().getMainClass().getLogger().info("sender: " + event.getSender());
+        CoreBungeeCord.getInstance().getLogger().info("channel: " + event.getChannel());
+        CoreBungeeCord.getInstance().getLogger().info("sender: " + event.getSender());
         for (Map.Entry<String, String> entry : event.getMessage().entrySet())
-            CoreBungeeCord.getInstance().getMainClass().getLogger().info("key: " + entry.getKey() + " value: " + entry.getValue());
+            CoreBungeeCord.getInstance().getLogger().info("key: " + entry.getKey() + " value: " + entry.getValue());
     }
 
 }

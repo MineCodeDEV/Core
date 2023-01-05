@@ -1,0 +1,7 @@
+name: Core
+description: Main dependency from MineCodeDEV
+
+main: dev.minecode.core.bungeecord.CoreBungeeCord
+version: 0.1.0-Pre.85
+
+author: MineCodeDEV

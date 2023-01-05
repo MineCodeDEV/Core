@@ -7,7 +7,6 @@ import dev.minecode.core.api.manager.SQLPluginMessageManager;
 import dev.minecode.core.bungeecord.CoreBungeeCord;
 import dev.minecode.core.bungeecord.event.MineCodePluginMessageReceiveEvent;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 import java.lang.reflect.Type;
@@ -49,13 +48,7 @@ public class SQLPluginMessageManagerProvider implements SQLPluginMessageManager 
         // Falls noch ein anderer Timer läuft, wird dieser abgebrochen
         cancelChecking();
 
-        Plugin mainClass = CoreBungeeCord.getInstance().getMainClass();
-        scheduledTask = mainClass.getProxy().getScheduler().schedule(mainClass, new Runnable() {
-            @Override
-            public void run() {
-                checkForPluginMessages();
-            }
-        }, interval, interval, TimeUnit.MILLISECONDS);
+        scheduledTask = ProxyServer.getInstance().getScheduler().schedule(CoreBungeeCord.getInstance(), () -> checkForPluginMessages(), interval, interval, TimeUnit.MILLISECONDS);
     }
 
     @Override

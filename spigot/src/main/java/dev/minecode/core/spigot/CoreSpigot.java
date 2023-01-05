@@ -8,39 +8,52 @@ import dev.minecode.core.spigot.api.manager.PluginMessageManagerProvider;
 import dev.minecode.core.spigot.api.manager.SQLPluginMessageManagerProvider;
 import dev.minecode.core.spigot.listener.BukkitPluginMessageListener;
 import dev.minecode.core.spigot.listener.PlayerListener;
-import dev.minecode.core.spigot.listener.PluginListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class CoreSpigot {
+public class CoreSpigot extends JavaPlugin {
     private static CoreSpigot instance;
-    private JavaPlugin mainClass;
-    private boolean disabled;
-
-    public CoreSpigot() {
-        makeInstances();
-    }
 
     public static CoreSpigot getInstance() {
-        if (instance == null) new CoreSpigot();
         return instance;
+    }
+
+    @Override
+    public void onEnable() {
+        makeInstances();
+        registerListeners();
+        registerPluginMessageChannel();
     }
 
     private void makeInstances() {
         instance = this;
-        disabled = false;
         CoreCommon.getInstance();
 
         CoreAPI.getInstance().setPluginMessageManager(new PluginMessageManagerProvider());
         if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL()) {
             CoreAPI.getInstance().setSQLPluginMessageManager(new SQLPluginMessageManagerProvider());
-//            CoreAPI.getInstance().getSQLPluginMessageManager().startChecking();
+            CoreAPI.getInstance().getSQLPluginMessageManager().startChecking();
         }
     }
 
-    public void onDisable() {
-        if (disabled) return;
+    private void registerPluginMessageChannel() {
+        if (CoreAPI.getInstance().getNetworkManager().isMultiproxy()) return;
 
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "minecode:pluginmessage");
+
+        BukkitPluginMessageListener listener = new BukkitPluginMessageListener();
+        Bukkit.getMessenger().registerIncomingPluginChannel(this, "BungeeCord", listener);
+        Bukkit.getMessenger().registerIncomingPluginChannel(this, "minecode:pluginmessage", listener);
+
+    }
+
+    private void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+    }
+
+    @Override
+    public void onDisable() {
         if (CoreAPI.getInstance().getDatabaseManager().isUsingSQL() && CoreAPI.getInstance().getSQLPluginMessageManager() != null)
             CoreAPI.getInstance().getSQLPluginMessageManager().cancelChecking();
 
@@ -48,44 +61,9 @@ public class CoreSpigot {
             CoreAPI.getInstance().getDatabaseManager().disconnect();
         else
             CoreAPI.getInstance().getFileManager().saveData();
-        disabled = true;
-    }
-
-    public void registerPluginMessageChannel() {
-        if (CoreAPI.getInstance().getNetworkManager().isMultiproxy()) return;
-
-        Bukkit.getMessenger().registerOutgoingPluginChannel(mainClass, "BungeeCord");
-        Bukkit.getMessenger().registerOutgoingPluginChannel(mainClass, "minecode:intern");
-        Bukkit.getMessenger().registerOutgoingPluginChannel(mainClass, "minecode:pluginmessage");
-
-        BukkitPluginMessageListener listener = new BukkitPluginMessageListener();
-        Bukkit.getMessenger().registerIncomingPluginChannel(mainClass, "BungeeCord", listener);
-        Bukkit.getMessenger().registerIncomingPluginChannel(mainClass, "minecode:intern", listener);
-        Bukkit.getMessenger().registerIncomingPluginChannel(mainClass, "minecode:pluginmessage", listener);
-
     }
 
     public CorePlugin registerPlugin(JavaPlugin mainClass, boolean loadMessageFiles) {
-        if (this.mainClass == null) {
-            setMainClass(mainClass);
-        }
-        CorePlugin corePlugin = CoreAPI.getInstance().getPluginManager().registerPlugin(mainClass.getClass(), mainClass.getDescription().getName(), mainClass.getDescription().getVersion(), mainClass.getDataFolder(), PluginPlattform.SPIGOT, loadMessageFiles);
-        CoreAPI.getInstance().getSQLPluginMessageManager().startChecking();
-        return corePlugin;
-    }
-
-    public void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(), mainClass);
-        Bukkit.getPluginManager().registerEvents(new PluginListener(), mainClass);
-    }
-
-    public JavaPlugin getMainClass() {
-        return mainClass;
-    }
-
-    public void setMainClass(JavaPlugin mainClass) {
-        this.mainClass = mainClass;
-        registerListeners();
-        registerPluginMessageChannel();
+        return CoreAPI.getInstance().getPluginManager().registerPlugin(mainClass.getClass(), mainClass.getDescription().getName(), mainClass.getDescription().getVersion(), mainClass.getDataFolder(), PluginPlattform.SPIGOT, loadMessageFiles);
     }
 }

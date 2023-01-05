@@ -15,8 +15,6 @@ import java.util.HashMap;
 
 public class BungeeCordListener implements Listener {
 
-    public static boolean registered;
-
     private final Gson gson;
     private final Type type;
 

@@ -42,12 +42,7 @@ public class SQLPluginMessageManagerProvider implements SQLPluginMessageManager 
     public void startChecking() {
         // Falls noch ein anderer Timer läuft, wird dieser abgebrochen
         cancelChecking();
-        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(CoreSpigot.getInstance().getMainClass(), new Runnable() {
-            @Override
-            public void run() {
-                checkForPluginMessages();
-            }
-        }, interval, interval);
+        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(CoreSpigot.getInstance(), () -> checkForPluginMessages(), interval, interval);
     }
 
     @Override
@@ -71,7 +66,7 @@ public class SQLPluginMessageManagerProvider implements SQLPluginMessageManager 
                 String channel = resultSet.getString("CHANNEL");
                 String senderserver = resultSet.getString("SENDERSERVER");
                 String message = resultSet.getString("MESSAGE");
-                Bukkit.getScheduler().runTask(CoreSpigot.getInstance().getMainClass(), () ->
+                Bukkit.getScheduler().runTask(CoreSpigot.getInstance(), () ->
                         Bukkit.getPluginManager().callEvent(new MineCodePluginMessageReceiveEvent(channel, senderserver, gson.fromJson(message, type))));
                 resultSet.deleteRow();
             }

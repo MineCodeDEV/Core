@@ -38,7 +38,7 @@ public class CoreAPIProvider extends CoreAPI {
     private void makeInstances() {
         CoreAPI.setInstance(this);
 
-        corePlugin = new CorePluginProvider(CoreCommon.class, "Core", "0.1.0-Pre.84", PluginPlattform.MINECODE_CORE, new File("plugins/Core/"), false);
+        corePlugin = new CorePluginProvider(CoreCommon.class, "Core", "0.1.0-Pre.85", PluginPlattform.MINECODE_CORE, new File("plugins/Core/"), false);
 
         fileManagerProvider = new FileManagerProvider(); // requires thisCorePlugin
         networkManagerProvider = new NetworkManagerProvider(); // requires fileManagerProvider
@@ -91,12 +91,12 @@ public class CoreAPIProvider extends CoreAPI {
     }
 
     @Override
-    public @NotNull SQLPluginMessageManager getSQLPluginMessageManager() {
+    public @Nullable SQLPluginMessageManager getSQLPluginMessageManager() {
         return sqlPluginMessageManager;
     }
 
     @Override
-    public void setSQLPluginMessageManager(SQLPluginMessageManager sqlPluginMessageManager) {
+    public void setSQLPluginMessageManager(@NotNull SQLPluginMessageManager sqlPluginMessageManager) {
         this.sqlPluginMessageManager = sqlPluginMessageManager;
     }
 

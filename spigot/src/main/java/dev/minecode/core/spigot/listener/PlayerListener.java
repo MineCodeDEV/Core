@@ -19,7 +19,7 @@ public class PlayerListener implements Listener {
         } else {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("GetServer");
-            Bukkit.getServer().sendPluginMessage(CoreSpigot.getInstance().getMainClass(), "BungeeCord", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(CoreSpigot.getInstance(), "BungeeCord", out.toByteArray());
         }
     }
 }

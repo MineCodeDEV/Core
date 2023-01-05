@@ -35,16 +35,16 @@ public abstract class CoreAPI {
 
     public abstract @NotNull PluginManager getPluginManager();
 
-    public abstract @NotNull PluginMessageManager getPluginMessageManager();
+    public abstract @Nullable PluginMessageManager getPluginMessageManager();
 
-    public abstract void setPluginMessageManager(PluginMessageManager pluginMessageManager);
+    public abstract void setPluginMessageManager(@NotNull PluginMessageManager pluginMessageManager);
 
     /**
      * @Nullable if MySQL is disabled
      */
     public abstract @Nullable SQLPluginMessageManager getSQLPluginMessageManager();
 
-    public abstract void setSQLPluginMessageManager(SQLPluginMessageManager sqlPluginMessageManager);
+    public abstract void setSQLPluginMessageManager(@NotNull SQLPluginMessageManager sqlPluginMessageManager);
 
     public abstract @NotNull ReplaceManager getReplaceManager(@NotNull String message);
 

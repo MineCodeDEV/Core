@@ -59,8 +59,8 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
 
     @Override
     public void executeQueue() {
-        for (int i = 0; i < queuedPluginMessages.size(); i++)
-            queuedPluginMessages.get(i).sendPluginMessage();
+        for (QueuedPluginMessage queuedPluginMessage : queuedPluginMessages)
+            queuedPluginMessage.sendPluginMessage();
     }
 
     private boolean sendPluginMessageOverChannel(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
@@ -76,7 +76,7 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
             out.writeUTF(channel);
             out.writeUTF(CoreAPI.getInstance().getNetworkManager().getServername());
             out.writeUTF(messageJson);
-            Bukkit.getServer().sendPluginMessage(CoreSpigot.getInstance().getMainClass(), "minecode:pluginmessage", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(CoreSpigot.getInstance(), "minecode:pluginmessage", out.toByteArray());
             return true;
         }
 
@@ -98,7 +98,7 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
         out.writeShort(msgbytes.toByteArray().length);
         out.write(msgbytes.toByteArray());
 
-        Bukkit.getServer().sendPluginMessage(CoreSpigot.getInstance().getMainClass(), "BungeeCord", out.toByteArray());
+        Bukkit.getServer().sendPluginMessage(CoreSpigot.getInstance(), "BungeeCord", out.toByteArray());
         return true;
     }
 
