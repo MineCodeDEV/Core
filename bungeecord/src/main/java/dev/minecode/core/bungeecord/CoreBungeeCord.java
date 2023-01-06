@@ -1,15 +1,21 @@
 package dev.minecode.core.bungeecord;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.manager.NetworkManager;
+import dev.minecode.core.api.object.CloudPlattform;
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.PluginPlattform;
 import dev.minecode.core.bungeecord.api.manager.PluginMessageManagerProvider;
 import dev.minecode.core.bungeecord.api.manager.SQLPluginMessageManagerProvider;
+import dev.minecode.core.bungeecord.event.MineCodePluginMessageReceiveEvent;
 import dev.minecode.core.bungeecord.listener.BungeeCordListener;
 import dev.minecode.core.common.CoreCommon;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
+
+import java.util.HashMap;
 
 public class CoreBungeeCord extends Plugin {
     private static CoreBungeeCord instance;
@@ -42,6 +48,16 @@ public class CoreBungeeCord extends Plugin {
 
     private void registerListeners() {
         ProxyServer.getInstance().getPluginManager().registerListener(this, new BungeeCordListener());
+
+        /*
+        register MessageChannel von SimpleCloud
+         */
+        if (CoreAPI.getInstance().getNetworkManager().getCloudPlattform() == CloudPlattform.SIMPLECLOUD) {
+            CoreCommon.getInstance().getMessageChannel().registerListener(
+                    (message, sender) -> ProxyServer.getInstance().getPluginManager().callEvent(
+                            new MineCodePluginMessageReceiveEvent(message.getChannel(), sender.getName(), new Gson().fromJson(message.getMessageToJson(), new TypeToken<HashMap<String, String>>() {
+                            }.getType()))));
+        }
     }
 
     private void registerPluginMessageChannel() {

@@ -39,13 +39,6 @@ public abstract class CoreAPI {
 
     public abstract void setPluginMessageManager(@NotNull PluginMessageManager pluginMessageManager);
 
-    /**
-     * @Nullable if MySQL is disabled
-     */
-    public abstract @Nullable SQLPluginMessageManager getSQLPluginMessageManager();
-
-    public abstract void setSQLPluginMessageManager(@NotNull SQLPluginMessageManager sqlPluginMessageManager);
-
     public abstract @NotNull ReplaceManager getReplaceManager(@NotNull String message);
 
     public abstract @NotNull ReplaceManager getReplaceManager(@NotNull BaseComponent[] message);
@@ -55,6 +48,13 @@ public abstract class CoreAPI {
     public abstract @NotNull ReplaceManager getReplaceManager(@NotNull Language language, @NotNull LanguageAbstract path);
 
     public abstract @NotNull UpdateManager getUpdateManager(@NotNull CorePlugin corePlugin);
+
+    /**
+     * @Nullable if MySQL is disabled
+     */
+    public abstract @Nullable SQLPluginMessageManager getSQLPluginMessageManager();
+
+    public abstract void setSQLPluginMessageManager(@NotNull SQLPluginMessageManager sqlPluginMessageManager);
 
     // Getter & Setter
     public abstract @NotNull CorePlugin getCorePlugin();

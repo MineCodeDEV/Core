@@ -75,6 +75,8 @@
 
                                     <include>org.spongepowered:configurate-gson</include>
                                     <include>com.google.gson:gson</include>
+
+                                    <include>eu.thesimplecloud.simplecloud:simplecloud-api</include>
                                 </includes>
                             </artifactSet>
                             <filters>

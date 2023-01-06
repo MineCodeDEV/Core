@@ -8,6 +8,10 @@ import dev.minecode.core.api.manager.NetworkManager;
 import dev.minecode.core.api.manager.PluginMessageManager;
 import dev.minecode.core.api.object.CloudPlattform;
 import dev.minecode.core.api.object.QueuedPluginMessage;
+import dev.minecode.core.common.CoreCommon;
+import dev.minecode.core.common.api.cloudsupport.SimpleCloudPluginMessage;
+import eu.thesimplecloud.api.CloudAPI;
+import eu.thesimplecloud.api.service.ICloudService;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import org.jetbrains.annotations.NotNull;
@@ -73,7 +77,11 @@ public class PluginMessageManagerProvider implements PluginMessageManager {
     }
 
     private boolean sendPluginMessageOverCloudNet(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {
-        return false;
+        ICloudService receiver = CloudAPI.getInstance().getCloudServiceManager().getCloudServiceByName(targetServer);
+        if (receiver == null) return false;
+        SimpleCloudPluginMessage pluginMessage = new SimpleCloudPluginMessage(channel, gson.toJson(message));
+        CoreCommon.getInstance().getMessageChannel().sendMessage(pluginMessage, receiver);
+        return true;
     }
 
     private boolean sendPluginMessageOverSimpleCloud(@NotNull String targetServer, @NotNull String channel, @NotNull HashMap<String, String> message) {

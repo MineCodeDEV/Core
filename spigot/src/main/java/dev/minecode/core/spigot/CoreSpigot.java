@@ -1,15 +1,20 @@
 package dev.minecode.core.spigot;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.PluginPlattform;
 import dev.minecode.core.common.CoreCommon;
 import dev.minecode.core.spigot.api.manager.PluginMessageManagerProvider;
 import dev.minecode.core.spigot.api.manager.SQLPluginMessageManagerProvider;
+import dev.minecode.core.spigot.event.MineCodePluginMessageReceiveEvent;
 import dev.minecode.core.spigot.listener.BukkitPluginMessageListener;
 import dev.minecode.core.spigot.listener.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
 
 public class CoreSpigot extends JavaPlugin {
     private static CoreSpigot instance;
@@ -50,6 +55,11 @@ public class CoreSpigot extends JavaPlugin {
 
     private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+
+        CoreCommon.getInstance().getMessageChannel().registerListener(
+                (message, sender) -> Bukkit.getPluginManager().callEvent(
+                        new MineCodePluginMessageReceiveEvent(message.getChannel(), sender.getName(), new Gson().fromJson(message.getMessageToJson(), new TypeToken<HashMap<String, String>>() {
+                        }.getType()))));
     }
 
     @Override
