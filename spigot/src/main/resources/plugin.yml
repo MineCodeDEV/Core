@@ -2,7 +2,7 @@ name: Core
 description: Main dependency from MineCodeDEV
 
 main: dev.minecode.core.spigot.CoreSpigot
-version: 0.1.0-Pre.85
+version: 0.1.0-Pre.86
 api-version: 1.19
 
 author: MineCodeDEV
